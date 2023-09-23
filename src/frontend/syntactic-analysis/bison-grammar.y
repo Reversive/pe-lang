@@ -35,6 +35,9 @@
 	int ret_function;
 	int void_function;
 	int parameters;
+	int statement;
+	int instruction;
+	int block;
 }
 
 // Un token que jamás debe ser usado en la gramática.
@@ -58,6 +61,7 @@
 %token <token> CLOSE_PARENTHESIS
 %token <token> ASSIGNMENT
 %token <token> COMMA
+%token <token> SEMICOLON
 
 // functions
 %token <token> PEOPEN
@@ -86,6 +90,9 @@
 %type <ret_function> ret_function
 %type <void_function> void_function
 %type <parameters> parameters
+%type <statement> statement
+%type <instruction> instruction
+%type <block> block
 
 // Associative and precedence rules.
 %left ADD SUB
@@ -97,11 +104,20 @@
 %%
 
 // TODO: Complete grammar rules, this is just for testing purposes.
-program: expression													{ $$ = ProgramGrammarAction($1); }
-	| full_assignment												{ $$ = ProgramGrammarAction($1); }
-	| assignment													{ $$ = ProgramGrammarAction($1); }
-	| ret_function													{ $$ = ProgramGrammarAction($1); }
-	| void_function													{ $$ = ProgramGrammarAction($1); }
+program: block														{ $$ = ProgramGrammarAction($1); }
+	;
+
+block: instruction block 											{ $$ = BlockGrammarAction($1, $2); }
+	| instruction													{ $$ = BlockGrammarAction($1, 0); }
+	;
+
+instruction: statement SEMICOLON									{ $$ = InstructionGrammarAction($1); }
+	| void_function	SEMICOLON		 								{ $$ = VoidFunctionGrammarAction($1); }
+	;
+
+statement: full_assignment											{ $$ = FullAssignmentStatementGrammarAction($1); }
+	| assignment													{ $$ = AssignmentStatementGrammarAction($1); }
+	| ret_function													{ $$ = FunctionStatementGrammarAction($1); }
 	;
 
 expression: expression[left] ADD expression[right]					{ $$ = AdditionExpressionGrammarAction($left, $right); }
