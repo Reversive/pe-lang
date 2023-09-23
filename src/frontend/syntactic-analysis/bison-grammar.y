@@ -27,6 +27,8 @@
 	char* string;
 	int type;
 	int declaration;
+	int full_assignment;
+	int assignment;
 }
 
 // Un token que jamás debe ser usado en la gramática.
@@ -47,11 +49,13 @@
 
 %token <token> OPEN_PARENTHESIS
 %token <token> CLOSE_PARENTHESIS
+%token <token> ASSIGNMENT
 
 %token <integer> INTEGER
 %token <string> STRING 
 %token <string> IDENTIFIER
-// Tipos de dato para los no-terminales generados desde Bison.
+
+// No-terminals 
 %type <program> program
 %type <expression> expression
 %type <factor> factor
@@ -60,19 +64,22 @@
 %type <string> identifier
 %type <type> type
 %type <declaration> declaration
+%type <full_assignment> full_assignment
+%type <assignment> assignment
 
-// Reglas de asociatividad y precedencia (de menor a mayor).
+// Associative and precedence rules.
 %left ADD SUB
 %left MUL DIV
 
-// El símbolo inicial de la gramatica.
+// Initial symbol.
 %start program
 
 %%
 
-// TODO: Completar la gramática, esto es solo a modo de ejemplo.
+// TODO: Complete grammar rules.
 program: expression													{ $$ = ProgramGrammarAction($1); }
-	| declaration													{ $$ = ProgramGrammarAction($1); }
+	| full_assignment												{ $$ = ProgramGrammarAction($1); }
+	| assignment													{ $$ = ProgramGrammarAction($1); }
 	;
 
 expression: expression[left] ADD expression[right]					{ $$ = AdditionExpressionGrammarAction($left, $right); }
@@ -93,6 +100,13 @@ factor: OPEN_PARENTHESIS expression CLOSE_PARENTHESIS				{ $$ = ExpressionFactor
 	| constant														{ $$ = ConstantFactorGrammarAction($1); }
 	| identifier													{ $$ = IdentifierFactorGrammarAction($1); }
 	| string 														{ $$ = StringFactorGrammarAction($1); }
+	;
+
+full_assignment: declaration ASSIGNMENT expression					{ $$ = FullAssignmentGrammarAction($1, $3); }
+	| declaration													{ $$ = DeclarationGrammarAction($1, 0); }
+	;
+
+assignment: identifier ASSIGNMENT expression						{ $$ = AssignmentGrammarAction($1, $3); }
 	;
 
 declaration: type identifier										{ $$ = DeclarationGrammarAction($1, $2); }

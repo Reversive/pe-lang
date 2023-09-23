@@ -62,7 +62,6 @@ token IntegerPatternAction(const char *lexeme, const int length)
 	LogDebug("[Flex] IntegerPatternAction: '%s' (length = %d).", lexeme, length);
 	char *lexemeCopy = copyLexeme(lexeme, length);
 	yylval.integer = atoi(lexemeCopy);
-	free(lexemeCopy);
 	return INTEGER;
 }
 
@@ -91,7 +90,6 @@ token UnknownPatternAction(const char *lexeme, const int length)
 {
 	char *lexemeCopy = copyLexeme(lexeme, length);
 	LogDebug("[Flex] UnknownPatternAction: '%s' (length = %d).", lexemeCopy, length);
-	free(lexemeCopy);
 	yylval.token = ERROR;
 	return ERROR;
 }
@@ -163,8 +161,8 @@ token IdentifierPatternAction(const char *lexeme, const int length)
 {
 	char *lexemeCopy = copyLexeme(lexeme, length);
 	LogDebug("[Flex] IdentifierPatternAction: '%s' (length = %d).", lexemeCopy, length);
-	free(lexemeCopy);
 	yylval.token = IDENTIFIER;
+	yylval.string = lexemeCopy;
 	return IDENTIFIER;
 }
 
@@ -172,8 +170,8 @@ token StringPatternAction(const char *lexeme, const int length)
 {
 	char *lexemeCopy = copyLexeme(lexeme, length);
 	LogDebug("[Flex] StringPatternAction: '%s' (length = %d).", lexemeCopy, length);
-	free(lexemeCopy);
 	yylval.token = STRING;
+	yylval.string = lexemeCopy;
 	return STRING;
 }
 
@@ -251,4 +249,10 @@ token ByteTypePatternAction()
 	LogDebug("[Flex] ByteTypePatternAction: 'Byte'.");
 	yylval.token = BYTE_TYPE;
 	return BYTE_TYPE;
+}
+token AssignmentPatternAction()
+{
+	LogDebug("[Flex] AssignmentPatternAction: ':='.");
+	yylval.token = ASSIGNMENT;
+	return ASSIGNMENT;
 }

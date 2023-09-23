@@ -58,6 +58,7 @@ int                                         { return IntTypePatternAction(); }
 string                                      { return StringTypePatternAction(); }
 byte                                        { return ByteTypePatternAction(); }
 
+"="											{ return AssignmentPatternAction(); }
 
 "("											{ return OpenParenthesisPatternAction(); }
 ")"											{ return CloseParenthesisPatternAction(); }
