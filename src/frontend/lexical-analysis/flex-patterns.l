@@ -54,6 +54,8 @@ letter          [a-zA-Z]
 
 {letter}({letter}|{digit})*					{ return IdentifierPatternAction(yytext, yyleng); }
 
+\"[^\"]+\"                                  { return StringPatternAction(yytext, yyleng); }
+
 .											{ return UnknownPatternAction(yytext, yyleng); }
 
 %%
