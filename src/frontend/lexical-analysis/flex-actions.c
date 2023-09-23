@@ -159,6 +159,15 @@ token NotOperatorPatternAction()
 	return NOT;
 }
 
+token IdentifierPatternAction(const char *lexeme, const int length)
+{
+	char *lexemeCopy = copyLexeme(lexeme, length);
+	LogDebug("[Flex] IdentifierPatternAction: '%s' (length = %d).", lexemeCopy, length);
+	free(lexemeCopy);
+	yylval.token = IDENTIFIER;
+	return IDENTIFIER;
+}
+
 void IgnoredPatternAction(const char *lexeme, const int length)
 {
 	char *lexemeCopy = copyLexeme(lexeme, length);

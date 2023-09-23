@@ -52,6 +52,8 @@ letter          [a-zA-Z]
 
 {whitespace}+								{ IgnoredPatternAction(yytext, yyleng); }
 
+{letter}({letter}|{digit})*					{ return IdentifierPatternAction(yytext, yyleng); }
+
 .											{ return UnknownPatternAction(yytext, yyleng); }
 
 %%
