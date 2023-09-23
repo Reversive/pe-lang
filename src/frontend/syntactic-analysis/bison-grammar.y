@@ -30,7 +30,10 @@
 	int full_assignment;
 	int assignment;
 	int peopen;
-	int function;
+	int print;
+	int ret_function;
+	int void_function;
+	int parameters;
 }
 
 // Un token que jamás debe ser usado en la gramática.
@@ -53,9 +56,11 @@
 %token <token> OPEN_PARENTHESIS
 %token <token> CLOSE_PARENTHESIS
 %token <token> ASSIGNMENT
+%token <token> COMMA
 
 // functions
 %token <token> PEOPEN
+%token <token> PRINT
 
 // constants
 %token <integer> INTEGER
@@ -74,7 +79,10 @@
 %type <full_assignment> full_assignment
 %type <assignment> assignment
 %type <peopen> peopen
-%type <function> function
+%type <print> print
+%type <ret_function> ret_function
+%type <void_function> void_function
+%type <parameters> parameters
 
 // Associative and precedence rules.
 %left ADD SUB
@@ -90,6 +98,7 @@ program: expression													{ $$ = ProgramGrammarAction($1); }
 	| full_assignment												{ $$ = ProgramGrammarAction($1); }
 	| assignment													{ $$ = ProgramGrammarAction($1); }
 	| peopen														{ $$ = ProgramGrammarAction($1); }
+	| print															{ $$ = ProgramGrammarAction($1); }
 	;
 
 expression: expression[left] ADD expression[right]					{ $$ = AdditionExpressionGrammarAction($left, $right); }
@@ -104,7 +113,7 @@ expression: expression[left] ADD expression[right]					{ $$ = AdditionExpression
 	| expression[left] GREATER_THAN_OR_EQUAL expression[right]		{ $$ = GreaterThanOrEqualExpressionGrammarAction($left, $right); }
 	| NOT expression												{ $$ = NotExpressionGrammarAction($1); }
 	| factor														{ $$ = FactorExpressionGrammarAction($1); }
-	| function														{ $$ = FunctionExpressionGrammarAction($1); }
+	| ret_function														{ $$ = FunctionExpressionGrammarAction($1); }
 	;
 
 factor: OPEN_PARENTHESIS expression CLOSE_PARENTHESIS				{ $$ = ExpressionFactorGrammarAction($2); }
@@ -145,11 +154,21 @@ identifier: IDENTIFIER												{ $$ = IdentifierGrammarAction($1); }
 string: STRING														{ $$ = StringGrammarAction($1); }
 	;
 
-function: peopen													{ $$ = PEOpenGrammarAction($1); }
+ret_function: peopen												{ $$ = PEOpenGrammarAction($1); }
+	;
+
+void_function: print												{ $$ = PrintGrammarAction($1); }
+	;
+
+parameters: expression												{ $$ = ParametersGrammarAction($1); }
+	| parameters COMMA expression									{ $$ = ParametersCommaExpressionGrammarAction($1, $3); }
 	;
 
 peopen: PEOPEN OPEN_PARENTHESIS string CLOSE_PARENTHESIS			{ $$ = PEOpenGrammarAction($2); }
-	| 	PEOPEN OPEN_PARENTHESIS identifier CLOSE_PARENTHESIS		{ $$ = PEOpenGrammarAction($2); } // Change this in the future, $2 is not a string
+	| 	PEOPEN OPEN_PARENTHESIS identifier CLOSE_PARENTHESIS		{ $$ = PEOpenIdentifierGrammarAction($2); }
+	;
+
+print: PRINT parameters												{ $$ = PrintGrammarAction($1); }
 	;
 
 %%

@@ -138,78 +138,118 @@ int DeclarationGrammarAction(const int leftValue, char *rightValue)
 	LogDebug("[Bison] DeclarationGrammarAction(%d, %s)", leftValue, rightValue);
 	return 0;
 }
+
 int PEFileTypeGrammarAction(const int value)
 {
 	LogDebug("[Bison] PEFileTypeGrammarAction(%d)", value);
 	return 0;
 }
+
 int PESectionTypeGrammarAction(const int value)
 {
 	LogDebug("[Bison] PESectionTypeGrammarAction(%d)", value);
 	return 0;
 }
+
 int PEImportTypeGrammarAction(const int value)
 {
 	LogDebug("[Bison] PEImportTypeGrammarAction(%d)", value);
 	return 0;
 }
+
 int PEExportTypeGrammarAction(const int value)
 {
 	LogDebug("[Bison] PEExportTypeGrammarAction(%d)", value);
 	return 0;
 }
+
 int PEHeaderTypeGrammarAction(const int value)
 {
 	LogDebug("[Bison] PEHeaderTypeGrammarAction(%d)", value);
 	return 0;
 }
+
 int PEResourceTypeGrammarAction(const int value)
 {
 	LogDebug("[Bison] PEResourceTypeGrammarAction(%d)", value);
 	return 0;
 }
+
 int PESignatureTypeGrammarAction(const int value)
 {
 	LogDebug("[Bison] PESignatureTypeGrammarAction(%d)", value);
 	return 0;
 }
+
 int PEDirEntryTypeGrammarAction(const int value)
 {
 	LogDebug("[Bison] PEDirEntryTypeGrammarAction(%d)", value);
 	return 0;
 }
+
 int IntTypeGrammarAction(const int value)
 {
 	LogDebug("[Bison] IntTypeGrammarAction(%d)", value);
 	return 0;
 }
+
 int StringTypeGrammarAction(const int value)
 {
 	LogDebug("[Bison] StringTypeGrammarAction(%d)", value);
 	return 0;
 }
+
 int ByteTypeGrammarAction(const int value)
 {
 	LogDebug("[Bison] ByteTypeGrammarAction(%d)", value);
 	return 0;
 }
+
 int FullAssignmentGrammarAction(const int leftValue, const int rightValue)
 {
 	LogDebug("[Bison] FullAssignmentGrammarAction (%d, %d)", leftValue, rightValue);
 	return 0;
 }
+
 int AssignmentGrammarAction(char *leftValue, const int rightValue)
 {
 	LogDebug("[Bison] AssignmentGrammarAction (%s, %d)", leftValue, rightValue);
 	return 0;
 }
+
 int PEOpenGrammarAction(const int value)
 {
 	LogDebug("[Bison] PEOpenGrammarAction (%d)", value);
 	return 0;
 }
+
 int FunctionExpressionGrammarAction(const int value)
 {
 	LogDebug("[Bison] FunctionExpressionGrammarAction (%d)", value);
 	return 0;
 }
+
+int PEOpenIdentifierGrammarAction(const int value)
+{
+	LogDebug("[Bison] PEOpenIdentifierGrammarAction (%d)", value);
+	return 0;
+}
+
+int PrintGrammarAction(const int value)
+{
+	LogDebug("[Bison] PrintGrammarAction (%d)", value);
+	return 0;
+}
+
+int ParametersCommaExpressionGrammarAction(const int leftValue, const int rightValue)
+{
+	LogDebug("[Bison] ParametersCommaExpressionGrammarAction (%d, %d)", leftValue, rightValue);
+	return 0;
+}
+
+int ParametersGrammarAction(const int value)
+{
+	LogDebug("[Bison] ParametersGrammarAction (%d)", value);
+	return 0;
+}
+
