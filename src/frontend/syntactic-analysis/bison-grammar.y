@@ -29,6 +29,8 @@
 	int declaration;
 	int full_assignment;
 	int assignment;
+	int peopen;
+	int function;
 }
 
 // Un token que jamás debe ser usado en la gramática.
@@ -47,10 +49,15 @@
 %token <token> INT_TYPE 
 %token <token> STRING_TYPE BYTE_TYPE PEFILE_TYPE PESECTION_TYPE PEIMPORT_TYPE PEEXPORT_TYPE PEHEADER_TYPE PERESOURCE_TYPE PESIGNATURE_TYPE PEDIRENTRY_TYPE
 
+// symbols
 %token <token> OPEN_PARENTHESIS
 %token <token> CLOSE_PARENTHESIS
 %token <token> ASSIGNMENT
 
+// functions
+%token <token> PEOPEN
+
+// constants
 %token <integer> INTEGER
 %token <string> STRING 
 %token <string> IDENTIFIER
@@ -66,6 +73,8 @@
 %type <declaration> declaration
 %type <full_assignment> full_assignment
 %type <assignment> assignment
+%type <peopen> peopen
+%type <function> function
 
 // Associative and precedence rules.
 %left ADD SUB
@@ -80,6 +89,7 @@
 program: expression													{ $$ = ProgramGrammarAction($1); }
 	| full_assignment												{ $$ = ProgramGrammarAction($1); }
 	| assignment													{ $$ = ProgramGrammarAction($1); }
+	| peopen														{ $$ = ProgramGrammarAction($1); }
 	;
 
 expression: expression[left] ADD expression[right]					{ $$ = AdditionExpressionGrammarAction($left, $right); }
@@ -94,6 +104,7 @@ expression: expression[left] ADD expression[right]					{ $$ = AdditionExpression
 	| expression[left] GREATER_THAN_OR_EQUAL expression[right]		{ $$ = GreaterThanOrEqualExpressionGrammarAction($left, $right); }
 	| NOT expression												{ $$ = NotExpressionGrammarAction($1); }
 	| factor														{ $$ = FactorExpressionGrammarAction($1); }
+	| function														{ $$ = FunctionExpressionGrammarAction($1); }
 	;
 
 factor: OPEN_PARENTHESIS expression CLOSE_PARENTHESIS				{ $$ = ExpressionFactorGrammarAction($2); }
@@ -132,6 +143,13 @@ identifier: IDENTIFIER												{ $$ = IdentifierGrammarAction($1); }
 	;
 
 string: STRING														{ $$ = StringGrammarAction($1); }
+	;
+
+function: peopen													{ $$ = PEOpenGrammarAction($1); }
+	;
+
+peopen: PEOPEN OPEN_PARENTHESIS string CLOSE_PARENTHESIS			{ $$ = PEOpenGrammarAction($2); }
+	| 	PEOPEN OPEN_PARENTHESIS identifier CLOSE_PARENTHESIS		{ $$ = PEOpenGrammarAction($2); } // Change this in the future, $2 is not a string
 	;
 
 %%

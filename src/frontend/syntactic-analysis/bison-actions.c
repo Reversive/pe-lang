@@ -203,3 +203,13 @@ int AssignmentGrammarAction(char *leftValue, const int rightValue)
 	LogDebug("[Bison] AssignmentGrammarAction (%s, %d)", leftValue, rightValue);
 	return 0;
 }
+int PEOpenGrammarAction(const int value)
+{
+	LogDebug("[Bison] PEOpenGrammarAction (%d)", value);
+	return 0;
+}
+int FunctionExpressionGrammarAction(const int value)
+{
+	LogDebug("[Bison] FunctionExpressionGrammarAction (%d)", value);
+	return 0;
+}
