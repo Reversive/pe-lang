@@ -136,30 +136,30 @@ int NotExpressionGrammarAction(const int value)
 	LogDebug("[Bison] NotExpressionGrammarAction(%d)", value);
 	return 0;
 }
-int IdentifierFactorGrammarAction(const int value)
+int IdentifierFactorGrammarAction(char *value)
 {
-	LogDebug("[Bison] IdentifierFactorGrammarAction(%d)", value);
+	LogDebug("[Bison] IdentifierFactorGrammarAction(%s)", value);
 	return 0;
 }
-int StringFactorGrammarAction(const int value)
+int StringFactorGrammarAction(char *value)
 {
-	LogDebug("[Bison] StringFactorGrammarAction(%d)", value);
+	LogDebug("[Bison] StringFactorGrammarAction(%s)", value);
 	return 0;
 }
 char *IdentifierGrammarAction(char *value)
 {
-	LogDebug("[Bison] IdentifierGrammarAction(%d)", value);
+	LogDebug("[Bison] IdentifierGrammarAction(%s)", value);
 	return 0;
 }
 char *StringGrammarAction(char *value)
 {
-	LogDebug("[Bison] StringGrammarAction(%d)", value);
+	LogDebug("[Bison] StringGrammarAction(%s)", value);
 	return 0;
 }
 
-int DeclarationGrammarAction(const int leftValue, const int rightValue)
+int DeclarationGrammarAction(const int leftValue, char *rightValue)
 {
-	LogDebug("[Bison] DeclarationGrammarAction(%d, %d)", leftValue, rightValue);
+	LogDebug("[Bison] DeclarationGrammarAction(%d, %s)", leftValue, rightValue);
 	return 0;
 }
 int PEFileTypeGrammarAction(const int value)
@@ -215,5 +215,10 @@ int StringTypeGrammarAction(const int value)
 int ByteTypeGrammarAction(const int value)
 {
 	LogDebug("[Bison] ByteTypeGrammarAction(%d)", value);
+	return 0;
+}
+int AssignmentGrammarAction(const int leftValue, const int rightValue)
+{
+	LogDebug("[Bison] AssignmentGrammarAction (%d, %d)", leftValue, rightValue);
 	return 0;
 }

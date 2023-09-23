@@ -31,11 +31,11 @@ int NotExpressionGrammarAction(const int value);
 // Factores.
 int ExpressionFactorGrammarAction(const int value);
 int ConstantFactorGrammarAction(const int value);
-int IdentifierFactorGrammarAction(const int value);
-int StringFactorGrammarAction(const int value);
+int IdentifierFactorGrammarAction(char *value);
+int StringFactorGrammarAction(char *value);
 
 // Tipos
-int DeclarationGrammarAction(const int leftValue, const int rightValue);
+int DeclarationGrammarAction(const int leftValue, char *rightValue);
 int PEFileTypeGrammarAction(const int value);
 int PESectionTypeGrammarAction(const int value);
 int PEImportTypeGrammarAction(const int value);
@@ -47,6 +47,9 @@ int PEDirEntryTypeGrammarAction(const int value);
 int IntTypeGrammarAction(const int value);
 int StringTypeGrammarAction(const int value);
 int ByteTypeGrammarAction(const int value);
+
+// Asignacion
+int AssignmentGrammarAction(const int leftValue, const int rightValue);
 
 // Constantes.
 int IntegerConstantGrammarAction(const int value);

@@ -27,6 +27,7 @@
 	char* string;
 	int type;
 	int declaration;
+	int assignment;
 }
 
 // Un token que jamás debe ser usado en la gramática.
@@ -47,6 +48,7 @@
 
 %token <token> OPEN_PARENTHESIS
 %token <token> CLOSE_PARENTHESIS
+%token <token> ASSIGNMENT
 
 %token <integer> INTEGER
 %token <string> STRING 
@@ -60,6 +62,7 @@
 %type <string> identifier
 %type <type> type
 %type <declaration> declaration
+%type <assignment> assignment
 
 // Reglas de asociatividad y precedencia (de menor a mayor).
 %left ADD SUB
@@ -73,6 +76,7 @@
 // TODO: Completar la gramática, esto es solo a modo de ejemplo.
 program: expression													{ $$ = ProgramGrammarAction($1); }
 	| declaration													{ $$ = ProgramGrammarAction($1); }
+	| assignment													{ $$ = ProgramGrammarAction($1); }
 	;
 
 expression: expression[left] ADD expression[right]					{ $$ = AdditionExpressionGrammarAction($left, $right); }
@@ -93,6 +97,9 @@ factor: OPEN_PARENTHESIS expression CLOSE_PARENTHESIS				{ $$ = ExpressionFactor
 	| constant														{ $$ = ConstantFactorGrammarAction($1); }
 	| identifier													{ $$ = IdentifierFactorGrammarAction($1); }
 	| string 														{ $$ = StringFactorGrammarAction($1); }
+	;
+
+assignment: declaration ASSIGNMENT expression						{ $$ = AssignmentGrammarAction($1, $3); }
 	;
 
 declaration: type identifier										{ $$ = DeclarationGrammarAction($1, $2); }
