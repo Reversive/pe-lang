@@ -258,3 +258,15 @@ int PECloseGrammarAction(const int value)
 	LogDebug("[Bison] PECloseGrammarAction (%d)", value);
 	return 0;
 }
+
+int AndExpressionGrammarAction(const int leftValue, const int rightValue)
+{
+	LogDebug("[Bison] AndExpressionGrammarAction (%d, %d)", leftValue, rightValue);
+	return 0;
+}
+
+int OrExpressionGrammarAction(const int leftValue, const int rightValue)
+{
+	LogDebug("[Bison] OrExpressionGrammarAction (%d, %d)", leftValue, rightValue);
+	return 0;
+}

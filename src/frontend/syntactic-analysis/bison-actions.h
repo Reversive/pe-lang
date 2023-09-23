@@ -21,6 +21,8 @@ int GreaterThanExpressionGrammarAction(const int leftValue, const int rightValue
 int GreaterThanOrEqualExpressionGrammarAction(const int leftValue, const int rightValue);
 int NotExpressionGrammarAction(const int value);
 int FunctionExpressionGrammarAction(const int value);
+int AndExpressionGrammarAction(const int leftValue, const int rightValue);
+int OrExpressionGrammarAction(const int leftValue, const int rightValue);
 
 // Factor
 int ExpressionFactorGrammarAction(const int value);
