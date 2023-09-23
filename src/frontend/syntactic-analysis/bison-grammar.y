@@ -30,6 +30,7 @@
 	int full_assignment;
 	int assignment;
 	int peopen;
+	int peclose;
 	int print;
 	int ret_function;
 	int void_function;
@@ -61,6 +62,7 @@
 // functions
 %token <token> PEOPEN
 %token <token> PRINT
+%token <token> PECLOSE
 
 // constants
 %token <integer> INTEGER
@@ -79,6 +81,7 @@
 %type <full_assignment> full_assignment
 %type <assignment> assignment
 %type <peopen> peopen
+%type <peclose> peclose
 %type <print> print
 %type <ret_function> ret_function
 %type <void_function> void_function
@@ -93,12 +96,12 @@
 
 %%
 
-// TODO: Complete grammar rules.
+// TODO: Complete grammar rules, this is just for testing purposes.
 program: expression													{ $$ = ProgramGrammarAction($1); }
 	| full_assignment												{ $$ = ProgramGrammarAction($1); }
 	| assignment													{ $$ = ProgramGrammarAction($1); }
-	| peopen														{ $$ = ProgramGrammarAction($1); }
-	| print															{ $$ = ProgramGrammarAction($1); }
+	| ret_function													{ $$ = ProgramGrammarAction($1); }
+	| void_function													{ $$ = ProgramGrammarAction($1); }
 	;
 
 expression: expression[left] ADD expression[right]					{ $$ = AdditionExpressionGrammarAction($left, $right); }
@@ -158,6 +161,7 @@ ret_function: peopen												{ $$ = PEOpenGrammarAction($1); }
 	;
 
 void_function: print												{ $$ = PrintGrammarAction($1); }
+	| peclose														{ $$ = PECloseGrammarAction($1); }
 	;
 
 parameters: expression												{ $$ = ParametersGrammarAction($1); }
@@ -166,6 +170,9 @@ parameters: expression												{ $$ = ParametersGrammarAction($1); }
 
 peopen: PEOPEN OPEN_PARENTHESIS string CLOSE_PARENTHESIS			{ $$ = PEOpenGrammarAction($2); }
 	| 	PEOPEN OPEN_PARENTHESIS identifier CLOSE_PARENTHESIS		{ $$ = PEOpenIdentifierGrammarAction($2); }
+	;
+
+peclose: PECLOSE OPEN_PARENTHESIS identifier CLOSE_PARENTHESIS		{ $$ = PECloseGrammarAction($2); }
 	;
 
 print: PRINT parameters												{ $$ = PrintGrammarAction($1); }

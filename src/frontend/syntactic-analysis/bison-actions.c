@@ -253,3 +253,8 @@ int ParametersGrammarAction(const int value)
 	return 0;
 }
 
+int PECloseGrammarAction(const int value)
+{
+	LogDebug("[Bison] PECloseGrammarAction (%d)", value);
+	return 0;
+}

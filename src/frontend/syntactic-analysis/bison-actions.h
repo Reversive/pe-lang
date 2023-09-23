@@ -49,12 +49,10 @@ int AssignmentGrammarAction(char *leftValue, const int rightValue);
 // Functions
 int PEOpenGrammarAction(const int value);
 int PEOpenIdentifierGrammarAction(const int value);
-
+int PECloseGrammarAction(const int value);
 int PrintGrammarAction(const int value);
 int ParametersCommaExpressionGrammarAction(const int leftValue, const int rightValue);
 int ParametersGrammarAction(const int value);
-
-
 
 // Constants
 int IntegerConstantGrammarAction(const int value);
