@@ -186,69 +186,69 @@ void IgnoredPatternAction(const char *lexeme, const int length)
 	free(lexemeCopy);
 }
 
-token PEFilePatternAction()
+token PEFileTypePatternAction()
 {
-	LogDebug("[Flex] PEFilePatternAction: 'PEFile'.");
+	LogDebug("[Flex] PEFileTypePatternAction: 'PEFile'.");
 	yylval.token = PEFILE_TYPE;
 	return PEFILE_TYPE;
 }
-token PESectionPatternAction()
+token PESectionTypePatternAction()
 {
-	LogDebug("[Flex] PESectionPatternAction: 'PESection'.");
+	LogDebug("[Flex] PESectionTypePatternAction: 'PESection'.");
 	yylval.token = PESECTION_TYPE;
 	return PESECTION_TYPE;
 }
-token PEImportPatternAction()
+token PEImportTypePatternAction()
 {
-	LogDebug("[Flex] PEImportPatternAction: 'PEImport'.");
+	LogDebug("[Flex] PEImportTypePatternAction: 'PEImport'.");
 	yylval.token = PEIMPORT_TYPE;
 	return PEIMPORT_TYPE;
 }
-token PEExportPatternAction()
+token PEExportTypePatternAction()
 {
-	LogDebug("[Flex] PEExportPatternAction: 'PEExport'.");
+	LogDebug("[Flex] PEExportTypePatternAction: 'PEExport'.");
 	yylval.token = PEEXPORT_TYPE;
 	return PEEXPORT_TYPE;
 }
-token PEHeaderPatternAction()
+token PEHeaderTypePatternAction()
 {
-	LogDebug("[Flex] PEHeaderPatternAction: 'PEHeader'.");
+	LogDebug("[Flex] PEHeaderTypePatternAction: 'PEHeader'.");
 	yylval.token = PEHEADER_TYPE;
 	return PEHEADER_TYPE;
 }
-token PEResourcePatternAction()
+token PEResourceTypePatternAction()
 {
-	LogDebug("[Flex] PEResourcePatternAction: 'PEResource'.");
+	LogDebug("[Flex] PEResourceTypePatternAction: 'PEResource'.");
 	yylval.token = PERESOURCE_TYPE;
 	return PERESOURCE_TYPE;
 }
-token PESignaturePatternAction()
+token PESignatureTypePatternAction()
 {
-	LogDebug("[Flex] PESignaturePatternAction: 'PESignature'.");
+	LogDebug("[Flex] PESignatureTypePatternAction: 'PESignature'.");
 	yylval.token = PESIGNATURE_TYPE;
 	return PESIGNATURE_TYPE;
 }
-token PEDirEntryPatternAction()
+token PEDirEntryTypePatternAction()
 {
-	LogDebug("[Flex] PEDirEntryPatternAction: 'PEDirEntry'.");
+	LogDebug("[Flex] PEDirEntryTypePatternAction: 'PEDirEntry'.");
 	yylval.token = PEDIRENTRY_TYPE;
 	return PEDIRENTRY_TYPE;
 }
-token IntPatternAction()
+token IntTypePatternAction()
 {
-	LogDebug("[Flex] IntPatternAction: 'Int'.");
+	LogDebug("[Flex] IntTypePatternAction: 'Int'.");
 	yylval.token = INT_TYPE;
 	return INT_TYPE;
 }
-token StringPatternAction()
+token StringTypePatternAction()
 {
-	LogDebug("[Flex] StringPatternAction: 'String'.");
+	LogDebug("[Flex] StringTypePatternAction: 'String'.");
 	yylval.token = STRING_TYPE;
 	return STRING_TYPE;
 }
-token BytePatternAction()
+token ByteTypePatternAction()
 {
-	LogDebug("[Flex] BytePatternAction: 'Byte'.");
+	LogDebug("[Flex] ByteTypePatternAction: 'Byte'.");
 	yylval.token = BYTE_TYPE;
 	return BYTE_TYPE;
 }

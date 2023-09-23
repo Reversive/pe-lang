@@ -45,18 +45,18 @@ letter          [a-zA-Z]
 "&&"                                        { return AndOperatorPatternAction(); }
 "!"                                         { return NotOperatorPatternAction(); }
 
-PEFile                                      { return PEFilePatternAction(); }
-PESection                                   { return PESectionPatternAction(); }
-PEImport                                    { return PEImportPatternAction(); }
-PEExport                                    { return PEExportPatternAction(); }
-PEHeader                                    { return PEHeaderPatternAction(); }
-PEResource                                  { return PEResourcePatternAction(); }
-PESignature                                 { return PESignaturePatternAction(); }
-PEDirEntry                                  { return PEDirEntryPatternAction(); }
+PEFile                                      { return PEFileTypePatternAction(); }
+PESection                                   { return PESectionTypePatternAction(); }
+PEImport                                    { return PEImportTypePatternAction(); }
+PEExport                                    { return PEExportTypePatternAction(); }
+PEHeader                                    { return PEHeaderTypePatternAction(); }
+PEResource                                  { return PEResourceTypePatternAction(); }
+PESignature                                 { return PESignatureTypePatternAction(); }
+PEDirEntry                                  { return PEDirEntryTypePatternAction(); }
 
-int                                         { return IntPatternAction(); }
-string                                      { return StringPatternAction(); }
-byte                                        { return BytePatternAction(); }
+int                                         { return IntTypePatternAction(); }
+string                                      { return StringTypePatternAction(); }
+byte                                        { return ByteTypePatternAction(); }
 
 
 "("											{ return OpenParenthesisPatternAction(); }
