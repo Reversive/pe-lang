@@ -20,12 +20,23 @@ int SubtractionExpressionGrammarAction(const int leftValue, const int rightValue
 int MultiplicationExpressionGrammarAction(const int leftValue, const int rightValue);
 int DivisionExpressionGrammarAction(const int leftValue, const int rightValue);
 int FactorExpressionGrammarAction(const int value);
+int EqualExpressionGrammarAction(const int leftValue, const int rightValue);
+int NotEqualExpressionGrammarAction(const int leftValue, const int rightValue);
+int LessThanExpressionGrammarAction(const int leftValue, const int rightValue);
+int LessThanOrEqualExpressionGrammarAction(const int leftValue, const int rightValue);
+int GreaterThanExpressionGrammarAction(const int leftValue, const int rightValue);
+int GreaterThanOrEqualExpressionGrammarAction(const int leftValue, const int rightValue);
+int NotExpressionGrammarAction(const int value);
 
 // Factores.
 int ExpressionFactorGrammarAction(const int value);
 int ConstantFactorGrammarAction(const int value);
+int IdentifierFactorGrammarAction(const int value);
+int StringFactorGrammarAction(const int value);
 
 // Constantes.
 int IntegerConstantGrammarAction(const int value);
+int IdentifierGrammarAction(const int value);
+int StringGrammarAction(const int value);
 
 #endif
