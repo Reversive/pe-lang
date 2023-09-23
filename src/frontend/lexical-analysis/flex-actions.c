@@ -190,69 +190,87 @@ token PEFileTypePatternAction()
 	yylval.token = PEFILE_TYPE;
 	return PEFILE_TYPE;
 }
+
 token PESectionTypePatternAction()
 {
 	LogDebug("[Flex] PESectionTypePatternAction: 'PESection'.");
 	yylval.token = PESECTION_TYPE;
 	return PESECTION_TYPE;
 }
+
 token PEImportTypePatternAction()
 {
 	LogDebug("[Flex] PEImportTypePatternAction: 'PEImport'.");
 	yylval.token = PEIMPORT_TYPE;
 	return PEIMPORT_TYPE;
 }
+
 token PEExportTypePatternAction()
 {
 	LogDebug("[Flex] PEExportTypePatternAction: 'PEExport'.");
 	yylval.token = PEEXPORT_TYPE;
 	return PEEXPORT_TYPE;
 }
+
 token PEHeaderTypePatternAction()
 {
 	LogDebug("[Flex] PEHeaderTypePatternAction: 'PEHeader'.");
 	yylval.token = PEHEADER_TYPE;
 	return PEHEADER_TYPE;
 }
+
 token PEResourceTypePatternAction()
 {
 	LogDebug("[Flex] PEResourceTypePatternAction: 'PEResource'.");
 	yylval.token = PERESOURCE_TYPE;
 	return PERESOURCE_TYPE;
 }
+
 token PESignatureTypePatternAction()
 {
 	LogDebug("[Flex] PESignatureTypePatternAction: 'PESignature'.");
 	yylval.token = PESIGNATURE_TYPE;
 	return PESIGNATURE_TYPE;
 }
+
 token PEDirEntryTypePatternAction()
 {
 	LogDebug("[Flex] PEDirEntryTypePatternAction: 'PEDirEntry'.");
 	yylval.token = PEDIRENTRY_TYPE;
 	return PEDIRENTRY_TYPE;
 }
+
 token IntTypePatternAction()
 {
 	LogDebug("[Flex] IntTypePatternAction: 'Int'.");
 	yylval.token = INT_TYPE;
 	return INT_TYPE;
 }
+
 token StringTypePatternAction()
 {
 	LogDebug("[Flex] StringTypePatternAction: 'String'.");
 	yylval.token = STRING_TYPE;
 	return STRING_TYPE;
 }
+
 token ByteTypePatternAction()
 {
 	LogDebug("[Flex] ByteTypePatternAction: 'Byte'.");
 	yylval.token = BYTE_TYPE;
 	return BYTE_TYPE;
 }
+
 token AssignmentPatternAction()
 {
 	LogDebug("[Flex] AssignmentPatternAction: ':='.");
 	yylval.token = ASSIGNMENT;
 	return ASSIGNMENT;
+}
+
+token PEOpenPatternAction()
+{
+	LogDebug("[Flex] PEOpenPatternAction: 'PEOpen'.");
+	yylval.token = PEOPEN;
+	return PEOPEN;
 }

@@ -34,6 +34,8 @@ letter          [a-zA-Z]
 "*"											{ return MultiplicationOperatorPatternAction(); }
 "/"											{ return DivisionOperatorPatternAction(); }
 
+peopen                                      { return PEOpenPatternAction(); }
+
 "=="                                        { return EqualOperatorPatternAction(); }
 "!="                                        { return NotEqualOperatorPatternAction(); }
 "<"                                         { return LessThanOperatorPatternAction(); }
