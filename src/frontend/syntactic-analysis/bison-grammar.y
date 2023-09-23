@@ -75,7 +75,6 @@
 
 // TODO: Completar la gramática, esto es solo a modo de ejemplo.
 program: expression													{ $$ = ProgramGrammarAction($1); }
-	| declaration													{ $$ = ProgramGrammarAction($1); }
 	| assignment													{ $$ = ProgramGrammarAction($1); }
 	;
 
@@ -100,6 +99,7 @@ factor: OPEN_PARENTHESIS expression CLOSE_PARENTHESIS				{ $$ = ExpressionFactor
 	;
 
 assignment: declaration ASSIGNMENT expression						{ $$ = AssignmentGrammarAction($1, $3); }
+	| declaration													{ $$ = DeclarationGrammarAction($1, 0); }
 	;
 
 declaration: type identifier										{ $$ = DeclarationGrammarAction($1, $2); }
