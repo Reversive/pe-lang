@@ -34,6 +34,12 @@ letter          [a-zA-Z]
 "*"											{ return MultiplicationOperatorPatternAction(); }
 "/"											{ return DivisionOperatorPatternAction(); }
 
+peopen                                      { return PEOpenPatternAction(); }
+peclose                                     { return PEClosePatternAction(); }
+print                                       { return PrintPatternAction(); }
+
+","                                         { return CommaPatternAction(); }
+
 "=="                                        { return EqualOperatorPatternAction(); }
 "!="                                        { return NotEqualOperatorPatternAction(); }
 "<"                                         { return LessThanOperatorPatternAction(); }

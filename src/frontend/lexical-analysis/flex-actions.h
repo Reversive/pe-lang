@@ -54,6 +54,10 @@ token IntTypePatternAction();
 token StringTypePatternAction();
 token ByteTypePatternAction();
 token AssignmentPatternAction();
+token PEOpenPatternAction();
+token PrintPatternAction();
+token CommaPatternAction();
+token PEClosePatternAction();
 // Patrón desconocido, permite abortar debido a un error de sintaxis.
 token UnknownPatternAction(const char *lexeme, const int length);
 
