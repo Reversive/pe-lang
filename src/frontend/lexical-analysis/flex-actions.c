@@ -185,3 +185,70 @@ void IgnoredPatternAction(const char *lexeme, const int length)
 	LogRaw("' (length = %d).\n", length);
 	free(lexemeCopy);
 }
+
+token PEFilePatternAction()
+{
+	LogDebug("[Flex] PEFilePatternAction: 'PEFile'.");
+	yylval.token = PEFILE_TYPE;
+	return PEFILE_TYPE;
+}
+token PESectionPatternAction()
+{
+	LogDebug("[Flex] PESectionPatternAction: 'PESection'.");
+	yylval.token = PESECTION_TYPE;
+	return PESECTION_TYPE;
+}
+token PEImportPatternAction()
+{
+	LogDebug("[Flex] PEImportPatternAction: 'PEImport'.");
+	yylval.token = PEIMPORT_TYPE;
+	return PEIMPORT_TYPE;
+}
+token PEExportPatternAction()
+{
+	LogDebug("[Flex] PEExportPatternAction: 'PEExport'.");
+	yylval.token = PEEXPORT_TYPE;
+	return PEEXPORT_TYPE;
+}
+token PEHeaderPatternAction()
+{
+	LogDebug("[Flex] PEHeaderPatternAction: 'PEHeader'.");
+	yylval.token = PEHEADER_TYPE;
+	return PEHEADER_TYPE;
+}
+token PEResourcePatternAction()
+{
+	LogDebug("[Flex] PEResourcePatternAction: 'PEResource'.");
+	yylval.token = PERESOURCE_TYPE;
+	return PERESOURCE_TYPE;
+}
+token PESignaturePatternAction()
+{
+	LogDebug("[Flex] PESignaturePatternAction: 'PESignature'.");
+	yylval.token = PESIGNATURE_TYPE;
+	return PESIGNATURE_TYPE;
+}
+token PEDirEntryPatternAction()
+{
+	LogDebug("[Flex] PEDirEntryPatternAction: 'PEDirEntry'.");
+	yylval.token = PEDIRENTRY_TYPE;
+	return PEDIRENTRY_TYPE;
+}
+token IntPatternAction()
+{
+	LogDebug("[Flex] IntPatternAction: 'Int'.");
+	yylval.token = INT_TYPE;
+	return INT_TYPE;
+}
+token StringPatternAction()
+{
+	LogDebug("[Flex] StringPatternAction: 'String'.");
+	yylval.token = STRING_TYPE;
+	return STRING_TYPE;
+}
+token BytePatternAction()
+{
+	LogDebug("[Flex] BytePatternAction: 'Byte'.");
+	yylval.token = BYTE_TYPE;
+	return BYTE_TYPE;
+}

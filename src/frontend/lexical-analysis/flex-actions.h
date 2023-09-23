@@ -42,6 +42,17 @@ token AndOperatorPatternAction();
 token NotOperatorPatternAction();
 token IdentifierPatternAction(const char *lexeme, const int length);
 token StringPatternAction(const char *lexeme, const int length);
+token PEFilePatternAction();
+token PESectionPatternAction();
+token PEImportPatternAction();
+token PEExportPatternAction();
+token PEHeaderPatternAction();
+token PEResourcePatternAction();
+token PESignaturePatternAction();
+token PEDirEntryPatternAction();
+token IntPatternAction();
+token StringPatternAction();
+token BytePatternAction();
 
 // Patrón desconocido, permite abortar debido a un error de sintaxis.
 token UnknownPatternAction(const char *lexeme, const int length);
