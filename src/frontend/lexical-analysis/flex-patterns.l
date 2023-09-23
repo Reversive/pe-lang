@@ -20,6 +20,7 @@
 digit			[0-9]
 endline			[\n]
 whitespace		[ \f\n\r\t\v]
+letter          [a-zA-Z]
 
 %%
 
@@ -28,13 +29,24 @@ whitespace		[ \f\n\r\t\v]
 <COMMENT>{endline}+							{ IgnoredPatternAction(yytext, yyleng); }
 <COMMENT>"*/"								{ EndCommentPatternAction(); BEGIN(INITIAL); }
 
-"+"											{ return AdditionOperatorPatternAction(yytext); }
-"-"											{ return SubtractionOperatorPatternAction(yytext); }
-"*"											{ return MultiplicationOperatorPatternAction(yytext); }
-"/"											{ return DivisionOperatorPatternAction(yytext); }
+"+"											{ return AdditionOperatorPatternAction(); }
+"-"											{ return SubtractionOperatorPatternAction(); }
+"*"											{ return MultiplicationOperatorPatternAction(); }
+"/"											{ return DivisionOperatorPatternAction(); }
 
-"("											{ return OpenParenthesisPatternAction(yytext); }
-")"											{ return CloseParenthesisPatternAction(yytext); }
+"=="                                        { return EqualOperatorPatternAction(); }
+"!="                                        { return NotEqualOperatorPatternAction(); }
+"<"                                         { return LessThanOperatorPatternAction(); }
+"<="                                        { return LessThanOrEqualOperatorPatternAction(); }
+">"                                         { return GreaterThanOperatorPatternAction(); }
+">="                                        { return GreaterThanOrEqualOperatorPatternAction(); }
+
+"||"                                        { return OrOperatorPatternAction(); }
+"&&"                                        { return AndOperatorPatternAction(); }
+"!"                                         { return NotOperatorPatternAction(); }
+
+"("											{ return OpenParenthesisPatternAction(); }
+")"											{ return CloseParenthesisPatternAction(); }
 
 {digit}+									{ return IntegerPatternAction(yytext, yyleng); }
 
