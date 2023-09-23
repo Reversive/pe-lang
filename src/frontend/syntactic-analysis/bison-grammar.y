@@ -25,23 +25,25 @@
 	token token;
 	int integer;
 	char* string;
+	int type;
+	int declaration;
 }
 
 // Un token que jamás debe ser usado en la gramática.
 %token <token> ERROR
 
-// IDs y tipos de los tokens terminales generados desde Flex.
+// math operators
 %token <token> ADD SUB MUL DIV
 
-%token <token> EQUAL 
-%token <token> NOT_EQUAL 
-%token <token> LESS_THAN 
-%token <token> LESS_THAN_OR_EQUAL 
-%token <token> GREATER_THAN 
-%token <token> GREATER_THAN_OR_EQUAL
-%token <token> AND
-%token <token> OR
-%token <token> NOT
+// relational operators
+%token <token> EQUAL NOT_EQUAL LESS_THAN LESS_THAN_OR_EQUAL GREATER_THAN GREATER_THAN_OR_EQUAL
+
+// logic operators
+%token <token> AND OR NOT
+
+// built-in types
+%token <token> INT_TYPE 
+%token <token> STRING_TYPE BYTE_TYPE PEFILE_TYPE PESECTION_TYPE PEIMPORT_TYPE PEEXPORT_TYPE PEHEADER_TYPE PERESOURCE_TYPE PESIGNATURE_TYPE PEDIRENTRY_TYPE
 
 %token <token> OPEN_PARENTHESIS
 %token <token> CLOSE_PARENTHESIS
@@ -56,6 +58,8 @@
 %type <constant> constant
 %type <string> string
 %type <string> identifier
+%type <type> type
+%type <declaration> declaration
 
 // Reglas de asociatividad y precedencia (de menor a mayor).
 %left ADD SUB
@@ -66,7 +70,9 @@
 
 %%
 
+// TODO: Completar la gramática, esto es solo a modo de ejemplo.
 program: expression													{ $$ = ProgramGrammarAction($1); }
+	| declaration													{ $$ = ProgramGrammarAction($1); }
 	;
 
 expression: expression[left] ADD expression[right]					{ $$ = AdditionExpressionGrammarAction($left, $right); }
@@ -87,6 +93,22 @@ factor: OPEN_PARENTHESIS expression CLOSE_PARENTHESIS				{ $$ = ExpressionFactor
 	| constant														{ $$ = ConstantFactorGrammarAction($1); }
 	| identifier													{ $$ = IdentifierFactorGrammarAction($1); }
 	| string 														{ $$ = StringFactorGrammarAction($1); }
+	;
+
+declaration: type identifier										{ $$ = DeclarationGrammarAction($1, $2); }
+	;
+
+type: PEFILE_TYPE													{ $$ = PEFileTypeGrammarAction($1); }
+	| PESECTION_TYPE												{ $$ = PESectionTypeGrammarAction($1); }
+	| PEIMPORT_TYPE													{ $$ = PEImportTypeGrammarAction($1); }
+	| PEEXPORT_TYPE													{ $$ = PEExportTypeGrammarAction($1); }
+	| PEHEADER_TYPE													{ $$ = PEHeaderTypeGrammarAction($1); }
+	| PERESOURCE_TYPE												{ $$ = PEResourceTypeGrammarAction($1); }
+	| PESIGNATURE_TYPE												{ $$ = PESignatureTypeGrammarAction($1); }
+	| PEDIRENTRY_TYPE												{ $$ = PEDirEntryTypeGrammarAction($1); }
+	| INT_TYPE														{ $$ = IntTypeGrammarAction($1); }
+	| STRING_TYPE													{ $$ = StringTypeGrammarAction($1); }
+	| BYTE_TYPE														{ $$ = ByteTypeGrammarAction($1); }
 	;
 
 constant: INTEGER													{ $$ = IntegerConstantGrammarAction($1); }

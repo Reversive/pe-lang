@@ -45,6 +45,20 @@ letter          [a-zA-Z]
 "&&"                                        { return AndOperatorPatternAction(); }
 "!"                                         { return NotOperatorPatternAction(); }
 
+PEFile                                      { return PEFileTypePatternAction(); }
+PESection                                   { return PESectionTypePatternAction(); }
+PEImport                                    { return PEImportTypePatternAction(); }
+PEExport                                    { return PEExportTypePatternAction(); }
+PEHeader                                    { return PEHeaderTypePatternAction(); }
+PEResource                                  { return PEResourceTypePatternAction(); }
+PESignature                                 { return PESignatureTypePatternAction(); }
+PEDirEntry                                  { return PEDirEntryTypePatternAction(); }
+
+int                                         { return IntTypePatternAction(); }
+string                                      { return StringTypePatternAction(); }
+byte                                        { return ByteTypePatternAction(); }
+
+
 "("											{ return OpenParenthesisPatternAction(); }
 ")"											{ return CloseParenthesisPatternAction(); }
 
