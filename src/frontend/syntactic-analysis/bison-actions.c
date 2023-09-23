@@ -146,13 +146,74 @@ int StringFactorGrammarAction(const int value)
 	LogDebug("[Bison] StringFactorGrammarAction(%d)", value);
 	return 0;
 }
-int IdentifierGrammarAction(const int value)
+char *IdentifierGrammarAction(char *value)
 {
 	LogDebug("[Bison] IdentifierGrammarAction(%d)", value);
 	return 0;
 }
-int StringGrammarAction(const int value)
+char *StringGrammarAction(char *value)
 {
 	LogDebug("[Bison] StringGrammarAction(%d)", value);
+	return 0;
+}
+
+int DeclarationGrammarAction(const int leftValue, const int rightValue)
+{
+	LogDebug("[Bison] DeclarationGrammarAction(%d, %d)", leftValue, rightValue);
+	return 0;
+}
+int PEFileTypeGrammarAction(const int value)
+{
+	LogDebug("[Bison] PEFileTypeGrammarAction(%d)", value);
+	return 0;
+}
+int PESectionTypeGrammarAction(const int value)
+{
+	LogDebug("[Bison] PESectionTypeGrammarAction(%d)", value);
+	return 0;
+}
+int PEImportTypeGrammarAction(const int value)
+{
+	LogDebug("[Bison] PEImportTypeGrammarAction(%d)", value);
+	return 0;
+}
+int PEExportTypeGrammarAction(const int value)
+{
+	LogDebug("[Bison] PEExportTypeGrammarAction(%d)", value);
+	return 0;
+}
+int PEHeaderTypeGrammarAction(const int value)
+{
+	LogDebug("[Bison] PEHeaderTypeGrammarAction(%d)", value);
+	return 0;
+}
+int PEResourceTypeGrammarAction(const int value)
+{
+	LogDebug("[Bison] PEResourceTypeGrammarAction(%d)", value);
+	return 0;
+}
+int PESignatureTypeGrammarAction(const int value)
+{
+	LogDebug("[Bison] PESignatureTypeGrammarAction(%d)", value);
+	return 0;
+}
+int PEDirEntryTypeGrammarAction(const int value)
+{
+	LogDebug("[Bison] PEDirEntryTypeGrammarAction(%d)", value);
+	return 0;
+}
+int IntTypeGrammarAction(const int value)
+{
+	LogDebug("[Bison] IntTypeGrammarAction(%d)", value);
+	return 0;
+}
+int StringTypeGrammarAction(const int value)
+{
+	LogDebug("[Bison] StringTypeGrammarAction(%d)", value);
+	return 0;
+}
+int ByteTypeGrammarAction(const int value)
+{
+	LogDebug("[Bison] ByteTypeGrammarAction(%d)", value);
 	return 0;
 }

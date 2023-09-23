@@ -34,9 +34,23 @@ int ConstantFactorGrammarAction(const int value);
 int IdentifierFactorGrammarAction(const int value);
 int StringFactorGrammarAction(const int value);
 
+// Tipos
+int DeclarationGrammarAction(const int leftValue, const int rightValue);
+int PEFileTypeGrammarAction(const int value);
+int PESectionTypeGrammarAction(const int value);
+int PEImportTypeGrammarAction(const int value);
+int PEExportTypeGrammarAction(const int value);
+int PEHeaderTypeGrammarAction(const int value);
+int PEResourceTypeGrammarAction(const int value);
+int PESignatureTypeGrammarAction(const int value);
+int PEDirEntryTypeGrammarAction(const int value);
+int IntTypeGrammarAction(const int value);
+int StringTypeGrammarAction(const int value);
+int ByteTypeGrammarAction(const int value);
+
 // Constantes.
 int IntegerConstantGrammarAction(const int value);
-int IdentifierGrammarAction(const int value);
-int StringGrammarAction(const int value);
+char *IdentifierGrammarAction(char *value);
+char *StringGrammarAction(char *value);
 
 #endif
