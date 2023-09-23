@@ -274,3 +274,17 @@ token PEOpenPatternAction()
 	yylval.token = PEOPEN;
 	return PEOPEN;
 }
+
+token PrintPatternAction()
+{
+	LogDebug("[Flex] PrintPatternAction: 'Print'.");
+	yylval.token = PRINT;
+	return PRINT;
+}
+
+token CommaPatternAction()
+{
+	LogDebug("[Flex] CommaPatternAction: ','.");
+	yylval.token = COMMA;
+	return COMMA;
+}
