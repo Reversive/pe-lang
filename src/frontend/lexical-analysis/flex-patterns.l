@@ -39,6 +39,7 @@ peclose                                     { return PEClosePatternAction(); }
 print                                       { return PrintPatternAction(); }
 
 ","                                         { return CommaPatternAction(); }
+";"                                         { return SemicolonPatternAction(); }
 
 "=="                                        { return EqualOperatorPatternAction(); }
 "!="                                        { return NotEqualOperatorPatternAction(); }

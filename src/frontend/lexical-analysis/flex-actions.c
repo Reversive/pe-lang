@@ -295,3 +295,10 @@ token PEClosePatternAction()
 	yylval.token = PECLOSE;
 	return PECLOSE;
 }
+
+token SemicolonPatternAction()
+{
+	LogDebug("[Flex] SemicolonPatternAction: ';'.");
+	yylval.token = SEMICOLON;
+	return SEMICOLON;
+}
