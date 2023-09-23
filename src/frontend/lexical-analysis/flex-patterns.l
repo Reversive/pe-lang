@@ -35,6 +35,7 @@ letter          [a-zA-Z]
 "/"											{ return DivisionOperatorPatternAction(); }
 
 peopen                                      { return PEOpenPatternAction(); }
+peclose                                     { return PEClosePatternAction(); }
 print                                       { return PrintPatternAction(); }
 
 ","                                         { return CommaPatternAction(); }

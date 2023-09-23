@@ -288,3 +288,10 @@ token CommaPatternAction()
 	yylval.token = COMMA;
 	return COMMA;
 }
+
+token PEClosePatternAction()
+{
+	LogDebug("[Flex] PEClosePatternAction: 'PEClose'.");
+	yylval.token = PECLOSE;
+	return PECLOSE;
+}
