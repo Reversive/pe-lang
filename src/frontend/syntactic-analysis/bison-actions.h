@@ -61,4 +61,16 @@ int IntegerConstantGrammarAction(const int value);
 char *IdentifierGrammarAction(char *value);
 char *StringGrammarAction(char *value);
 
+// Block
+int BlockGrammarAction(const int leftValue, const int rightValue);
+
+// Instruction
+int InstructionGrammarAction(const int value);
+int VoidFunctionGrammarAction(const int value);
+
+// Statement
+int FullAssignmentStatementGrammarAction(const int value);
+int AssignmentStatementGrammarAction(const int value);
+int FunctionStatementGrammarAction(const int value);
+
 #endif

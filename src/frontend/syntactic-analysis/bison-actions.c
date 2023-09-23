@@ -270,3 +270,39 @@ int OrExpressionGrammarAction(const int leftValue, const int rightValue)
 	LogDebug("[Bison] OrExpressionGrammarAction (%d, %d)", leftValue, rightValue);
 	return 0;
 }
+
+int BlockGrammarAction(const int leftValue, const int rightValue)
+{
+	LogDebug("[Bison] BlockGrammarAction (%d, %d)", leftValue, rightValue);
+	return 0;
+}
+
+int InstructionGrammarAction(const int value)
+{
+	LogDebug("[Bison] InstructionGrammarAction (%d)", value);
+	return 0;
+}
+
+int FullAssignmentStatementGrammarAction(const int value)
+{
+	LogDebug("[Bison] FullAssignmentStatementGrammarAction (%d)", value);
+	return 0;
+}
+
+int AssignmentStatementGrammarAction(const int value)
+{
+	LogDebug("[Bison] AssignmentStatementGrammarAction (%d)", value);
+	return 0;
+}
+
+int FunctionStatementGrammarAction(const int value)
+{
+	LogDebug("[Bison] FunctionStatementGrammarAction (%d)", value);
+	return 0;
+}
+
+int VoidFunctionGrammarAction(const int value)
+{
+	LogDebug("[Bison] VoidFunctionGrammarAction (%d)", value);
+	return 0;
+}

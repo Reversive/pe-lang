@@ -58,6 +58,7 @@ token PEOpenPatternAction();
 token PrintPatternAction();
 token CommaPatternAction();
 token PEClosePatternAction();
+token SemicolonPatternAction();
 // Patrón desconocido, permite abortar debido a un error de sintaxis.
 token UnknownPatternAction(const char *lexeme, const int length);
 
