@@ -27,15 +27,26 @@ void EndCommentPatternAction();
 token AdditionOperatorPatternAction();
 token CloseParenthesisPatternAction();
 token DivisionOperatorPatternAction();
-token IntegerPatternAction(const char * lexeme, const int length);
+token IntegerPatternAction(const char *lexeme, const int length);
 token MultiplicationOperatorPatternAction();
 token OpenParenthesisPatternAction();
 token SubtractionOperatorPatternAction();
+token EqualOperatorPatternAction();
+token NotEqualOperatorPatternAction();
+token LessThanOperatorPatternAction();
+token LessThanOrEqualOperatorPatternAction();
+token GreaterThanOperatorPatternAction();
+token GreaterThanOrEqualOperatorPatternAction();
+token OrOperatorPatternAction();
+token AndOperatorPatternAction();
+token NotOperatorPatternAction();
+token IdentifierPatternAction(const char *lexeme, const int length);
+token StringPatternAction(const char *lexeme, const int length);
 
 // Patrón desconocido, permite abortar debido a un error de sintaxis.
-token UnknownPatternAction(const char * lexeme, const int length);
+token UnknownPatternAction(const char *lexeme, const int length);
 
 // Regla que no hace nada, permite ignorar parte de la entrada.
-void IgnoredPatternAction(const char * lexeme, const int length);
+void IgnoredPatternAction(const char *lexeme, const int length);
 
 #endif
