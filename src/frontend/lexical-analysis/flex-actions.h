@@ -53,7 +53,7 @@ token PEDirEntryTypePatternAction();
 token IntTypePatternAction();
 token StringTypePatternAction();
 token ByteTypePatternAction();
-
+token AssignmentPatternAction();
 // Patrón desconocido, permite abortar debido a un error de sintaxis.
 token UnknownPatternAction(const char *lexeme, const int length);
 
