@@ -23,6 +23,7 @@ int NotExpressionGrammarAction(const int value);
 int FunctionExpressionGrammarAction(const int value);
 int AndExpressionGrammarAction(const int leftValue, const int rightValue);
 int OrExpressionGrammarAction(const int leftValue, const int rightValue);
+int VectorExpressionGrammarAction(const int value);
 
 // Factor
 int ExpressionFactorGrammarAction(const int value);
@@ -43,10 +44,13 @@ int PEDirEntryTypeGrammarAction(const int value);
 int IntTypeGrammarAction(const int value);
 int StringTypeGrammarAction(const int value);
 int ByteTypeGrammarAction(const int value);
+int VectorDeclarationGrammarAction(const int first, char *second);
+int VectorFullAssignmentGrammarAction(const int first, const int second);
 
 // Assignments
 int FullAssignmentGrammarAction(const int leftValue, const int rightValue);
 int AssignmentGrammarAction(char *leftValue, const int rightValue);
+int VectorAssignmentGrammarAction(const int leftValue, const int rightValue);
 
 // Functions
 int PEOpenGrammarAction(const int value);
@@ -67,6 +71,9 @@ int FullAssignmentForGrammarAction(const int first, const int second, const int 
 int AssignmentForGrammarAction(const int first, const int second, const int third, const int fourth);
 int ForGrammarAction(const int first, const int second, const int third, const int fourth);
 int DeclarationForGrammarAction(const int first, char *second, const int third);
+
+// Vector
+int VectorGrammarAction(char *first, const int second);
 
 // Block
 int BlockGrammarAction(const int leftValue, const int rightValue);

@@ -42,6 +42,7 @@
 	int if_closure_condition;
 	int while_loop;
 	int for_loop;
+	int vector;
 }
 
 // Un token que jamás debe ser usado en la gramática.
@@ -69,6 +70,8 @@
 %token <token> OPEN_BRACE
 %token <token> CLOSE_BRACE
 %token <token> IN
+%token <token> OPEN_BRACKET
+%token <token> CLOSE_BRACKET
 
 // conditional
 %token <token> IF
@@ -113,6 +116,7 @@
 %type <if_closure_condition> if_closure
 %type <while_loop> while
 %type <for_loop> for
+%type <vector> vector
 
 // Associative and precedence rules.
 %left ADD SUB
@@ -175,6 +179,10 @@ expression: expression[left] ADD expression[right]					{ $$ = AdditionExpression
 	| NOT expression												{ $$ = NotExpressionGrammarAction($1); }
 	| factor														{ $$ = FactorExpressionGrammarAction($1); }
 	| ret_function													{ $$ = FunctionExpressionGrammarAction($1); }
+	| vector														{ $$ = VectorExpressionGrammarAction($1); }
+	;
+
+vector: identifier OPEN_BRACKET factor CLOSE_BRACKET				{ $$ = VectorGrammarAction($1, $3); }
 	;
 
 factor: OPEN_PARENTHESIS expression CLOSE_PARENTHESIS				{ $$ = ExpressionFactorGrammarAction($2); }
@@ -184,13 +192,16 @@ factor: OPEN_PARENTHESIS expression CLOSE_PARENTHESIS				{ $$ = ExpressionFactor
 	;
 
 full_assignment: declaration ASSIGNMENT expression					{ $$ = FullAssignmentGrammarAction($1, $3); }
+	| declaration ASSIGNMENT OPEN_BRACE parameters CLOSE_BRACE		{ $$ = VectorFullAssignmentGrammarAction($1, $4); } 
 	| declaration													{ $$ = DeclarationGrammarAction($1, 0); }
 	;
 
 assignment: identifier ASSIGNMENT expression						{ $$ = AssignmentGrammarAction($1, $3); }
+	| vector ASSIGNMENT expression									{ $$ = VectorAssignmentGrammarAction($1, $3); } 
 	;
 
 declaration: type identifier										{ $$ = DeclarationGrammarAction($1, $2); }
+	| type identifier OPEN_BRACKET CLOSE_BRACKET					{ $$ = VectorDeclarationGrammarAction($1, $2); }
 	;
 
 type: PEFILE_TYPE													{ $$ = PEFileTypeGrammarAction($1); }
