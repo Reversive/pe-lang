@@ -73,4 +73,12 @@ int FullAssignmentStatementGrammarAction(const int value);
 int AssignmentStatementGrammarAction(const int value);
 int FunctionStatementGrammarAction(const int value);
 
+// if
+int IfGrammarAction(const int first, const int second, const int third);
+
+// if closure
+int IfClosureGrammarAction(const int value);
+int IfElseIfGrammarAction(const int leftValue, const int rightValue);
+int IfElseBlockGrammarAction(const int leftValue, const int rightValue);
+
 #endif

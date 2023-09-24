@@ -306,3 +306,27 @@ int VoidFunctionGrammarAction(const int value)
 	LogDebug("[Bison] VoidFunctionGrammarAction (%d)", value);
 	return 0;
 }
+
+int IfGrammarAction(const int first, const int second, const int third)
+{
+	LogDebug("[Bison] IfGrammarAction (%d, %d, %d)", first, second, third);
+	return 0;
+}
+
+int IfClosureGrammarAction(const int value)
+{
+	LogDebug("[Bison] IfClosureGrammarAction (%d)", value);
+	return 0;
+}
+
+int IfElseIfGrammarAction(const int leftValue, const int rightValue)
+{
+	LogDebug("[Bison] IfElseIfGrammarAction (%d, %d)", leftValue, rightValue);
+	return 0;
+}
+
+int IfElseBlockGrammarAction(const int leftValue, const int rightValue)
+{
+	LogDebug("[Bison] IfElseBlockGrammarAction (%d, %d)", leftValue, rightValue);
+	return 0;
+}
