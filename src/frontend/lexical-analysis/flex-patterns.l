@@ -68,6 +68,8 @@ byte                                        { return ByteTypePatternAction(); }
 if                                          { return IfPatternAction(); }
 else                                        { return ElsePatternAction(); }
 
+"{"                                         { return OpenBracePatternAction(); }
+"}"                                         { return CloseBracePatternAction(); }
 
 "="											{ return AssignmentPatternAction(); }
 

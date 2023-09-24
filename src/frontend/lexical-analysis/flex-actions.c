@@ -316,3 +316,17 @@ token ElsePatternAction()
 	yylval.token = ELSE;
 	return ELSE;
 }
+
+token OpenBracePatternAction()
+{
+	LogDebug("[Flex] OpenBracePatternAction: '{'.");
+	yylval.token = OPEN_BRACE;
+	return OPEN_BRACE;
+}
+
+token CloseBracePatternAction()
+{
+	LogDebug("[Flex] CloseBracePatternAction: '}'.");
+	yylval.token = CLOSE_BRACE;
+	return CLOSE_BRACE;
+}
