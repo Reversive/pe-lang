@@ -41,6 +41,7 @@
 	int if_condition;
 	int if_closure_condition;
 	int while_loop;
+	int for_loop;
 }
 
 // Un token que jamás debe ser usado en la gramática.
@@ -74,6 +75,7 @@
 
 // loop
 %token <token> WHILE
+%token <token> FOR
 
 // functions
 %token <token> PEOPEN
@@ -108,6 +110,7 @@
 %type <if_condition> if
 %type <if_closure_condition> if_closure
 %type <while_loop> while
+%type <for_loop> for
 
 // Associative and precedence rules.
 %left ADD SUB
@@ -129,6 +132,7 @@ instruction: statement SEMICOLON									{ $$ = InstructionGrammarAction($1); }
 	| void_function	SEMICOLON		 								{ $$ = VoidFunctionGrammarAction($1); }
 	| if															{ $$ = IfGrammarAction($1, 0, 0); }
 	| while															{ $$ = WhileGrammarAction($1, 0); }
+	| for															{ $$ = ForGrammarAction(0, $1, 0, 0); }
 	;
 
 statement: full_assignment											{ $$ = FullAssignmentStatementGrammarAction($1); }
@@ -145,6 +149,12 @@ if_closure: CLOSE_BRACE 											{ $$ = IfClosureGrammarAction($1); }
 	;
 
 while: WHILE OPEN_PARENTHESIS expression CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = WhileGrammarAction($3, $6); }
+	;
+
+for: FOR OPEN_PARENTHESIS full_assignment SEMICOLON expression SEMICOLON assignment CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = FullAssignmentForGrammarAction($3, $5, $7, $10); }
+	| FOR OPEN_PARENTHESIS assignment SEMICOLON expression SEMICOLON assignment CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = AssignmentForGrammarAction($3, $5, $7, $10); }
+	| FOR OPEN_PARENTHESIS SEMICOLON expression SEMICOLON assignment CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = ForGrammarAction(0, $4, $6, $9); }
+	| FOR OPEN_PARENTHESIS SEMICOLON expression SEMICOLON CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = ForGrammarAction(0, 0, 0, $8); }
 	;
 
 expression: expression[left] ADD expression[right]					{ $$ = AdditionExpressionGrammarAction($left, $right); }
