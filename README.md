@@ -50,18 +50,23 @@ user@machine:path/ $ script\build.bat
 Then the generated solution bin\Compiler.sln must be opened with the Microsoft Visual Studio 2022 IDE. The executables that this system builds are placed within the bin\Debug and bin\Release directories, as appropriate.
 
 ## Usage
-Explain how to use pe-lang in a clear and concise manner.
-
 ### Running pe-lang
-[Provide instructions on how to run pe-lang]
+On linux:
 ```
-$ ./pe-lang my_program.pe
+user@machine:path/ $ script/start.sh program
+```
+On windows:
+```
+user@machine:path/ $ script\start.bat program
 ```
 ### Example Code
 ```
-// Hello, World! in pe-lang
-func main() {
-    print("Hello, World!")
+PEFile pe = peopen ("file.exe");
+for SectionInfo section in pe.sections {
+  print "{1} found on address {2} with size {3}",
+    section.name,
+    section.virtual_address,
+    section.virtual_size;
 }
 ```
 ## Documentation
