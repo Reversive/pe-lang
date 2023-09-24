@@ -59,6 +59,10 @@ token PrintPatternAction();
 token CommaPatternAction();
 token PEClosePatternAction();
 token SemicolonPatternAction();
+token IfPatternAction();
+token ElsePatternAction();
+token OpenBracePatternAction();
+token CloseBracePatternAction();
 // Patrón desconocido, permite abortar debido a un error de sintaxis.
 token UnknownPatternAction(const char *lexeme, const int length);
 
