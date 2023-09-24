@@ -330,3 +330,10 @@ token CloseBracePatternAction()
 	yylval.token = CLOSE_BRACE;
 	return CLOSE_BRACE;
 }
+
+token WhilePatternAction()
+{
+	LogDebug("[Flex] WhilePatternAction: 'While'.");
+	yylval.token = WHILE;
+	return WHILE;
+}
