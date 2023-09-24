@@ -360,3 +360,33 @@ int DeclarationForGrammarAction(const int first, char *second, const int third)
 	LogDebug("[Bison] DeclarationForGrammarAction (%d, %s, %d)", first, second, third);
 	return 0;
 }
+
+int VectorExpressionGrammarAction(const int value)
+{
+	LogDebug("[Bison] VectorExpressionGrammarAction (%d)", value);
+	return 0;
+}
+
+int VectorGrammarAction(char *first, const int second)
+{
+	LogDebug("[Bison] VectorGrammarAction (%s, %d)", first, second);
+	return 0;
+}
+
+int VectorDeclarationGrammarAction(const int first, char *second)
+{
+	LogDebug("[Bison] VectorDeclarationGrammarAction (%d, %s)", first, second);
+	return 0;
+}
+
+int VectorFullAssignmentGrammarAction(const int first, const int second)
+{
+	LogDebug("[Bison] VectorFullAssignmentGrammarAction (%d, %d)", first, second);
+	return 0;
+}
+
+int VectorAssignmentGrammarAction(const int leftValue, const int rightValue)
+{
+	LogDebug("[Bison] VectorAssignmentGrammarAction (%d, %d)", leftValue, rightValue);
+	return 0;
+}
