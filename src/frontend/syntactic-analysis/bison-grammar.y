@@ -40,6 +40,7 @@
 	int block;
 	int if_condition;
 	int if_closure_condition;
+	int while_loop;
 }
 
 // Un token que jamás debe ser usado en la gramática.
@@ -70,6 +71,9 @@
 // conditional
 %token <token> IF
 %token <token> ELSE
+
+// loop
+%token <token> WHILE
 
 // functions
 %token <token> PEOPEN
@@ -103,6 +107,7 @@
 %type <block> block
 %type <if_condition> if
 %type <if_closure_condition> if_closure
+%type <while_loop> while
 
 // Associative and precedence rules.
 %left ADD SUB
@@ -123,6 +128,7 @@ block: instruction block 											{ $$ = BlockGrammarAction($1, $2); }
 instruction: statement SEMICOLON									{ $$ = InstructionGrammarAction($1); }
 	| void_function	SEMICOLON		 								{ $$ = VoidFunctionGrammarAction($1); }
 	| if															{ $$ = IfGrammarAction($1, 0, 0); }
+	| while															{ $$ = WhileGrammarAction($1, 0); }
 	;
 
 statement: full_assignment											{ $$ = FullAssignmentStatementGrammarAction($1); }
@@ -136,6 +142,9 @@ if: IF OPEN_PARENTHESIS expression CLOSE_PARENTHESIS OPEN_BRACE block if_closure
 if_closure: CLOSE_BRACE 											{ $$ = IfClosureGrammarAction($1); }
 	| CLOSE_BRACE ELSE if											{ $$ = IfElseIfGrammarAction($1, $3); }
 	| CLOSE_BRACE ELSE OPEN_BRACE block CLOSE_BRACE					{ $$ = IfElseBlockGrammarAction($1, $4); }
+	;
+
+while: WHILE OPEN_PARENTHESIS expression CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = WhileGrammarAction($3, $6); }
 	;
 
 expression: expression[left] ADD expression[right]					{ $$ = AdditionExpressionGrammarAction($left, $right); }

@@ -330,3 +330,9 @@ int IfElseBlockGrammarAction(const int leftValue, const int rightValue)
 	LogDebug("[Bison] IfElseBlockGrammarAction (%d, %d)", leftValue, rightValue);
 	return 0;
 }
+
+int WhileGrammarAction(const int first, const int second)
+{
+	LogDebug("[Bison] WhileGrammarAction (%d, %d)", first, second);
+	return 0;
+}

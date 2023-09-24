@@ -61,6 +61,9 @@ int IntegerConstantGrammarAction(const int value);
 char *IdentifierGrammarAction(char *value);
 char *StringGrammarAction(char *value);
 
+// Conditions
+int WhileGrammarAction(const int first, const int second);
+
 // Block
 int BlockGrammarAction(const int leftValue, const int rightValue);
 
