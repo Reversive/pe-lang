@@ -71,6 +71,8 @@ else                                        { return ElsePatternAction(); }
 while                                       { return WhilePatternAction(); }
 for                                         { return ForPatternAction(); }
 
+in                                          { return InPatternAction(); }
+
 "{"                                         { return OpenBracePatternAction(); }
 "}"                                         { return CloseBracePatternAction(); }
 
