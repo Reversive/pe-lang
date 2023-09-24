@@ -65,6 +65,10 @@ int                                         { return IntTypePatternAction(); }
 string                                      { return StringTypePatternAction(); }
 byte                                        { return ByteTypePatternAction(); }
 
+if                                          { return IfPatternAction(); }
+else                                        { return ElsePatternAction(); }
+
+
 "="											{ return AssignmentPatternAction(); }
 
 "("											{ return OpenParenthesisPatternAction(); }

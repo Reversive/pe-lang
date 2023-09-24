@@ -302,3 +302,17 @@ token SemicolonPatternAction()
 	yylval.token = SEMICOLON;
 	return SEMICOLON;
 }
+
+token IfPatternAction()
+{
+	LogDebug("[Flex] IfPatternAction: 'If'.");
+	yylval.token = IF;
+	return IF;
+}
+
+token ElsePatternAction()
+{
+	LogDebug("[Flex] ElsePatternAction: 'Else'.");
+	yylval.token = ELSE;
+	return ELSE;
+}
