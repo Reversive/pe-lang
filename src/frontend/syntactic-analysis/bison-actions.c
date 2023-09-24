@@ -354,3 +354,9 @@ int ForGrammarAction(const int first, const int second, const int third, const i
 	LogDebug("[Bison] ForGrammarAction (%d, %d, %d, %d)", first, second, third, fourth);
 	return 0;
 }
+
+int DeclarationForGrammarAction(const int first, char *second, const int third)
+{
+	LogDebug("[Bison] DeclarationForGrammarAction (%d, %s, %d)", first, second, third);
+	return 0;
+}

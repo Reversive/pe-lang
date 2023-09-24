@@ -66,6 +66,7 @@ int WhileGrammarAction(const int first, const int second);
 int FullAssignmentForGrammarAction(const int first, const int second, const int third, const int fourth);
 int AssignmentForGrammarAction(const int first, const int second, const int third, const int fourth);
 int ForGrammarAction(const int first, const int second, const int third, const int fourth);
+int DeclarationForGrammarAction(const int first, char *second, const int third);
 
 // Block
 int BlockGrammarAction(const int leftValue, const int rightValue);

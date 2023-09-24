@@ -68,6 +68,7 @@
 %token <token> SEMICOLON
 %token <token> OPEN_BRACE
 %token <token> CLOSE_BRACE
+%token <token> IN
 
 // conditional
 %token <token> IF
@@ -155,6 +156,7 @@ for: FOR OPEN_PARENTHESIS full_assignment SEMICOLON expression SEMICOLON assignm
 	| FOR OPEN_PARENTHESIS assignment SEMICOLON expression SEMICOLON assignment CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = AssignmentForGrammarAction($3, $5, $7, $10); }
 	| FOR OPEN_PARENTHESIS SEMICOLON expression SEMICOLON assignment CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = ForGrammarAction(0, $4, $6, $9); }
 	| FOR OPEN_PARENTHESIS SEMICOLON expression SEMICOLON CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = ForGrammarAction(0, 0, 0, $8); }
+	| FOR OPEN_PARENTHESIS declaration IN identifier CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = DeclarationForGrammarAction($3, $5, $8); }
 	;
 
 expression: expression[left] ADD expression[right]					{ $$ = AdditionExpressionGrammarAction($left, $right); }
