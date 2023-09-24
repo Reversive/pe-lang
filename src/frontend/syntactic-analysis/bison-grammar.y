@@ -82,6 +82,7 @@
 %token <token> PEOPEN
 %token <token> PRINT
 %token <token> PECLOSE
+%token <token> MAIN
 
 // constants
 %token <integer> INTEGER
@@ -122,7 +123,7 @@
 
 %%
 
-program: block														{ $$ = ProgramGrammarAction($1); }
+program: MAIN OPEN_BRACE block CLOSE_BRACE							{ $$ = ProgramGrammarAction($1); }
 	;
 
 block: instruction block 											{ $$ = BlockGrammarAction($1, $2); }
