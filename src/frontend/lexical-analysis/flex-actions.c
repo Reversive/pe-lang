@@ -337,3 +337,10 @@ token WhilePatternAction()
 	yylval.token = WHILE;
 	return WHILE;
 }
+
+token ForPatternAction()
+{
+	LogDebug("[Flex] ForPatternAction: 'For'.");
+	yylval.token = FOR;
+	return FOR;
+}

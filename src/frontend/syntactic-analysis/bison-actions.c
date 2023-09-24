@@ -336,3 +336,21 @@ int WhileGrammarAction(const int first, const int second)
 	LogDebug("[Bison] WhileGrammarAction (%d, %d)", first, second);
 	return 0;
 }
+
+int FullAssignmentForGrammarAction(const int first, const int second, const int third, const int fourth)
+{
+	LogDebug("[Bison] FullAssignmentForGrammarAction (%d, %d, %d, %d)", first, second, third, fourth);
+	return 0;
+}
+
+int AssignmentForGrammarAction(const int first, const int second, const int third, const int fourth)
+{
+	LogDebug("[Bison] AssignmentForGrammarAction (%d, %d, %d, %d)", first, second, third, fourth);
+	return 0;
+}
+
+int ForGrammarAction(const int first, const int second, const int third, const int fourth)
+{
+	LogDebug("[Bison] ForGrammarAction (%d, %d, %d, %d)", first, second, third, fourth);
+	return 0;
+}

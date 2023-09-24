@@ -69,6 +69,7 @@ if                                          { return IfPatternAction(); }
 else                                        { return ElsePatternAction(); }
 
 while                                       { return WhilePatternAction(); }
+for                                         { return ForPatternAction(); }
 
 "{"                                         { return OpenBracePatternAction(); }
 "}"                                         { return CloseBracePatternAction(); }
