@@ -77,6 +77,8 @@ in                                          { return InPatternAction(); }
 
 "{"                                         { return OpenBracePatternAction(); }
 "}"                                         { return CloseBracePatternAction(); }
+"["                                         { return OpenBracketPatternAction(); }
+"]"                                         { return CloseBracketPatternAction(); }
 
 "="											{ return AssignmentPatternAction(); }
 

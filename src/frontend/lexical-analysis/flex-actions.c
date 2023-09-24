@@ -358,3 +358,17 @@ token MainPatternAction()
 	yylval.token = MAIN;
 	return MAIN;
 }
+
+token OpenBracketPatternAction()
+{
+	LogDebug("[Flex] OpenBracketPatternAction: '['.");
+	yylval.token = OPEN_BRACKET;
+	return OPEN_BRACKET;
+}
+
+token CloseBracketPatternAction()
+{
+	LogDebug("[Flex] CloseBracketPatternAction: ']'.");
+	yylval.token = CLOSE_BRACKET;
+	return CLOSE_BRACKET;
+}

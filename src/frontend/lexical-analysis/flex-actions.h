@@ -67,6 +67,8 @@ token WhilePatternAction();
 token ForPatternAction();
 token InPatternAction();
 token MainPatternAction();
+token OpenBracketPatternAction();
+token CloseBracketPatternAction();
 // Patrón desconocido, permite abortar debido a un error de sintaxis.
 token UnknownPatternAction(const char *lexeme, const int length);
 
