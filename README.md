@@ -1,7 +1,5 @@
 # pe-lang
 
-![pe-lang Logo](https://your-image-url.com/pe-lang-logo.png)
-
 ## Table of Contents
 
 - [About](#about)
@@ -16,13 +14,16 @@
 
 ## About
 
-pe-lang is a custom programming language created with Bison and Flex. It is designed to [briefly describe the purpose and scope of your language].
+pe-lang is a custom programming language created with Bison and Flex. It is designed to analyze PE executables in a simplistic way.
 
 ## Features
 
-- [List some key features of your language]
-- [Include any notable functionalities or libraries]
-- [Highlight what makes pe-lang unique]
+- Extract basic PE header information (sections, cpu arch, entrypoint)
+- Explore sections in detail
+- Analyze imports and exports
+- Do relational operations
+- Use basic control flow structures
+- Print results to stdout
 
 ## Getting Started
 
