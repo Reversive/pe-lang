@@ -344,3 +344,10 @@ token ForPatternAction()
 	yylval.token = FOR;
 	return FOR;
 }
+
+token InPatternAction()
+{
+	LogDebug("[Flex] InPatternAction: 'in'.");
+	yylval.token = IN;
+	return IN;
+}
