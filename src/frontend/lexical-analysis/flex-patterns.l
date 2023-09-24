@@ -38,6 +38,8 @@ peopen                                      { return PEOpenPatternAction(); }
 peclose                                     { return PEClosePatternAction(); }
 print                                       { return PrintPatternAction(); }
 
+main                                        { return MainPatternAction(); }
+
 ","                                         { return CommaPatternAction(); }
 ";"                                         { return SemicolonPatternAction(); }
 

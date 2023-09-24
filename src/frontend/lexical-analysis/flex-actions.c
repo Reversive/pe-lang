@@ -351,3 +351,10 @@ token InPatternAction()
 	yylval.token = IN;
 	return IN;
 }
+
+token MainPatternAction()
+{
+	LogDebug("[Flex] MainPatternAction: 'Main'.");
+	yylval.token = MAIN;
+	return MAIN;
+}
