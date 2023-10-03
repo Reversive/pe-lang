@@ -372,3 +372,108 @@ token CloseBracketPatternAction()
 	yylval.token = CLOSE_BRACKET;
 	return CLOSE_BRACKET;
 }
+
+token DirectoryEntriesPatternAction()
+{
+	LogDebug("[Flex] DirectoryEntriesPatternAction: 'DirectoryEntries'.");
+	yylval.token = DIRECTORY_ENTRIES;
+	return DIRECTORY_ENTRIES;
+}
+
+token ImportsDirectoryEntriesPatternAction()
+{
+	LogDebug("[Flex] ImportsDirectoryEntriesPatternAction: 'ImportsDirectoryEntries'.");
+	yylval.token = IMPORTS_DIRECTORY_ENTRIES;
+	return IMPORTS_DIRECTORY_ENTRIES;
+}
+
+token ExportsDirectoryEntriesPatternAction()
+{
+	LogDebug("[Flex] ExportsDirectoryEntriesPatternAction: 'ExportsDirectoryEntries'.");
+	yylval.token = EXPORTS_DIRECTORY_ENTRIES;
+	return EXPORTS_DIRECTORY_ENTRIES;
+}
+
+token DLLPatternAction()
+{
+	LogDebug("[Flex] DLLPatternAction: 'DLL'.");
+	yylval.token = DLL;
+	return DLL;
+}
+
+token ImportsPatternAction()
+{
+	LogDebug("[Flex] ImportsPatternAction: 'Imports'.");
+	yylval.token = IMPORTS;
+	return IMPORTS;
+}
+
+token ExportsPatternAction()
+{
+	LogDebug("[Flex] ExportsPatternAction: 'Exports'.");
+	yylval.token = EXPORTS;
+	return EXPORTS;
+}
+
+token NamePatternAction()
+{
+	LogDebug("[Flex] NamePatternAction: 'Name'.");
+	yylval.token = NAME;
+	return NAME;
+}
+
+token AddressPatternAction()
+{
+	LogDebug("[Flex] AddressPatternAction: 'Address'.");
+	yylval.token = ADDRESS;
+	return ADDRESS;
+}
+
+token SectionsPatternAction()
+{
+	LogDebug("[Flex] SectionsPatternAction: 'Sections'.");
+	yylval.token = SECTIONS;
+	return SECTIONS;
+}
+
+token VirtualSizePatternAction()
+{
+	LogDebug("[Flex] VirtualSizePatternAction: 'VirtualSize'.");
+	yylval.token = VIRTUAL_SIZE;
+	return VIRTUAL_SIZE;
+}
+
+token VirtualAddressPatternAction()
+{
+	LogDebug("[Flex] VirtualAddressPatternAction: 'VirtualAddress'.");
+	yylval.token = VIRTUAL_ADDRESS;
+	return VIRTUAL_ADDRESS;
+}
+
+token OptionalHeaderPatternAction()
+{
+	LogDebug("[Flex] OptionalHeaderPatternAction: 'OptionalHeader'.");
+	yylval.token = OPTIONAL_HEADER;
+	return OPTIONAL_HEADER;
+}
+
+token MagicPatternAction()
+{
+	LogDebug("[Flex] MagicPatternAction: 'Magic'.");
+	yylval.token = MAGIC;
+	return MAGIC;
+}
+
+token OptionalHeaderMagicPatternAction()
+{
+	LogDebug("[Flex] OptionalHeaderMagicPatternAction: 'OptionalHeaderMagic'.");
+	yylval.token = OPTIONAL_HEADER_MAGIC;
+	return OPTIONAL_HEADER_MAGIC;
+}
+
+token DotPatternAction()
+{
+	LogDebug("[Flex] DotPatternAction: '.'.");
+	yylval.token = DOT;
+	return DOT;
+}

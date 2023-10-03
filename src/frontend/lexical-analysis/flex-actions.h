@@ -69,6 +69,21 @@ token InPatternAction();
 token MainPatternAction();
 token OpenBracketPatternAction();
 token CloseBracketPatternAction();
+token DirectoryEntriesPatternAction();
+token ImportsDirectoryEntriesPatternAction();
+token ExportsDirectoryEntriesPatternAction();
+token DLLPatternAction();
+token ImportsPatternAction();
+token ExportsPatternAction();
+token AddressPatternAction();
+token SectionsPatternAction();
+token NamePatternAction();
+token VirtualSizePatternAction();
+token VirtualAddressPatternAction();
+token OptionalHeaderPatternAction();
+token MagicPatternAction();
+token OptionalHeaderMagicPatternAction();
+token DotPatternAction();
 // Patrón desconocido, permite abortar debido a un error de sintaxis.
 token UnknownPatternAction(const char *lexeme, const int length);
 
