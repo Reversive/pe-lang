@@ -355,9 +355,9 @@ int ForGrammarAction(const int first, const int second, const int third, const i
 	return 0;
 }
 
-int DeclarationForGrammarAction(const int first, char *second, const int third)
+int DeclarationForGrammarAction(const int first, const int second, const int third)
 {
-	LogDebug("[Bison] DeclarationForGrammarAction (%d, %s, %d)", first, second, third);
+	LogDebug("[Bison] DeclarationForGrammarAction (%d, %d, %d)", first, second, third);
 	return 0;
 }
 
@@ -388,5 +388,101 @@ int VectorFullAssignmentGrammarAction(const int first, const int second)
 int VectorAssignmentGrammarAction(const int leftValue, const int rightValue)
 {
 	LogDebug("[Bison] VectorAssignmentGrammarAction (%d, %d)", leftValue, rightValue);
+	return 0;
+}
+
+int MemberExpressionGrammarAction(const int value)
+{
+	LogDebug("[Bison] MemberExpressionGrammarAction (%d)", value);
+	return 0;
+}
+
+int DirectoryEntriesMemberGrammarAction(char *value)
+{
+	LogDebug("[Bison] DirectoryEntriesMemberGrammarAction (%s)", value);
+	return 0;
+}
+
+int ImportsDirectoryEntriesMemberGrammarAction(char *value)
+{
+	LogDebug("[Bison] ImportsDirectoryEntriesMemberGrammarAction (%s)", value);
+	return 0;
+}
+
+int ExportsDirectoryEntriesMemberGrammarAction(char *value)
+{
+	LogDebug("[Bison] ExportsDirectoryEntriesMemberGrammarAction (%s)", value);
+	return 0;
+}
+
+int DLLMemberGrammarAction(char *value)
+{
+	LogDebug("[Bison] DLLMemberGrammarAction (%s)", value);
+	return 0;
+}
+
+int ImportsMemberGrammarAction(char *value)
+{
+	LogDebug("[Bison] ImportsMemberGrammarAction (%s)", value);
+	return 0;
+}
+
+int ExportsMemberGrammarAction(char *value)
+{
+	LogDebug("[Bison] ExportsMemberGrammarAction (%s)", value);
+	return 0;
+}
+
+int AddressMemberGrammarAction(char *value)
+{
+	LogDebug("[Bison] AddressMemberGrammarAction (%s)", value);
+	return 0;
+}
+
+int SectionsMemberGrammarAction(char *value)
+{
+	LogDebug("[Bison] SectionsMemberGrammarAction (%s)", value);
+	return 0;
+}
+
+int NameMemberGrammarAction(char *value)
+{
+	LogDebug("[Bison] NameMemberGrammarAction (%s)", value);
+	return 0;
+}
+
+int VirtualSizeMemberGrammarAction(char *value)
+{
+	LogDebug("[Bison] VirtualSizeMemberGrammarAction (%s)", value);
+	return 0;
+}
+
+int VirtualAddressMemberGrammarAction(char *value)
+{
+	LogDebug("[Bison] VirtualAddressMemberGrammarAction (%s)", value);
+	return 0;
+}
+
+int OptionalHeaderMemberGrammarAction(char *value)
+{
+	LogDebug("[Bison] OptionalHeaderMemberGrammarAction (%s)", value);
+	return 0;
+}
+
+int MagicMemberGrammarAction(char *value)
+{
+	LogDebug("[Bison] MagicMemberGrammarAction (%s)", value);
+	return 0;
+}
+
+int OptionalHeaderMagicMemberGrammarAction(char *value)
+{
+	LogDebug("[Bison] OptionalHeaderMagicMemberGrammarAction (%s)", value);
+	return 0;
+}
+
+int IdentifierMemberGrammarAction(char *value)
+{
+	LogDebug("[Bison] IdentifierMemberGrammarAction (%s)", value);
 	return 0;
 }
