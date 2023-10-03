@@ -22,6 +22,7 @@ endline			[\n]
 whitespace		[ \f\n\r\t\v]
 letter          [a-zA-Z]
 
+/* I want to add support for structure members, for example if i have the following code: PEFile pe; PEHeader header = pe.optional_header; */
 %%
 
 "/*"										{ BEGIN(COMMENT); BeginCommentPatternAction(); }
@@ -42,6 +43,7 @@ main                                        { return MainPatternAction(); }
 
 ","                                         { return CommaPatternAction(); }
 ";"                                         { return SemicolonPatternAction(); }
+"."                                         { return DotPatternAction(); }
 
 "=="                                        { return EqualOperatorPatternAction(); }
 "!="                                        { return NotEqualOperatorPatternAction(); }
@@ -62,6 +64,25 @@ PEHeader                                    { return PEHeaderTypePatternAction()
 PEResource                                  { return PEResourceTypePatternAction(); }
 PESignature                                 { return PESignatureTypePatternAction(); }
 PEDirEntry                                  { return PEDirEntryTypePatternAction(); }
+
+"directory_entries"                        { return DirectoryEntriesPatternAction(); }
+"directory_entries.imports"                { return ImportsDirectoryEntriesPatternAction(); }
+"directory_entries.exports"                { return ExportsDirectoryEntriesPatternAction(); }
+"dll"                                      { return DLLPatternAction(); }
+"imports"                                  { return ImportsPatternAction(); }
+"exports"                                  { return ExportsPatternAction(); }
+"name"                                     { return NamePatternAction(); }
+"address"                                  { return AddressPatternAction(); }
+
+"sections"                                 { return SectionsPatternAction(); }
+"virtual_size"                             { return VirtualSizePatternAction(); }
+"virtual_address"                          { return VirtualAddressPatternAction(); }
+
+"optional_header"                          { return OptionalHeaderPatternAction(); }
+"magic"                                    { return MagicPatternAction(); }
+"optional_header.magic"                    { return OptionalHeaderMagicPatternAction(); }
+
+
 
 int                                         { return IntTypePatternAction(); }
 string                                      { return StringTypePatternAction(); }

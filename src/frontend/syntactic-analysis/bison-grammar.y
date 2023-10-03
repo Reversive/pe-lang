@@ -43,6 +43,7 @@
 	int while_loop;
 	int for_loop;
 	int vector;
+	int member;
 }
 
 // Un token que jamás debe ser usado en la gramática.
@@ -72,6 +73,23 @@
 %token <token> IN
 %token <token> OPEN_BRACKET
 %token <token> CLOSE_BRACKET
+%token <token> DOT
+
+// member structure
+%token <token> DIRECTORY_ENTRIES
+%token <token> IMPORTS_DIRECTORY_ENTRIES
+%token <token> EXPORTS_DIRECTORY_ENTRIES
+%token <token> DLL
+%token <token> IMPORTS
+%token <token> EXPORTS
+%token <token> ADDRESS
+%token <token> SECTIONS
+%token <token> NAME
+%token <token> VIRTUAL_SIZE
+%token <token> VIRTUAL_ADDRESS
+%token <token> OPTIONAL_HEADER
+%token <token> MAGIC
+%token <token> OPTIONAL_HEADER_MAGIC
 
 // conditional
 %token <token> IF
@@ -117,6 +135,7 @@
 %type <while_loop> while
 %type <for_loop> for
 %type <vector> vector
+%type <member> member
 
 // Associative and precedence rules.
 %left ADD SUB
@@ -161,7 +180,7 @@ for: FOR OPEN_PARENTHESIS full_assignment SEMICOLON expression SEMICOLON assignm
 	| FOR OPEN_PARENTHESIS assignment SEMICOLON expression SEMICOLON assignment CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = AssignmentForGrammarAction($3, $5, $7, $10); }
 	| FOR OPEN_PARENTHESIS SEMICOLON expression SEMICOLON assignment CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = ForGrammarAction(0, $4, $6, $9); }
 	| FOR OPEN_PARENTHESIS SEMICOLON expression SEMICOLON CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = ForGrammarAction(0, 0, 0, $8); }
-	| FOR OPEN_PARENTHESIS declaration IN identifier CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = DeclarationForGrammarAction($3, $5, $8); }
+	| FOR OPEN_PARENTHESIS declaration IN member CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = DeclarationForGrammarAction($3, $5, $8); }
 	;
 
 expression: expression[left] ADD expression[right]					{ $$ = AdditionExpressionGrammarAction($left, $right); }
@@ -180,6 +199,24 @@ expression: expression[left] ADD expression[right]					{ $$ = AdditionExpression
 	| factor														{ $$ = FactorExpressionGrammarAction($1); }
 	| ret_function													{ $$ = FunctionExpressionGrammarAction($1); }
 	| vector														{ $$ = VectorExpressionGrammarAction($1); }
+	| member														{ $$ = MemberExpressionGrammarAction($1); }
+	;
+
+member: identifier DOT DIRECTORY_ENTRIES								{ $$ = DirectoryEntriesMemberGrammarAction($1); }
+	| identifier DOT IMPORTS_DIRECTORY_ENTRIES							{ $$ = ImportsDirectoryEntriesMemberGrammarAction($1); }
+	| identifier DOT EXPORTS_DIRECTORY_ENTRIES							{ $$ = ExportsDirectoryEntriesMemberGrammarAction($1); }
+	| identifier DOT DLL												{ $$ = DLLMemberGrammarAction($1); }
+	| identifier DOT IMPORTS											{ $$ = ImportsMemberGrammarAction($1); }
+	| identifier DOT EXPORTS											{ $$ = ExportsMemberGrammarAction($1); }
+	| identifier DOT ADDRESS											{ $$ = AddressMemberGrammarAction($1); }
+	| identifier DOT SECTIONS											{ $$ = SectionsMemberGrammarAction($1); }
+	| identifier DOT NAME												{ $$ = NameMemberGrammarAction($1); }
+	| identifier DOT VIRTUAL_SIZE										{ $$ = VirtualSizeMemberGrammarAction($1); }
+	| identifier DOT VIRTUAL_ADDRESS									{ $$ = VirtualAddressMemberGrammarAction($1); }
+	| identifier DOT OPTIONAL_HEADER									{ $$ = OptionalHeaderMemberGrammarAction($1); }
+	| identifier DOT MAGIC												{ $$ = MagicMemberGrammarAction($1); }
+	| identifier DOT OPTIONAL_HEADER_MAGIC								{ $$ = OptionalHeaderMagicMemberGrammarAction($1); }
+	| identifier    											   		{ $$ = IdentifierMemberGrammarAction($1); }
 	;
 
 vector: identifier OPEN_BRACKET factor CLOSE_BRACKET				{ $$ = VectorGrammarAction($1, $3); }
