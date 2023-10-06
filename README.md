@@ -10,7 +10,6 @@
 - [Usage](#usage)
   - [Running pe-lang](#running-pe-lang)
   - [Example Code](#example-code)
-- [Documentation](#documentation)
 - [Credits](#credits)
 
 ## About
@@ -69,8 +68,6 @@ for SectionInfo section in pe.sections {
     section.virtual_size;
 }
 ```
-## Documentation
-[Provide links or instructions to access detailed documentation if available]
 
 ## Credits
 - [@agustin-golmar](https://github.com/agustin-golmar/)
