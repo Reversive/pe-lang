@@ -1,0 +1,13 @@
+main
+{
+    PEFile pe = peopen("file.exe");
+    byte arch = pe.optional_header.magic;
+    if (arch == 267)
+    {
+        print "32";
+    }
+    else if (arch == 523)
+    {
+        print "64";
+    }
+}

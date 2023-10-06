@@ -1,0 +1,12 @@
+main
+{
+    PEFile pe = peopen("file.txt");
+    for (PEDirEntry entry in pe.directory_entries)
+    {
+        print entry.dll;
+        for (PEExport export in entry.exports)
+        {
+            print "\t", export.address, export.name;
+        }
+    }
+}

@@ -1,0 +1,4 @@
+main
+{
+    PEFile pe = open("file.txt");
+}
