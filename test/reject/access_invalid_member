@@ -1,0 +1,5 @@
+main
+{
+    PEFile pe = open("file.txt");
+    PESection section = pe.section;
+}
