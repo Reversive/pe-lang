@@ -42,6 +42,7 @@
 	int if_closure_condition;
 	int while_loop;
 	int for_loop;
+	int for_loop_decl;
 	int vector;
 	int member;
 	int property;
@@ -133,6 +134,7 @@
 %type <if_closure_condition> if_closure
 %type <while_loop> while
 %type <for_loop> for
+%type <for_loop_decl> for_loop_declaration
 %type <vector> vector
 %type <member> member
 %type <property> property
@@ -174,14 +176,17 @@ if_closure: CLOSE_BRACE 											{ $$ = IfClosureGrammarAction($1); }
 	| CLOSE_BRACE ELSE OPEN_BRACE block CLOSE_BRACE					{ $$ = IfElseBlockGrammarAction($1, $4); }
 	;
 
-while: WHILE OPEN_PARENTHESIS expression CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = WhileGrammarAction($3, $6); }
+while: WHILE OPEN_PARENTHESIS expression CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE 		{ $$ = WhileGrammarAction($3, $6); }
 	;
 
-for: FOR OPEN_PARENTHESIS full_assignment SEMICOLON expression SEMICOLON assignment CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = FullAssignmentForGrammarAction($3, $5, $7, $10); }
-	| FOR OPEN_PARENTHESIS assignment SEMICOLON expression SEMICOLON assignment CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = AssignmentForGrammarAction($3, $5, $7, $10); }
-	| FOR OPEN_PARENTHESIS SEMICOLON expression SEMICOLON assignment CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = ForGrammarAction(0, $4, $6, $9); }
-	| FOR OPEN_PARENTHESIS SEMICOLON expression SEMICOLON CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = ForGrammarAction(0, 0, 0, $8); }
-	| FOR OPEN_PARENTHESIS declaration IN member CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE { $$ = DeclarationForGrammarAction($3, $5, $8); }
+for: FOR OPEN_PARENTHESIS for_loop_declaration CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE 	{ $$ = ExplicitForGrammarAction($3, $6); }
+	;
+
+for_loop_declaration: full_assignment SEMICOLON expression SEMICOLON assignment 				{ $$ = 0; }
+	| assignment SEMICOLON expression SEMICOLON assignment										{ $$ = 0; }
+	| SEMICOLON expression SEMICOLON assignment													{ $$ = 0; }
+	| SEMICOLON expression SEMICOLON															{ $$ = 0; }
+	| declaration IN member																		{ $$ = 0; }
 	;
 
 expression: expression[left] ADD expression[right]					{ $$ = AdditionExpressionGrammarAction($left, $right); }

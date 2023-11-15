@@ -355,6 +355,12 @@ int ForGrammarAction(const int first, const int second, const int third, const i
 	return 0;
 }
 
+int ExplicitForGrammarAction(const int first, const int second)
+{
+	LogDebug("[Bison] ExplicitForGrammarAction (%d, %d)", first, second);
+	return 0;
+}
+
 int DeclarationForGrammarAction(const int first, const int second, const int third)
 {
 	LogDebug("[Bison] DeclarationForGrammarAction (%d, %d, %d)", first, second, third);

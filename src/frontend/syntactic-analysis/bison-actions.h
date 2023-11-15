@@ -66,15 +66,12 @@ int ParametersGrammarAction(const int value);
 
 // Constants
 int IntegerConstantGrammarAction(const int value);
-char *IdentifierGrammarAction(char *value);
-char *StringGrammarAction(char *value);
 
 // Conditions
 int WhileGrammarAction(const int first, const int second);
 int FullAssignmentForGrammarAction(const int first, const int second, const int third, const int fourth);
-int AssignmentForGrammarAction(const int first, const int second, const int third, const int fourth);
 int ForGrammarAction(const int first, const int second, const int third, const int fourth);
-int DeclarationForGrammarAction(const int first, const int second, const int third);
+int ExplicitForGrammarAction(const int first, const int second);
 
 // Vector
 int VectorGrammarAction(char *first, const int second);
