@@ -44,6 +44,7 @@
 	int for_loop;
 	int vector;
 	int member;
+	int property;
 }
 
 // Un token que jamás debe ser usado en la gramática.
@@ -136,6 +137,7 @@
 %type <for_loop> for
 %type <vector> vector
 %type <member> member
+%type <property> property
 
 // Associative and precedence rules.
 %left ADD SUB
@@ -203,21 +205,23 @@ expression: expression[left] ADD expression[right]					{ $$ = AdditionExpression
 	| member														{ $$ = MemberExpressionGrammarAction($1); }
 	;
 
-member: identifier DOT DIRECTORY_ENTRIES								{ $$ = DirectoryEntriesMemberGrammarAction($1); }
-	| identifier DOT IMPORTS_DIRECTORY_ENTRIES							{ $$ = ImportsDirectoryEntriesMemberGrammarAction($1); }
-	| identifier DOT EXPORTS_DIRECTORY_ENTRIES							{ $$ = ExportsDirectoryEntriesMemberGrammarAction($1); }
-	| identifier DOT DLL												{ $$ = DLLMemberGrammarAction($1); }
-	| identifier DOT IMPORTS											{ $$ = ImportsMemberGrammarAction($1); }
-	| identifier DOT EXPORTS											{ $$ = ExportsMemberGrammarAction($1); }
-	| identifier DOT ADDRESS											{ $$ = AddressMemberGrammarAction($1); }
-	| identifier DOT SECTIONS											{ $$ = SectionsMemberGrammarAction($1); }
-	| identifier DOT NAME												{ $$ = NameMemberGrammarAction($1); }
-	| identifier DOT VIRTUAL_SIZE										{ $$ = VirtualSizeMemberGrammarAction($1); }
-	| identifier DOT VIRTUAL_ADDRESS									{ $$ = VirtualAddressMemberGrammarAction($1); }
-	| identifier DOT OPTIONAL_HEADER									{ $$ = OptionalHeaderMemberGrammarAction($1); }
-	| identifier DOT MAGIC												{ $$ = MagicMemberGrammarAction($1); }
-	| identifier DOT OPTIONAL_HEADER_MAGIC								{ $$ = OptionalHeaderMagicMemberGrammarAction($1); }
-	| identifier    											   		{ $$ = IdentifierMemberGrammarAction($1); }
+member: identifier DOT property										{ $$ = MemberGrammarAction($1, $3); }
+	;
+
+property: DIRECTORY_ENTRIES											{ $$ = DIRECTORY_ENTRIES; }
+	| IMPORTS_DIRECTORY_ENTRIES										{ $$ = IMPORTS_DIRECTORY_ENTRIES; }
+	| EXPORTS_DIRECTORY_ENTRIES										{ $$ = EXPORTS_DIRECTORY_ENTRIES; }
+	| DLL															{ $$ = DLL; }
+	| IMPORTS														{ $$ = IMPORTS; }
+	| EXPORTS														{ $$ = EXPORTS; }
+	| ADDRESS														{ $$ = ADDRESS; }
+	| SECTIONS														{ $$ = SECTIONS; }
+	| NAME															{ $$ = NAME; }
+	| VIRTUAL_SIZE													{ $$ = VIRTUAL_SIZE; }
+	| VIRTUAL_ADDRESS												{ $$ = VIRTUAL_ADDRESS; }
+	| OPTIONAL_HEADER												{ $$ = OPTIONAL_HEADER; }
+	| MAGIC															{ $$ = MAGIC; }
+	| OPTIONAL_HEADER_MAGIC											{ $$ = OPTIONAL_HEADER_MAGIC; }
 	;
 
 vector: identifier OPEN_BRACKET factor CLOSE_BRACKET				{ $$ = VectorGrammarAction($1, $3); }

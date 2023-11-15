@@ -53,22 +53,8 @@ int AssignmentGrammarAction(char *leftValue, const int rightValue);
 int VectorAssignmentGrammarAction(const int leftValue, const int rightValue);
 
 // Members
-int MemberExpressionGrammarAction(const int value);
-int DirectoryEntriesMemberGrammarAction(char *value);
-int ImportsDirectoryEntriesMemberGrammarAction(char *value);
-int ExportsDirectoryEntriesMemberGrammarAction(char *value);
-int DLLMemberGrammarAction(char *value);
-int ImportsMemberGrammarAction(char *value);
-int ExportsMemberGrammarAction(char *value);
-int AddressMemberGrammarAction(char *value);
-int SectionsMemberGrammarAction(char *value);
-int NameMemberGrammarAction(char *value);
-int VirtualSizeMemberGrammarAction(char *value);
-int VirtualAddressMemberGrammarAction(char *value);
-int OptionalHeaderMemberGrammarAction(char *value);
-int MagicMemberGrammarAction(char *value);
-int OptionalHeaderMagicMemberGrammarAction(char *value);
-int IdentifierMemberGrammarAction(char *value);
+int MemberExpressionGrammarAction(int value);
+int MemberGrammarAction(char *leftValue, int rightValue);
 
 // Functions
 int PEOpenGrammarAction(const int value);
