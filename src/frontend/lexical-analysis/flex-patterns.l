@@ -66,8 +66,6 @@ PESignature                                 { return PESignatureTypePatternActio
 PEDirEntry                                  { return PEDirEntryTypePatternAction(); }
 
 "directory_entries"                        { return DirectoryEntriesPatternAction(); }
-"directory_entries.imports"                { return ImportsDirectoryEntriesPatternAction(); }
-"directory_entries.exports"                { return ExportsDirectoryEntriesPatternAction(); }
 "dll"                                      { return DLLPatternAction(); }
 "imports"                                  { return ImportsPatternAction(); }
 "exports"                                  { return ExportsPatternAction(); }
@@ -80,8 +78,6 @@ PEDirEntry                                  { return PEDirEntryTypePatternAction
 
 "optional_header"                          { return OptionalHeaderPatternAction(); }
 "magic"                                    { return MagicPatternAction(); }
-"optional_header.magic"                    { return OptionalHeaderMagicPatternAction(); }
-
 
 
 int                                         { return IntTypePatternAction(); }
