@@ -53,22 +53,9 @@ int AssignmentGrammarAction(char *leftValue, const int rightValue);
 int VectorAssignmentGrammarAction(const int leftValue, const int rightValue);
 
 // Members
-int MemberExpressionGrammarAction(const int value);
-int DirectoryEntriesMemberGrammarAction(char *value);
-int ImportsDirectoryEntriesMemberGrammarAction(char *value);
-int ExportsDirectoryEntriesMemberGrammarAction(char *value);
-int DLLMemberGrammarAction(char *value);
-int ImportsMemberGrammarAction(char *value);
-int ExportsMemberGrammarAction(char *value);
-int AddressMemberGrammarAction(char *value);
-int SectionsMemberGrammarAction(char *value);
-int NameMemberGrammarAction(char *value);
-int VirtualSizeMemberGrammarAction(char *value);
-int VirtualAddressMemberGrammarAction(char *value);
-int OptionalHeaderMemberGrammarAction(char *value);
-int MagicMemberGrammarAction(char *value);
-int OptionalHeaderMagicMemberGrammarAction(char *value);
-int IdentifierMemberGrammarAction(char *value);
+int MemberExpressionGrammarAction(int value);
+int MemberIdentifierGrammarAction(char *leftValue, int rightValue);
+int MemberGrammarAction(int leftValue, int rightValue);
 
 // Functions
 int PEOpenGrammarAction(const int value);
@@ -80,15 +67,12 @@ int ParametersGrammarAction(const int value);
 
 // Constants
 int IntegerConstantGrammarAction(const int value);
-char *IdentifierGrammarAction(char *value);
-char *StringGrammarAction(char *value);
 
 // Conditions
 int WhileGrammarAction(const int first, const int second);
 int FullAssignmentForGrammarAction(const int first, const int second, const int third, const int fourth);
-int AssignmentForGrammarAction(const int first, const int second, const int third, const int fourth);
 int ForGrammarAction(const int first, const int second, const int third, const int fourth);
-int DeclarationForGrammarAction(const int first, const int second, const int third);
+int ExplicitForGrammarAction(const int first, const int second);
 
 // Vector
 int VectorGrammarAction(char *first, const int second);
