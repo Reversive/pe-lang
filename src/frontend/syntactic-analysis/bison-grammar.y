@@ -116,8 +116,6 @@
 %type <expression> expression
 %type <factor> factor
 %type <constant> constant
-%type <string> string
-%type <string> identifier
 %type <type> type
 %type <declaration> declaration
 %type <full_assignment> full_assignment
@@ -205,7 +203,7 @@ expression: expression[left] ADD expression[right]					{ $$ = AdditionExpression
 	| member														{ $$ = MemberExpressionGrammarAction($1); }
 	;
 
-member: identifier DOT property										{ $$ = MemberGrammarAction($1, $3); }
+member: IDENTIFIER DOT property										{ $$ = MemberGrammarAction($1, $3); }
 	;
 
 property: DIRECTORY_ENTRIES											{ $$ = DIRECTORY_ENTRIES; }
@@ -224,13 +222,13 @@ property: DIRECTORY_ENTRIES											{ $$ = DIRECTORY_ENTRIES; }
 	| OPTIONAL_HEADER_MAGIC											{ $$ = OPTIONAL_HEADER_MAGIC; }
 	;
 
-vector: identifier OPEN_BRACKET factor CLOSE_BRACKET				{ $$ = VectorGrammarAction($1, $3); }
+vector: IDENTIFIER OPEN_BRACKET factor CLOSE_BRACKET				{ $$ = VectorGrammarAction($1, $3); }
 	;
 
 factor: OPEN_PARENTHESIS expression CLOSE_PARENTHESIS				{ $$ = ExpressionFactorGrammarAction($2); }
 	| constant														{ $$ = ConstantFactorGrammarAction($1); }
-	| identifier													{ $$ = IdentifierFactorGrammarAction($1); }
-	| string 														{ $$ = StringFactorGrammarAction($1); }
+	| IDENTIFIER													{ $$ = IdentifierFactorGrammarAction($1); }
+	| STRING 														{ $$ = StringFactorGrammarAction($1); }
 	;
 
 full_assignment: declaration ASSIGNMENT expression					{ $$ = FullAssignmentGrammarAction($1, $3); }
@@ -238,12 +236,12 @@ full_assignment: declaration ASSIGNMENT expression					{ $$ = FullAssignmentGram
 	| declaration													{ $$ = DeclarationGrammarAction($1, 0); }
 	;
 
-assignment: identifier ASSIGNMENT expression						{ $$ = AssignmentGrammarAction($1, $3); }
+assignment: IDENTIFIER ASSIGNMENT expression						{ $$ = AssignmentGrammarAction($1, $3); }
 	| vector ASSIGNMENT expression									{ $$ = VectorAssignmentGrammarAction($1, $3); } 
 	;
 
-declaration: type identifier										{ $$ = DeclarationGrammarAction($1, $2); }
-	| type identifier OPEN_BRACKET CLOSE_BRACKET					{ $$ = VectorDeclarationGrammarAction($1, $2); }
+declaration: type IDENTIFIER										{ $$ = DeclarationGrammarAction($1, $2); }
+	| type IDENTIFIER OPEN_BRACKET CLOSE_BRACKET					{ $$ = VectorDeclarationGrammarAction($1, $2); }
 	;
 
 type: PEFILE_TYPE													{ $$ = PEFileTypeGrammarAction($1); }
@@ -262,12 +260,6 @@ type: PEFILE_TYPE													{ $$ = PEFileTypeGrammarAction($1); }
 constant: INTEGER													{ $$ = IntegerConstantGrammarAction($1); }
 	;
 
-identifier: IDENTIFIER												{ $$ = IdentifierGrammarAction($1); }
-	;
-
-string: STRING														{ $$ = StringGrammarAction($1); }
-	;
-
 ret_function: peopen												{ $$ = PEOpenGrammarAction($1); }
 	;
 
@@ -279,11 +271,11 @@ parameters: expression												{ $$ = ParametersGrammarAction($1); }
 	| parameters COMMA expression									{ $$ = ParametersCommaExpressionGrammarAction($1, $3); }
 	;
 
-peopen: PEOPEN OPEN_PARENTHESIS string CLOSE_PARENTHESIS			{ $$ = PEOpenGrammarAction($2); }
-	| 	PEOPEN OPEN_PARENTHESIS identifier CLOSE_PARENTHESIS		{ $$ = PEOpenIdentifierGrammarAction($2); }
+peopen: PEOPEN OPEN_PARENTHESIS STRING CLOSE_PARENTHESIS			{ $$ = PEOpenGrammarAction($2); }
+	| 	PEOPEN OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS		{ $$ = PEOpenIdentifierGrammarAction($2); }
 	;
 
-peclose: PECLOSE OPEN_PARENTHESIS identifier CLOSE_PARENTHESIS		{ $$ = PECloseGrammarAction($2); }
+peclose: PECLOSE OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS		{ $$ = PECloseGrammarAction($2); }
 	;
 
 print: PRINT parameters												{ $$ = PrintGrammarAction($1); }
