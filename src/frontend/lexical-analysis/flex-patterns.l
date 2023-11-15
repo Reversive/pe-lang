@@ -15,6 +15,7 @@
 
 /* Contextos de Flex. */
 %x COMMENT
+%x STRING
 
 /* Patrones reutilizables. */
 digit			[0-9]
@@ -22,7 +23,7 @@ endline			[\n]
 whitespace		[ \f\n\r\t\v]
 letter          [a-zA-Z]
 
-/* I want to add support for structure members, for example if i have the following code: PEFile pe; PEHeader header = pe.optional_header; */
+/* Define a Start condition for STRING */
 %%
 
 "/*"										{ BEGIN(COMMENT); BeginCommentPatternAction(); }
@@ -65,19 +66,19 @@ PEResource                                  { return PEResourceTypePatternAction
 PESignature                                 { return PESignatureTypePatternAction(); }
 PEDirEntry                                  { return PEDirEntryTypePatternAction(); }
 
-"directory_entries"                        { return DirectoryEntriesPatternAction(); }
-"dll"                                      { return DLLPatternAction(); }
-"imports"                                  { return ImportsPatternAction(); }
-"exports"                                  { return ExportsPatternAction(); }
-"name"                                     { return NamePatternAction(); }
-"address"                                  { return AddressPatternAction(); }
+"directory_entries"                         { return DirectoryEntriesPatternAction(); }
+"dll"                                       { return DLLPatternAction(); }
+"imports"                                   { return ImportsPatternAction(); }
+"exports"                                   { return ExportsPatternAction(); }
+"name"                                      { return NamePatternAction(); }
+"address"                                   { return AddressPatternAction(); }
 
-"sections"                                 { return SectionsPatternAction(); }
-"virtual_size"                             { return VirtualSizePatternAction(); }
-"virtual_address"                          { return VirtualAddressPatternAction(); }
+"sections"                                  { return SectionsPatternAction(); }
+"virtual_size"                              { return VirtualSizePatternAction(); }
+"virtual_address"                           { return VirtualAddressPatternAction(); }
 
-"optional_header"                          { return OptionalHeaderPatternAction(); }
-"magic"                                    { return MagicPatternAction(); }
+"optional_header"                           { return OptionalHeaderPatternAction(); }
+"magic"                                     { return MagicPatternAction(); }
 
 
 int                                         { return IntTypePatternAction(); }
@@ -108,7 +109,9 @@ in                                          { return InPatternAction(); }
 
 {letter}({letter}|{digit})*					{ return IdentifierPatternAction(yytext, yyleng); }
 
-\"[^\"]+\"                                  { return StringPatternAction(yytext, yyleng); }
+"\""                                        { BEGIN(STRING); }
+<STRING>[^"]+                               { return StringPatternAction(yytext, yyleng); }
+<STRING>"\""                                { BEGIN(INITIAL); }
 
 .											{ return UnknownPatternAction(yytext, yyleng); }
 

@@ -22,6 +22,8 @@
 // Bloque de comentarios multilínea.
 void BeginCommentPatternAction();
 void EndCommentPatternAction();
+void BeginStringPatternAction();
+void EndStringPatternAction();
 
 // Patrones terminales del lenguaje diseñado.
 token AdditionOperatorPatternAction();

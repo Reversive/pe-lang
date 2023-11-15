@@ -36,6 +36,16 @@ void EndCommentPatternAction()
 	LogDebug("[Flex] [COMMENT] EndCommentPatternAction..............................");
 }
 
+void BeginStringPatternAction()
+{
+	LogDebug("[Flex] [STRING] BeginStringPatternAction..............................");
+}
+
+void EndStringPatternAction()
+{
+	LogDebug("[Flex] [STRING] EndStringPatternAction..............................");
+}
+
 token AdditionOperatorPatternAction()
 {
 	LogDebug("[Flex] AdditionOperatorPatternAction: '+'.");
