@@ -54,7 +54,8 @@ int VectorAssignmentGrammarAction(const int leftValue, const int rightValue);
 
 // Members
 int MemberExpressionGrammarAction(int value);
-int MemberGrammarAction(char *leftValue, int rightValue);
+int MemberIdentifierGrammarAction(char *leftValue, int rightValue);
+int MemberGrammarAction(int leftValue, int rightValue);
 
 // Functions
 int PEOpenGrammarAction(const int value);

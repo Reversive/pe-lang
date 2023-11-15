@@ -397,9 +397,15 @@ int VectorAssignmentGrammarAction(const int leftValue, const int rightValue)
 	return 0;
 }
 
-int MemberGrammarAction(char *leftValue, int rightValue)
+int MemberIdentifierGrammarAction(char *leftValue, int rightValue)
 {
 	LogDebug("[Bison] MemberGrammarAction (%s, %d)", leftValue, rightValue);
+	return 0;
+}
+
+int MemberGrammarAction(int leftValue, int rightValue)
+{
+	LogDebug("[Bison] MemberGrammarAction (%d, %d)", leftValue, rightValue);
 	return 0;
 }
 

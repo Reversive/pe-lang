@@ -208,7 +208,8 @@ expression: expression[left] ADD expression[right]					{ $$ = AdditionExpression
 	| member														{ $$ = MemberExpressionGrammarAction($1); }
 	;
 
-member: IDENTIFIER DOT property										{ $$ = MemberGrammarAction($1, $3); }
+member: IDENTIFIER DOT property										{ $$ = MemberIdentifierGrammarAction($1, $3); }
+	| member DOT property											{ $$ = MemberGrammarAction($1, $3); }
 	;
 
 property: DIRECTORY_ENTRIES											{ $$ = DIRECTORY_ENTRIES; }
