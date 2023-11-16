@@ -110,7 +110,7 @@ in                                          { return InPatternAction(); }
 {letter}({letter}|{digit})*					{ return IdentifierPatternAction(yytext, yyleng); }
 
 "\""                                        { BEGIN(STRING); }
-<STRING>[^"]+                               { return StringPatternAction(yytext, yyleng); }
+<STRING>[^"]*                               { return StringPatternAction(yytext, yyleng); }
 <STRING>"\""                                { BEGIN(INITIAL); }
 
 .											{ return UnknownPatternAction(yytext, yyleng); }
