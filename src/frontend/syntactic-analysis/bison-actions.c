@@ -458,7 +458,7 @@ Expression* MemberExpressionGrammarAction(Member* member) {
 
 // Member
 Member* MemberIdentifierGrammarAction(char* id, int property) {
-	LogDebug("[Bison] MemberIdentifierGrammarAction");
+	LogDebug("[Bison] MemberIdentifierGrammarAction: %s, %d", id, property);
 	Member* member = calloc(1, sizeof(Member));
 	AssertNotNull(member);
 	member->type = IDENTIFIER_PROPERTY_MEMBER;
@@ -468,7 +468,7 @@ Member* MemberIdentifierGrammarAction(char* id, int property) {
 }
 
 Member* MemberGrammarAction(Member* member, int property) {
-	LogDebug("[Bison] MemberGrammarAction");
+	LogDebug("[Bison] MemberGrammarAction: %d", property);
 	Member* newMember = calloc(1, sizeof(Member));
 	AssertNotNull(newMember);
 	newMember->type = MEMBER_PROPERTY_MEMBER;
@@ -479,7 +479,7 @@ Member* MemberGrammarAction(Member* member, int property) {
 
 // Vector
 Vector* VectorGrammarAction(char* id, Factor* factor) {
-	LogDebug("[Bison] VectorGrammarAction");
+	LogDebug("[Bison] VectorGrammarAction: %s", id);
 	Vector* vector = calloc(1, sizeof(Vector));
 	AssertNotNull(vector);
 	vector->id = id;
@@ -507,7 +507,7 @@ Factor* ConstantFactorGrammarAction(Constant* value) {
 }
 
 Factor* IdentifierFactorGrammarAction(char *id) {
-	LogDebug("[Bison] IdentifierFactorGrammarAction");
+	LogDebug("[Bison] IdentifierFactorGrammarAction: %s", id);
 	Factor* factor = calloc(1, sizeof(Factor));
 	AssertNotNull(factor);
 	factor->type = IDENTIFIER_FACTOR;
@@ -516,7 +516,7 @@ Factor* IdentifierFactorGrammarAction(char *id) {
 }
 
 Factor* StringFactorGrammarAction(char *string) {
-	LogDebug("[Bison] StringFactorGrammarAction");
+	LogDebug("[Bison] StringFactorGrammarAction: %s", string);
 	Factor* factor = calloc(1, sizeof(Factor));
 	AssertNotNull(factor);
 	factor->type = STRING_FACTOR;
@@ -559,7 +559,7 @@ FullAssignment* DeclarationAssignmentGrammarAction(Declaration* declaration) {
 
 // Assignments
 Assignment* AssignmentGrammarAction(char* id, Expression* expression) {
-	LogDebug("[Bison] AssignmentGrammarAction");
+	LogDebug("[Bison] AssignmentGrammarAction: %s", id);
 	Assignment *assignment = calloc(1, sizeof(Assignment));
 	AssertNotNull(assignment);
 	assignment->type = IDENTIFIER_ASSIGNMENT;
@@ -580,7 +580,7 @@ Assignment* VectorAssignmentGrammarAction(Vector* vector, Expression* expression
 
 // Declaration
 Declaration* DeclarationGrammarAction(int type, char* id) {
-	LogDebug("[Bison] DeclarationGrammarAction");
+	LogDebug("[Bison] DeclarationGrammarAction: %d, %s", type, id);
 	Declaration *declaration = calloc(1, sizeof(Declaration));
 	AssertNotNull(declaration);
 	declaration->type = TYPE_DECLARATION;
@@ -590,7 +590,7 @@ Declaration* DeclarationGrammarAction(int type, char* id) {
 }
 
 Declaration* VectorDeclarationGrammarAction(int type, char* id) {
-	LogDebug("[Bison] VectorDeclarationGrammarAction");
+	LogDebug("[Bison] VectorDeclarationGrammarAction: %d, %s", type, id);
 	Declaration *declaration = calloc(1, sizeof(Declaration));
 	AssertNotNull(declaration);
 	declaration->type = VECTOR_DECLARATION;
@@ -601,7 +601,7 @@ Declaration* VectorDeclarationGrammarAction(int type, char* id) {
 
 // Constant
 Constant* IntegerConstantGrammarAction(int value) {
-	LogDebug("[Bison] IntegerConstantGrammarAction");
+	LogDebug("[Bison] IntegerConstantGrammarAction: %d", value);
 	Constant* constant = calloc(1, sizeof(Constant));
 	AssertNotNull(constant);
 	constant->value = value;
@@ -661,7 +661,7 @@ Parameters* ParametersCommaExpressionGrammarAction(
 
 // PEOpen
 PEOpen* PEOpenGrammarAction(char* path) {
-	LogDebug("[Bison] PEOpenGrammarAction");
+	LogDebug("[Bison] PEOpenGrammarAction: %s", path);
 	PEOpen* peOpen = calloc(1, sizeof(PEOpen));
 	AssertNotNull(peOpen);
 	peOpen->type = PE_OPEN_PATH;
@@ -670,7 +670,7 @@ PEOpen* PEOpenGrammarAction(char* path) {
 }
 
 PEOpen* PEOpenIdentifierGrammarAction(char* id) {
-	LogDebug("[Bison] PEOpenIdentifierGrammarAction");
+	LogDebug("[Bison] PEOpenIdentifierGrammarAction: %s", id);
 	PEOpen* peOpen = calloc(1, sizeof(PEOpen));
 	AssertNotNull(peOpen);
 	peOpen->type = PE_OPEN_ID;
@@ -680,7 +680,7 @@ PEOpen* PEOpenIdentifierGrammarAction(char* id) {
 
 // PEClose
 PEClose* PECloseGrammarAction(char* id) {
-	LogDebug("[Bison] PECloseGrammarAction");
+	LogDebug("[Bison] PECloseGrammarAction: %s", id);
 	PEClose* peClose = calloc(1, sizeof(PEClose));
 	AssertNotNull(peClose);
 	peClose->id = id;
