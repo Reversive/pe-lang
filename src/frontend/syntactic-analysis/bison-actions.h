@@ -5,96 +5,113 @@
 #include "../../backend/semantic-analysis/abstract-syntax-tree.h"
 
 // Program
-int ProgramGrammarAction(const int value);
-
-// Expression
-int AdditionExpressionGrammarAction(const int leftValue, const int rightValue);
-int SubtractionExpressionGrammarAction(const int leftValue, const int rightValue);
-int MultiplicationExpressionGrammarAction(const int leftValue, const int rightValue);
-int DivisionExpressionGrammarAction(const int leftValue, const int rightValue);
-int FactorExpressionGrammarAction(const int value);
-int EqualExpressionGrammarAction(const int leftValue, const int rightValue);
-int NotEqualExpressionGrammarAction(const int leftValue, const int rightValue);
-int LessThanExpressionGrammarAction(const int leftValue, const int rightValue);
-int LessThanOrEqualExpressionGrammarAction(const int leftValue, const int rightValue);
-int GreaterThanExpressionGrammarAction(const int leftValue, const int rightValue);
-int GreaterThanOrEqualExpressionGrammarAction(const int leftValue, const int rightValue);
-int NotExpressionGrammarAction(const int value);
-int FunctionExpressionGrammarAction(const int value);
-int AndExpressionGrammarAction(const int leftValue, const int rightValue);
-int OrExpressionGrammarAction(const int leftValue, const int rightValue);
-int VectorExpressionGrammarAction(const int value);
-
-// Factor
-int ExpressionFactorGrammarAction(const int value);
-int ConstantFactorGrammarAction(const int value);
-int IdentifierFactorGrammarAction(char *value);
-int StringFactorGrammarAction(char *value);
-
-// Types
-int DeclarationGrammarAction(const int leftValue, char *rightValue);
-int PEFileTypeGrammarAction(const int value);
-int PESectionTypeGrammarAction(const int value);
-int PEImportTypeGrammarAction(const int value);
-int PEExportTypeGrammarAction(const int value);
-int PEHeaderTypeGrammarAction(const int value);
-int PEResourceTypeGrammarAction(const int value);
-int PESignatureTypeGrammarAction(const int value);
-int PEDirEntryTypeGrammarAction(const int value);
-int IntTypeGrammarAction(const int value);
-int StringTypeGrammarAction(const int value);
-int ByteTypeGrammarAction(const int value);
-int VectorDeclarationGrammarAction(const int first, char *second);
-int VectorFullAssignmentGrammarAction(const int first, const int second);
-
-// Assignments
-int FullAssignmentGrammarAction(const int leftValue, const int rightValue);
-int AssignmentGrammarAction(char *leftValue, const int rightValue);
-int VectorAssignmentGrammarAction(const int leftValue, const int rightValue);
-
-// Members
-int MemberExpressionGrammarAction(int value);
-int MemberIdentifierGrammarAction(char *leftValue, int rightValue);
-int MemberGrammarAction(int leftValue, int rightValue);
-
-// Functions
-int PEOpenGrammarAction(const int value);
-int PEOpenIdentifierGrammarAction(const int value);
-int PECloseGrammarAction(const int value);
-int PrintGrammarAction(const int value);
-int ParametersCommaExpressionGrammarAction(const int leftValue, const int rightValue);
-int ParametersGrammarAction(const int value);
-
-// Constants
-int IntegerConstantGrammarAction(const int value);
-
-// Conditions
-int WhileGrammarAction(const int first, const int second);
-int FullAssignmentForGrammarAction(const int first, const int second, const int third, const int fourth);
-int ForGrammarAction(const int first, const int second, const int third, const int fourth);
-int ExplicitForGrammarAction(const int first, const int second);
-
-// Vector
-int VectorGrammarAction(char *first, const int second);
+Program* GrammarActionProgram(Block* block);
 
 // Block
-int BlockGrammarAction(const int leftValue, const int rightValue);
+Block* InstructionBlockGrammarActionBlock(Instruction* instruction, Block* block);
+Block* InstructionGrammarActionBlock(Instruction* instruction);
 
 // Instruction
-int InstructionGrammarAction(const int value);
-int VoidFunctionGrammarAction(const int value);
+Instruction* StatementGrammarActionInstruction(Statement* statement);
+Instruction* VoidFunctionGrammarActionInstruction(VoidFunction* voidFunction);
+Instruction* IfGrammarActionInstruction(If* ifInstruction);
+Instruction* WhileGrammarActionInstruction(While* whileInstruction);
+Instruction* ForGrammarActionInstruction(For* forInstruction);
 
 // Statement
-int FullAssignmentStatementGrammarAction(const int value);
-int AssignmentStatementGrammarAction(const int value);
-int FunctionStatementGrammarAction(const int value);
+Statement* FullAssignmentGrammarActionStatement(FullAssignment* fullAssignment);
+Statement* AssignmentGrammarActionStatement(Assignment* assignment);
+Statement* ReturnFunctionGrammarActionStatement(ReturnFunction* returnFunction);
 
-// if
-int IfGrammarAction(const int first, const int second, const int third);
+// If
+If* GrammarActionIf(Expression* expression, Block* block, IfClosure* ifClosure);
 
-// if closure
-int IfClosureGrammarAction(const int value);
-int IfElseIfGrammarAction(const int leftValue, const int rightValue);
-int IfElseBlockGrammarAction(const int leftValue, const int rightValue);
+// IfClosure
+IfClosure* IfClosureGrammarAction();
+IfClosure* IfElseIfGrammarAction(If* ifInstruction);
+IfClosure* IfElseBlockGrammarAction(Block* block);
+
+// While
+While* WhileGrammarAction(Expression* expression, Block* block);
+
+// For
+For* ExplicitForGrammarAction(ForLoopDeclaration* ForLoopDeclaration, Block* block);
+
+// ForLoopDeclaration
+ForLoopDeclaration* ForFullAssignmentForGrammarAction(FullAssignment* leftAssignment, Expression* expression, Assignment* rightAssignment);
+ForLoopDeclaration* ForAssignmentExpressionAssignmentGrammarAction(Assignment* leftAssignment, Expression* expression, Assignment* rightAssignment);
+ForLoopDeclaration* ForExpressionAssignmentGrammarAction(Expression* expression, Assignment* rightAssignment);
+ForLoopDeclaration* ForExpressionGrammarAction(Expression* expression);
+ForLoopDeclaration* ForDeclarationMemberGrammarAction(Declaration* declaration, Member* member);
+
+// Expression
+Expression* AdditionExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
+Expression* SubtractionExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
+Expression* MultiplicationExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
+Expression* DivisionExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
+Expression* EqualExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
+Expression* NotEqualExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
+Expression* LessThanExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
+Expression* LessThanOrEqualExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
+Expression* GreaterThanExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
+Expression* GreaterThanOrEqualExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
+Expression* AndExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
+Expression* OrExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
+Expression* NotExpressionGrammarAction(Expression* expression);
+Expression* FunctionExpressionGrammarAction(ReturnFunction* returnFunction);
+Expression* VectorExpressionGrammarAction(Vector* vector);
+Expression* FactorExpressionGrammarAction(Factor* factor);
+Expression* MemberExpressionGrammarAction(Member* member);
+
+// Member
+Member* MemberIdentifierGrammarAction(char* id, int property);
+Member* MemberGrammarAction(Member* member, int property);
+
+// Vector
+Vector* VectorGrammarAction(char* id, Factor* factor);
+
+// Factor
+Factor* ExpressionFactorGrammarAction(Expression* expression);
+Factor* ConstantFactorGrammarAction(Constant* value);
+Factor* IdentifierFactorGrammarAction(char *id);
+Factor* StringFactorGrammarAction(char *string);
+
+// Full assignment
+FullAssignment* FullAssignmentGrammarAction(Declaration* declaration, Expression* expression);
+FullAssignment* VectorFullAssignmentGrammarAction(Declaration* declaration, Parameters* parameters);
+FullAssignment* DeclarationAssignmentGrammarAction(Declaration* declaration);
+
+
+// Assignments
+Assignment* AssignmentGrammarAction(char* id, Expression* expression);
+Assignment* VectorAssignmentGrammarAction(Vector* vector, Expression* expression);
+
+// Declaration
+Declaration* DeclarationGrammarAction(int type, char* id);
+Declaration* VectorDeclarationGrammarAction(int type, char* id);
+
+// Constant
+Constant* IntegerConstantGrammarAction(int value);
+
+// ReturnFunction
+ReturnFunction* PEOpenFunctionGrammarAction(PEOpen* peOpen);
+
+// VoidFunction
+VoidFunction* PrintFunctionGrammarAction(Print* print);
+VoidFunction* PECloseFunctionGrammarAction(PEClose* peClose);
+
+// Parameters
+Parameters* ParametersGrammarAction(Expression* expression);
+Parameters* ParametersCommaExpressionGrammarAction(Parameters* parameters, Expression* expression);
+
+// PEOpen
+PEOpen* PEOpenGrammarAction(char* path);
+PEOpen* PEOpenIdentifierGrammarAction(char* id);
+
+// PEClose
+PEClose* PECloseGrammarAction(char* id);
+
+// Print
+Print* PrintGrammarAction(Parameters* parameters);
 
 #endif
