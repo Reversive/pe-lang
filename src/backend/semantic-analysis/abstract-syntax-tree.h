@@ -163,7 +163,7 @@ typedef struct {
 struct Member {
 	MemberType type;
 	char* id;
-	Property* property;
+	int property;
 	Member* member;
 };
 
@@ -221,7 +221,7 @@ typedef struct {
 
 typedef struct {
 	DeclarationType type;
-	Type* declarationType;
+	int declarationType;
 	Token* token;
 	char* id;
 } Declaration;
@@ -230,6 +230,10 @@ struct Expression {
 	ExpressionType type;
 	Expression* leftExpression;
 	Expression* rightExpression;
+	Factor* factor;
+	ReturnFunction* returnFunction;
+	Vector* vector;
+	Member* member;
 };
 
 struct Parameters {
@@ -256,6 +260,7 @@ typedef struct {
 	FullAssignment* fullAssignment;
 	Expression* expression;
 	Assignment* assignment;
+	Declaration* declaration;
 	Member* member;
 } ForLoopDeclaration;
 
