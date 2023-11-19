@@ -1,6 +1,7 @@
 #include "backend/code-generation/generator.h"
 #include "backend/support/logger.h"
 #include "backend/support/shared.h"
+#include "backend/semantic-analysis/scope/context.h"
 #include "frontend/syntactic-analysis/bison-parser.h"
 #include <stdio.h>
 
@@ -14,15 +15,16 @@ const int main(const int argumentCount, const char **arguments)
 	state.program = NULL;
 	state.result = 0;
 	state.succeed = false;
-
+	
 	// Mostrar parámetros recibidos por consola.
 	for (int i = 0; i < argumentCount; ++i)
 	{
 		LogInfo("Argumento %d: '%s'", i, arguments[i]);
 	}
 
-	// Compilar el programa de entrada.
 	LogInfo("Compilando...\n");
+	AllocateContext();
+	AddScope();
 	const int result = yyparse();
 	switch (result)
 	{
