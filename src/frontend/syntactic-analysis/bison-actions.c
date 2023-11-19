@@ -3,6 +3,7 @@
 #include "bison-actions.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 void yyerror(const char *string)
 {
@@ -20,397 +21,677 @@ void yyerror(const char *string)
 	LogErrorRaw("' (length = %d, linea %d).\n\n", yyleng, yylineno);
 }
 
-int ProgramGrammarAction(const int value)
-{
-	LogDebug("[Bison] ProgramGrammarAction(%d)", value);
+void AssertNotNull(void* parameter) {
+	if(parameter == NULL) {
+		LogError("No se pudo reservar memoria para el programa.");
+		exit(1);
+	}
+}
 
+Program* GrammarActionProgram(Block* block) {
+	LogDebug("[Bison] GrammarActionProgram");
+	Program* program = malloc(sizeof(Program));
+	AssertNotNull(program);
+	program->block = block;
 	state.succeed = true;
-	state.result = value;
-	return value;
+	state.program = program;
+	return program;
 }
 
-int AdditionExpressionGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] AdditionExpressionGrammarAction(%d, %d)", leftValue, rightValue);
-	return Add(leftValue, rightValue);
+// Block
+Block* InstructionBlockGrammarActionBlock(Instruction* instruction, Block* block) {
+	LogDebug("[Bison] InstructionBlockGrammarActionBlock");
+	Block* newBlock = calloc(1, sizeof(Block));
+	AssertNotNull(newBlock);
+	newBlock->type = INSTRUCTION_BLOCK_BLOCK;
+	newBlock->instruction = instruction;
+	newBlock->block = block;
+	return newBlock;
 }
 
-int SubtractionExpressionGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] SubtractionExpressionGrammarAction(%d, %d)", leftValue, rightValue);
-	return Subtract(leftValue, rightValue);
+Block* InstructionGrammarActionBlock(Instruction* instruction) {
+	LogDebug("[Bison] InstructionGrammarActionBlock");
+	Block* newBlock = calloc(1, sizeof(Block));
+	AssertNotNull(newBlock);
+	newBlock->type = INSTRUCTION_BLOCK;
+	newBlock->instruction = instruction;
+	newBlock->block = NULL;
+	return newBlock;
 }
 
-int MultiplicationExpressionGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] MultiplicationExpressionGrammarAction(%d, %d)", leftValue, rightValue);
-	return Multiply(leftValue, rightValue);
+// Instruction
+Instruction* StatementGrammarActionInstruction(Statement* statement) {
+	LogDebug("[Bison] StatementGrammarActionInstruction");
+	Instruction* instruction = calloc(1, sizeof(Instruction));
+	AssertNotNull(instruction);
+	instruction->type = STATEMENT_INSTRUCTION;
+	instruction->statement = statement;
+	return instruction;
 }
 
-int DivisionExpressionGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] DivisionExpressionGrammarAction(%d, %d)", leftValue, rightValue);
-	return Divide(leftValue, rightValue);
+Instruction* VoidFunctionGrammarActionInstruction(VoidFunction* voidFunction) {
+	LogDebug("[Bison] VoidFunctionGrammarActionInstruction");
+	Instruction* instruction = calloc(1, sizeof(Instruction));
+	AssertNotNull(instruction);
+	instruction->type = VOID_FUNCTION_INSTRUCTION;
+	instruction->voidFunction = voidFunction;
+	return instruction;
 }
 
-int FactorExpressionGrammarAction(const int value)
-{
-	LogDebug("[Bison] FactorExpressionGrammarAction(%d)", value);
-	return value;
+Instruction* IfGrammarActionInstruction(If* ifInstruction) {
+	LogDebug("[Bison] IfGrammarActionInstruction");
+	Instruction* instruction = calloc(1, sizeof(Instruction));
+	AssertNotNull(instruction);
+	instruction->type = IF_INSTRUCTION;
+	instruction->ifInstruction = ifInstruction;
+	return instruction;
 }
 
-int ExpressionFactorGrammarAction(const int value)
-{
-	LogDebug("[Bison] ExpressionFactorGrammarAction(%d)", value);
-	return value;
+Instruction* WhileGrammarActionInstruction(While* whileInstruction) {
+	LogDebug("[Bison] WhileGrammarActionInstruction");
+	Instruction* instruction = calloc(1, sizeof(Instruction));
+	AssertNotNull(instruction);
+	instruction->type = WHILE_INSTRUCTION;
+	instruction->whileInstruction = whileInstruction;
+	return instruction;
 }
 
-int ConstantFactorGrammarAction(const int value)
-{
-	LogDebug("[Bison] ConstantFactorGrammarAction(%d)", value);
-	return value;
+Instruction* ForGrammarActionInstruction(For* forInstruction) {
+	LogDebug("[Bison] ForGrammarActionInstruction");
+	Instruction* instruction = calloc(1, sizeof(Instruction));
+	AssertNotNull(instruction);
+	instruction->type = FOR_INSTRUCTION;
+	instruction->forInstruction = forInstruction;
+	return instruction;
 }
 
-int IntegerConstantGrammarAction(const int value)
-{
-	LogDebug("[Bison] IntegerConstantGrammarAction(%d)", value);
-	return value;
+// Statement
+Statement* FullAssignmentGrammarActionStatement(FullAssignment* fullAssignment) {
+	LogDebug("[Bison] FullAssignmentGrammarActionStatement");
+	Statement* statement = calloc(1, sizeof(Statement));
+	AssertNotNull(statement);
+	statement->type = FULL_ASSIGNMENT_STATEMENT;
+	statement->fullAssignment = fullAssignment;
+	return statement;
 }
 
-int EqualExpressionGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] EqualExpressionGrammarAction(%d, %d)", leftValue, rightValue);
-	return 0;
-}
-int NotEqualExpressionGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] NotEqualExpressionGrammarAction(%d, %d)", leftValue, rightValue);
-	return 0;
-}
-int LessThanExpressionGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] LessThanExpressionGrammarAction(%d, %d)", leftValue, rightValue);
-	return 0;
-}
-int LessThanOrEqualExpressionGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] LessThanOrEqualExpressionGrammarAction(%d, %d)", leftValue, rightValue);
-	return 0;
-}
-int GreaterThanExpressionGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] GreaterThanExpressionGrammarAction(%d, %d)", leftValue, rightValue);
-	return 0;
-}
-int GreaterThanOrEqualExpressionGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] GreaterThanOrEqualExpressionGrammarAction(%d, %d)", leftValue, rightValue);
-	return 0;
-}
-int NotExpressionGrammarAction(const int value)
-{
-	LogDebug("[Bison] NotExpressionGrammarAction(%d)", value);
-	return 0;
-}
-int IdentifierFactorGrammarAction(char *value)
-{
-	LogDebug("[Bison] IdentifierFactorGrammarAction(%s)", value);
-	return 0;
-}
-int StringFactorGrammarAction(char *value)
-{
-	LogDebug("[Bison] StringFactorGrammarAction(%s)", value);
-	return 0;
-}
-char *IdentifierGrammarAction(char *value)
-{
-	LogDebug("[Bison] IdentifierGrammarAction(%s)", value);
-	return 0;
-}
-char *StringGrammarAction(char *value)
-{
-	LogDebug("[Bison] StringGrammarAction(%s)", value);
-	return 0;
+Statement* AssignmentGrammarActionStatement(Assignment* assignment) {
+	LogDebug("[Bison] AssignmentGrammarActionStatement");
+	Statement* statement = calloc(1, sizeof(Statement));
+	AssertNotNull(statement);
+	statement->type = ASSIGNMENT_STATEMENT;
+	statement->assignment = assignment;
+	return statement;
 }
 
-int DeclarationGrammarAction(const int leftValue, char *rightValue)
-{
-	LogDebug("[Bison] DeclarationGrammarAction(%d, %s)", leftValue, rightValue);
-	return 0;
+Statement* ReturnFunctionGrammarActionStatement(ReturnFunction* returnFunction) {
+	LogDebug("[Bison] ReturnFunctionGrammarActionStatement");
+	Statement* statement = calloc(1, sizeof(Statement));
+	AssertNotNull(statement);
+	statement->type = RETURN_FUNCTION_STATEMENT;
+	statement->returnFunction = returnFunction;
+	return statement;
 }
 
-int PEFileTypeGrammarAction(const int value)
-{
-	LogDebug("[Bison] PEFileTypeGrammarAction(%d)", value);
-	return 0;
+// If
+If* GrammarActionIf(Expression* expression, Block* block, IfClosure* ifClosure) {
+	LogDebug("[Bison] GrammarActionIf");
+	If* ifInstruction = calloc(1, sizeof(If));
+	AssertNotNull(ifInstruction);
+	ifInstruction->expression = expression;
+	ifInstruction->block = block;
+	ifInstruction->ifClosure = ifClosure;
+	return ifInstruction;
 }
 
-int PESectionTypeGrammarAction(const int value)
-{
-	LogDebug("[Bison] PESectionTypeGrammarAction(%d)", value);
-	return 0;
+// IfClosure
+IfClosure* IfClosureGrammarAction() {
+	LogDebug("[Bison] IfClosureGrammarAction");
+	IfClosure* ifClosure = calloc(1, sizeof(IfClosure));
+	AssertNotNull(ifClosure);
+	ifClosure->type = IF_CLOSURE;
+	return ifClosure;
 }
 
-int PEImportTypeGrammarAction(const int value)
-{
-	LogDebug("[Bison] PEImportTypeGrammarAction(%d)", value);
-	return 0;
+IfClosure* IfElseIfGrammarAction(If* ifInstruction) {
+	LogDebug("[Bison] IfElseIfGrammarAction");
+	IfClosure* ifClosure = calloc(1, sizeof(IfClosure));
+	AssertNotNull(ifClosure);
+	ifClosure->type = IF_CLOSURE_ELSE_IF;
+	ifClosure->ifClosure = ifInstruction;
+	return ifClosure;
 }
 
-int PEExportTypeGrammarAction(const int value)
-{
-	LogDebug("[Bison] PEExportTypeGrammarAction(%d)", value);
-	return 0;
+IfClosure* IfElseBlockGrammarAction(Block* block) {
+	LogDebug("[Bison] IfElseBlockGrammarAction");
+	IfClosure* ifClosure = calloc(1, sizeof(IfClosure));
+	AssertNotNull(ifClosure);
+	ifClosure->type = IF_CLOSURE_ELSE;
+	ifClosure->block = block;
+	return ifClosure;
 }
 
-int PEHeaderTypeGrammarAction(const int value)
-{
-	LogDebug("[Bison] PEHeaderTypeGrammarAction(%d)", value);
-	return 0;
+// While
+While* WhileGrammarAction(Expression* expression, Block* block) {
+	LogDebug("[Bison] WhileGrammarAction");
+	While* whileInstruction = calloc(1, sizeof(While));
+	AssertNotNull(whileInstruction);
+	whileInstruction->expression = expression;
+	whileInstruction->block = block;
+	return whileInstruction;
 }
 
-int PEResourceTypeGrammarAction(const int value)
-{
-	LogDebug("[Bison] PEResourceTypeGrammarAction(%d)", value);
-	return 0;
+// For
+For* ExplicitForGrammarAction(ForLoopDeclaration* ForLoopDeclaration, Block* block) {
+	LogDebug("[Bison] ExplicitForGrammarAction");
+	For* forInstruction = calloc(1, sizeof(For));
+	AssertNotNull(forInstruction);
+	forInstruction->forLoopDeclaration = ForLoopDeclaration;
+	forInstruction->block = block;
+	return forInstruction;
 }
 
-int PESignatureTypeGrammarAction(const int value)
-{
-	LogDebug("[Bison] PESignatureTypeGrammarAction(%d)", value);
-	return 0;
+// ForLoopDeclaration
+ForLoopDeclaration* ForFullAssignmentForGrammarAction(
+	FullAssignment* leftAssignment, 
+	Expression* expression, 
+	Assignment* rightAssignment
+) {
+	LogDebug("[Bison] ForFullAssignmentForGrammarAction");
+	ForLoopDeclaration* forLoopDeclaration = calloc(1, sizeof(ForLoopDeclaration));
+	AssertNotNull(forLoopDeclaration);
+	forLoopDeclaration->type = FULL_FOR_ASSIGNMENT;
+	forLoopDeclaration->fullAssignment = leftAssignment;
+	forLoopDeclaration->expression = expression;
+	forLoopDeclaration->assignment = rightAssignment;
+	return forLoopDeclaration;
 }
 
-int PEDirEntryTypeGrammarAction(const int value)
-{
-	LogDebug("[Bison] PEDirEntryTypeGrammarAction(%d)", value);
-	return 0;
+ForLoopDeclaration* ForAssignmentExpressionAssignmentGrammarAction(
+	Assignment* leftAssignment, 
+	Expression* expression, 
+	Assignment* rightAssignment
+) {
+	LogDebug("[Bison] ForAssignmentExpressionAssignmentGrammarAction");
+	ForLoopDeclaration* forLoopDeclaration = calloc(1, sizeof(ForLoopDeclaration));
+	AssertNotNull(forLoopDeclaration);
+	forLoopDeclaration->type = FOR_ASSIGNMENT;
+	forLoopDeclaration->assignment = leftAssignment;
+	forLoopDeclaration->expression = expression;
+	forLoopDeclaration->assignment = rightAssignment;
+	return forLoopDeclaration;
 }
 
-int IntTypeGrammarAction(const int value)
-{
-	LogDebug("[Bison] IntTypeGrammarAction(%d)", value);
-	return 0;
+ForLoopDeclaration* ForExpressionAssignmentGrammarAction(
+	Expression* expression, 
+	Assignment* rightAssignment
+) {
+	LogDebug("[Bison] ForExpressionAssignmentGrammarAction");
+	ForLoopDeclaration* forLoopDeclaration = calloc(1, sizeof(ForLoopDeclaration));
+	AssertNotNull(forLoopDeclaration);
+	forLoopDeclaration->type = EXPRESSION_AND_ASSIGNMENT;
+	forLoopDeclaration->expression = expression;
+	forLoopDeclaration->assignment = rightAssignment;
+	return forLoopDeclaration;
 }
 
-int StringTypeGrammarAction(const int value)
-{
-	LogDebug("[Bison] StringTypeGrammarAction(%d)", value);
-	return 0;
+ForLoopDeclaration* ForExpressionGrammarAction(Expression* expression) {
+	LogDebug("[Bison] ForExpressionGrammarAction");
+	ForLoopDeclaration* forLoopDeclaration = calloc(1, sizeof(ForLoopDeclaration));
+	AssertNotNull(forLoopDeclaration);
+	forLoopDeclaration->type = ONLY_EXPRESSION;
+	forLoopDeclaration->expression = expression;
+	return forLoopDeclaration;
 }
 
-int ByteTypeGrammarAction(const int value)
-{
-	LogDebug("[Bison] ByteTypeGrammarAction(%d)", value);
-	return 0;
+ForLoopDeclaration* ForDeclarationMemberGrammarAction(Declaration* declaration, Member* member) {
+	LogDebug("[Bison] ForDeclarationMemberGrammarAction");
+	ForLoopDeclaration* forLoopDeclaration = calloc(1, sizeof(ForLoopDeclaration));
+	AssertNotNull(forLoopDeclaration);
+	forLoopDeclaration->type = MEMBER_DECLARATION;
+	forLoopDeclaration->declaration = declaration;
+	forLoopDeclaration->member = member;
+	return forLoopDeclaration;
 }
 
-int FullAssignmentGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] FullAssignmentGrammarAction (%d, %d)", leftValue, rightValue);
-	return 0;
+// Expression
+Expression* AdditionExpressionGrammarAction(
+	Expression* leftExpression, 
+	Expression* rightExpression
+) {
+	LogDebug("[Bison] AdditionExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = ADDITION_EXPRESSION;
+	expression->leftExpression = leftExpression;
+	expression->rightExpression = rightExpression;
+	return expression;
 }
 
-int AssignmentGrammarAction(char *leftValue, const int rightValue)
-{
-	LogDebug("[Bison] AssignmentGrammarAction (%s, %d)", leftValue, rightValue);
-	return 0;
+Expression* SubtractionExpressionGrammarAction(
+	Expression* leftExpression, 
+	Expression* rightExpression
+) {
+	LogDebug("[Bison] SubtractionExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = SUBTRACTION_EXPRESSION;
+	expression->leftExpression = leftExpression;
+	expression->rightExpression = rightExpression;
+	return expression;
 }
 
-int PEOpenGrammarAction(const int value)
-{
-	LogDebug("[Bison] PEOpenGrammarAction (%d)", value);
-	return 0;
+Expression* MultiplicationExpressionGrammarAction(
+	Expression* leftExpression, 
+	Expression* rightExpression
+) {
+	LogDebug("[Bison] MultiplicationExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = MULTIPLICATION_EXPRESSION;
+	expression->leftExpression = leftExpression;
+	expression->rightExpression = rightExpression;
+	return expression;
 }
 
-int FunctionExpressionGrammarAction(const int value)
-{
-	LogDebug("[Bison] FunctionExpressionGrammarAction (%d)", value);
-	return 0;
+Expression* DivisionExpressionGrammarAction(
+	Expression* leftExpression, 
+	Expression* rightExpression
+) {
+	LogDebug("[Bison] DivisionExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = DIVISION_EXPRESSION;
+	expression->leftExpression = leftExpression;
+	expression->rightExpression = rightExpression;
+	return expression;
 }
 
-int PEOpenIdentifierGrammarAction(const int value)
-{
-	LogDebug("[Bison] PEOpenIdentifierGrammarAction (%d)", value);
-	return 0;
+Expression* EqualExpressionGrammarAction(
+	Expression* leftExpression, 
+	Expression* rightExpression
+) {
+	LogDebug("[Bison] EqualExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = EQUALITY_EXPRESSION;
+	expression->leftExpression = leftExpression;
+	expression->rightExpression = rightExpression;
+	return expression;
 }
 
-int PrintGrammarAction(const int value)
-{
-	LogDebug("[Bison] PrintGrammarAction (%d)", value);
-	return 0;
+Expression* NotEqualExpressionGrammarAction(
+	Expression* leftExpression, 
+	Expression* rightExpression
+) {
+	LogDebug("[Bison] NotEqualExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = INEQUALITY_EXPRESSION;
+	expression->leftExpression = leftExpression;
+	expression->rightExpression = rightExpression;
+	return expression;
 }
 
-int ParametersCommaExpressionGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] ParametersCommaExpressionGrammarAction (%d, %d)", leftValue, rightValue);
-	return 0;
+Expression* LessThanExpressionGrammarAction(
+	Expression* leftExpression, 
+	Expression* rightExpression
+) {
+	LogDebug("[Bison] LessThanExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = LESS_THAN_EXPRESSION;
+	expression->leftExpression = leftExpression;
+	expression->rightExpression = rightExpression;
+	return expression;
 }
 
-int ParametersGrammarAction(const int value)
-{
-	LogDebug("[Bison] ParametersGrammarAction (%d)", value);
-	return 0;
+Expression* LessThanOrEqualExpressionGrammarAction(
+	Expression* leftExpression, 
+	Expression* rightExpression
+) {
+	LogDebug("[Bison] LessThanOrEqualExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = LESS_THAN_OR_EQUAL_TO_EXPRESSION;
+	expression->leftExpression = leftExpression;
+	expression->rightExpression = rightExpression;
+	return expression;
 }
 
-int PECloseGrammarAction(const int value)
-{
-	LogDebug("[Bison] PECloseGrammarAction (%d)", value);
-	return 0;
+Expression* GreaterThanExpressionGrammarAction(
+	Expression* leftExpression, 
+	Expression* rightExpression
+) {
+	LogDebug("[Bison] GreaterThanExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = GREATER_THAN_EXPRESSION;
+	expression->leftExpression = leftExpression;
+	expression->rightExpression = rightExpression;
+	return expression;
 }
 
-int AndExpressionGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] AndExpressionGrammarAction (%d, %d)", leftValue, rightValue);
-	return 0;
+Expression* GreaterThanOrEqualExpressionGrammarAction(
+	Expression* leftExpression, 
+	Expression* rightExpression
+) {
+	LogDebug("[Bison] GreaterThanOrEqualExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = GREATER_THAN_OR_EQUAL_TO_EXPRESSION;
+	expression->leftExpression = leftExpression;
+	expression->rightExpression = rightExpression;
+	return expression;
 }
 
-int OrExpressionGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] OrExpressionGrammarAction (%d, %d)", leftValue, rightValue);
-	return 0;
+Expression* AndExpressionGrammarAction(
+	Expression* leftExpression, 
+	Expression* rightExpression
+) {
+	LogDebug("[Bison] AndExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = AND_EXPRESSION;
+	expression->leftExpression = leftExpression;
+	expression->rightExpression = rightExpression;
+	return expression;
 }
 
-int BlockGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] BlockGrammarAction (%d, %d)", leftValue, rightValue);
-	return 0;
+Expression* OrExpressionGrammarAction(
+	Expression* leftExpression, 
+	Expression* rightExpression
+) {
+	LogDebug("[Bison] OrExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = OR_EXPRESSION;
+	expression->leftExpression = leftExpression;
+	expression->rightExpression = rightExpression;
+	return expression;
 }
 
-int InstructionGrammarAction(const int value)
-{
-	LogDebug("[Bison] InstructionGrammarAction (%d)", value);
-	return 0;
+Expression* NotExpressionGrammarAction(Expression* expression) {
+	LogDebug("[Bison] NotExpressionGrammarAction");
+	Expression* newExpression = calloc(1, sizeof(Expression));
+	AssertNotNull(newExpression);
+	newExpression->type = NOT_EXPRESSION;
+	newExpression->leftExpression = expression;
+	return newExpression;
 }
 
-int FullAssignmentStatementGrammarAction(const int value)
-{
-	LogDebug("[Bison] FullAssignmentStatementGrammarAction (%d)", value);
-	return 0;
+Expression* FunctionExpressionGrammarAction(ReturnFunction* returnFunction) {
+	LogDebug("[Bison] FunctionExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = RETURN_FUNCTION_EXPRESSION;
+	expression->returnFunction = returnFunction;
+	return expression;
 }
 
-int AssignmentStatementGrammarAction(const int value)
-{
-	LogDebug("[Bison] AssignmentStatementGrammarAction (%d)", value);
-	return 0;
+Expression* VectorExpressionGrammarAction(Vector* vector) {
+	LogDebug("[Bison] VectorExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = VECTOR_EXPRESSION;
+	expression->vector = vector;
+	return expression;
 }
 
-int FunctionStatementGrammarAction(const int value)
-{
-	LogDebug("[Bison] FunctionStatementGrammarAction (%d)", value);
-	return 0;
+Expression* FactorExpressionGrammarAction(Factor* factor) {
+	LogDebug("[Bison] FactorExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = FACTOR_EXPRESSION;
+	expression->factor = factor;
+	return expression;
 }
 
-int VoidFunctionGrammarAction(const int value)
-{
-	LogDebug("[Bison] VoidFunctionGrammarAction (%d)", value);
-	return 0;
+Expression* MemberExpressionGrammarAction(Member* member) {
+	LogDebug("[Bison] MemberExpressionGrammarAction");
+	Expression* expression = calloc(1, sizeof(Expression));
+	AssertNotNull(expression);
+	expression->type = MEMBER_EXPRESSION;
+	expression->member = member;
+	return expression;
 }
 
-int IfGrammarAction(const int first, const int second, const int third)
-{
-	LogDebug("[Bison] IfGrammarAction (%d, %d, %d)", first, second, third);
-	return 0;
+// Member
+Member* MemberIdentifierGrammarAction(char* id, int property) {
+	LogDebug("[Bison] MemberIdentifierGrammarAction: %s, %d", id, property);
+	Member* member = calloc(1, sizeof(Member));
+	AssertNotNull(member);
+	member->type = IDENTIFIER_PROPERTY_MEMBER;
+	member->id = id;
+	member->property = property;
+	return member;
 }
 
-int IfClosureGrammarAction(const int value)
-{
-	LogDebug("[Bison] IfClosureGrammarAction (%d)", value);
-	return 0;
+Member* MemberGrammarAction(Member* member, int property) {
+	LogDebug("[Bison] MemberGrammarAction: %d", property);
+	Member* newMember = calloc(1, sizeof(Member));
+	AssertNotNull(newMember);
+	newMember->type = MEMBER_PROPERTY_MEMBER;
+	newMember->member = member;
+	newMember->property = property;
+	return newMember;
 }
 
-int IfElseIfGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] IfElseIfGrammarAction (%d, %d)", leftValue, rightValue);
-	return 0;
+// Vector
+Vector* VectorGrammarAction(char* id, Factor* factor) {
+	LogDebug("[Bison] VectorGrammarAction: %s", id);
+	Vector* vector = calloc(1, sizeof(Vector));
+	AssertNotNull(vector);
+	vector->id = id;
+	vector->factor = factor;
+	return vector;
 }
 
-int IfElseBlockGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] IfElseBlockGrammarAction (%d, %d)", leftValue, rightValue);
-	return 0;
+// Factor
+Factor* ExpressionFactorGrammarAction(Expression* expression) {
+	LogDebug("[Bison] ExpressionFactorGrammarAction");
+	Factor* factor = calloc(1, sizeof(Factor));
+	AssertNotNull(factor);
+	factor->type = EXPRESSION_FACTOR;
+	factor->expression = expression;
+	return factor;
 }
 
-int WhileGrammarAction(const int first, const int second)
-{
-	LogDebug("[Bison] WhileGrammarAction (%d, %d)", first, second);
-	return 0;
+Factor* ConstantFactorGrammarAction(Constant* value) {
+	LogDebug("[Bison] ConstantFactorGrammarAction");
+	Factor* factor = calloc(1, sizeof(Factor));
+	AssertNotNull(factor);
+	factor->type = CONSTANT_FACTOR;
+	factor->constant = value;
+	return factor;
 }
 
-int FullAssignmentForGrammarAction(const int first, const int second, const int third, const int fourth)
-{
-	LogDebug("[Bison] FullAssignmentForGrammarAction (%d, %d, %d, %d)", first, second, third, fourth);
-	return 0;
+Factor* IdentifierFactorGrammarAction(char *id) {
+	LogDebug("[Bison] IdentifierFactorGrammarAction: %s", id);
+	Factor* factor = calloc(1, sizeof(Factor));
+	AssertNotNull(factor);
+	factor->type = IDENTIFIER_FACTOR;
+	factor->id = id;
+	return factor;
 }
 
-int AssignmentForGrammarAction(const int first, const int second, const int third, const int fourth)
-{
-	LogDebug("[Bison] AssignmentForGrammarAction (%d, %d, %d, %d)", first, second, third, fourth);
-	return 0;
+Factor* StringFactorGrammarAction(char *string) {
+	LogDebug("[Bison] StringFactorGrammarAction: %s", string);
+	Factor* factor = calloc(1, sizeof(Factor));
+	AssertNotNull(factor);
+	factor->type = STRING_FACTOR;
+	factor->string = string;
+	return factor;
 }
 
-int ForGrammarAction(const int first, const int second, const int third, const int fourth)
-{
-	LogDebug("[Bison] ForGrammarAction (%d, %d, %d, %d)", first, second, third, fourth);
-	return 0;
+// Full assignment
+FullAssignment* FullAssignmentGrammarAction(
+	Declaration* declaration, 
+	Expression* expression
+) {
+	LogDebug("[Bison] FullAssignmentGrammarAction");
+	FullAssignment* fullAssignment = calloc(1, sizeof(FullAssignment));
+	AssertNotNull(fullAssignment);
+	fullAssignment->declaration = declaration;
+	fullAssignment->expression = expression;
+	return fullAssignment;
+}
+FullAssignment* VectorFullAssignmentGrammarAction(
+	Declaration* declaration, 
+	Parameters* parameters
+) {
+	LogDebug("[Bison] VectorFullAssignmentGrammarAction");
+	FullAssignment* fullAssignment = calloc(1, sizeof(FullAssignment));
+	AssertNotNull(fullAssignment);
+	fullAssignment->declaration = declaration;
+	fullAssignment->parameters = parameters;
+	return fullAssignment;
 }
 
-int ExplicitForGrammarAction(const int first, const int second)
-{
-	LogDebug("[Bison] ExplicitForGrammarAction (%d, %d)", first, second);
-	return 0;
+FullAssignment* DeclarationAssignmentGrammarAction(Declaration* declaration) {
+	LogDebug("[Bison] DeclarationAssignmentGrammarAction");
+	FullAssignment* fullAssignment = calloc(1, sizeof(FullAssignment));
+	AssertNotNull(fullAssignment);
+	fullAssignment->declaration = declaration;
+	return fullAssignment;
 }
 
-int DeclarationForGrammarAction(const int first, const int second, const int third)
-{
-	LogDebug("[Bison] DeclarationForGrammarAction (%d, %d, %d)", first, second, third);
-	return 0;
+
+// Assignments
+Assignment* AssignmentGrammarAction(char* id, Expression* expression) {
+	LogDebug("[Bison] AssignmentGrammarAction: %s", id);
+	Assignment *assignment = calloc(1, sizeof(Assignment));
+	AssertNotNull(assignment);
+	assignment->type = IDENTIFIER_ASSIGNMENT;
+	assignment->id = id;
+	assignment->expression = expression;
+	return assignment;
 }
 
-int VectorExpressionGrammarAction(const int value)
-{
-	LogDebug("[Bison] VectorExpressionGrammarAction (%d)", value);
-	return 0;
+Assignment* VectorAssignmentGrammarAction(Vector* vector, Expression* expression) {
+	LogDebug("[Bison] VectorAssignmentGrammarAction");
+	Assignment *assignment = calloc(1, sizeof(Assignment));
+	AssertNotNull(assignment);
+	assignment->type = VECTOR_ASSIGNMENT;
+	assignment->vector = vector;
+	assignment->expression = expression;
+	return assignment;
 }
 
-int VectorGrammarAction(char *first, const int second)
-{
-	LogDebug("[Bison] VectorGrammarAction (%s, %d)", first, second);
-	return 0;
+// Declaration
+Declaration* DeclarationGrammarAction(int type, char* id) {
+	LogDebug("[Bison] DeclarationGrammarAction: %d, %s", type, id);
+	Declaration *declaration = calloc(1, sizeof(Declaration));
+	AssertNotNull(declaration);
+	declaration->type = TYPE_DECLARATION;
+	declaration->declarationType = type;
+	declaration->id = id;
+	return declaration;
 }
 
-int VectorDeclarationGrammarAction(const int first, char *second)
-{
-	LogDebug("[Bison] VectorDeclarationGrammarAction (%d, %s)", first, second);
-	return 0;
+Declaration* VectorDeclarationGrammarAction(int type, char* id) {
+	LogDebug("[Bison] VectorDeclarationGrammarAction: %d, %s", type, id);
+	Declaration *declaration = calloc(1, sizeof(Declaration));
+	AssertNotNull(declaration);
+	declaration->type = VECTOR_DECLARATION;
+	declaration->declarationType = type;
+	declaration->id = id;
+	return declaration;
 }
 
-int VectorFullAssignmentGrammarAction(const int first, const int second)
-{
-	LogDebug("[Bison] VectorFullAssignmentGrammarAction (%d, %d)", first, second);
-	return 0;
+// Constant
+Constant* IntegerConstantGrammarAction(int value) {
+	LogDebug("[Bison] IntegerConstantGrammarAction: %d", value);
+	Constant* constant = calloc(1, sizeof(Constant));
+	AssertNotNull(constant);
+	constant->value = value;
+	return constant;
 }
 
-int VectorAssignmentGrammarAction(const int leftValue, const int rightValue)
-{
-	LogDebug("[Bison] VectorAssignmentGrammarAction (%d, %d)", leftValue, rightValue);
-	return 0;
+// ReturnFunction
+ReturnFunction* PEOpenFunctionGrammarAction(PEOpen* peOpen) {
+	LogDebug("[Bison] PEOpenFunctionGrammarAction");
+	ReturnFunction* returnFunction = calloc(1, sizeof(ReturnFunction));
+	AssertNotNull(returnFunction);
+	returnFunction->peOpen = peOpen;
+	return returnFunction;
 }
 
-int MemberIdentifierGrammarAction(char *leftValue, int rightValue)
-{
-	LogDebug("[Bison] MemberGrammarAction (%s, %d)", leftValue, rightValue);
-	return 0;
+// VoidFunction
+VoidFunction* PrintFunctionGrammarAction(Print* print) {
+	LogDebug("[Bison] PrintFunctionGrammarAction");
+	VoidFunction* voidFunction = calloc(1, sizeof(VoidFunction));
+	AssertNotNull(voidFunction);
+	voidFunction->type = PRINT_FUNCTION;
+	voidFunction->print = print;
+	return voidFunction;
 }
 
-int MemberGrammarAction(int leftValue, int rightValue)
-{
-	LogDebug("[Bison] MemberGrammarAction (%d, %d)", leftValue, rightValue);
-	return 0;
+VoidFunction* PECloseFunctionGrammarAction(PEClose* peClose) {
+	LogDebug("[Bison] PECloseFunctionGrammarAction");
+	VoidFunction* voidFunction = calloc(1, sizeof(VoidFunction));
+	AssertNotNull(voidFunction);
+	voidFunction->type = PE_CLOSE_FUNCTION;
+	voidFunction->peClose = peClose;
+	return voidFunction;
 }
 
-int MemberExpressionGrammarAction(int value)
-{
-	LogDebug("[Bison] MemberExpressionGrammarAction (%d)", value);
-	return 0;
+// Parameters
+Parameters* ParametersGrammarAction(Expression* expression) {
+	LogDebug("[Bison] ParametersGrammarAction");
+	Parameters* parameters = calloc(1, sizeof(Parameters));
+	AssertNotNull(parameters);
+	parameters->type = EXPRESSION_PARAMETERS;
+	parameters->expression = expression;
+	return parameters;
+}
+
+Parameters* ParametersCommaExpressionGrammarAction(
+	Parameters* parameters, 
+	Expression* expression
+) {
+	LogDebug("[Bison] ParametersCommaExpressionGrammarAction");
+	Parameters* newParameters = calloc(1, sizeof(Parameters));
+	AssertNotNull(newParameters);
+	newParameters->type = PARAMETERS_EXPRESSION_PARAMETERS;
+	newParameters->parameters = parameters;
+	newParameters->expression = expression;
+	return newParameters;
+}
+
+// PEOpen
+PEOpen* PEOpenGrammarAction(char* path) {
+	LogDebug("[Bison] PEOpenGrammarAction: %s", path);
+	PEOpen* peOpen = calloc(1, sizeof(PEOpen));
+	AssertNotNull(peOpen);
+	peOpen->type = PE_OPEN_PATH;
+	peOpen->path = path;
+	return peOpen;
+}
+
+PEOpen* PEOpenIdentifierGrammarAction(char* id) {
+	LogDebug("[Bison] PEOpenIdentifierGrammarAction: %s", id);
+	PEOpen* peOpen = calloc(1, sizeof(PEOpen));
+	AssertNotNull(peOpen);
+	peOpen->type = PE_OPEN_ID;
+	peOpen->id = id;
+	return peOpen;
+}
+
+// PEClose
+PEClose* PECloseGrammarAction(char* id) {
+	LogDebug("[Bison] PECloseGrammarAction: %s", id);
+	PEClose* peClose = calloc(1, sizeof(PEClose));
+	AssertNotNull(peClose);
+	peClose->id = id;
+	return peClose;
+}
+
+// Print
+Print* PrintGrammarAction(Parameters* parameters) {
+	LogDebug("[Bison] PrintGrammarAction");
+	Print* print = calloc(1, sizeof(Print));
+	AssertNotNull(print);
+	print->parameters = parameters;
+	return print;
 }
