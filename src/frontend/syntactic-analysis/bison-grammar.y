@@ -23,6 +23,7 @@
 	Parameters* parameters;
 	Statement* statement;
 	Instruction* instruction;
+	Instructions* instructions;
 	Block* block;
 	If* if_condition;
 	IfClosure* if_closure_condition;
@@ -130,6 +131,7 @@
 %type <vector> vector
 %type <member> member
 %type <property> property
+%type <instructions> instructions
 
 // Associative and precedence rules.
 %left ADD SUB
@@ -141,15 +143,18 @@
 
 %%
 
-program: MAIN OPEN_BRACE block CLOSE_BRACE							{ $$ = GrammarActionProgram($3); }
+program: MAIN block 												{ $$ = GrammarActionProgram($2); }
 	;
 
-block: instruction block 											{ $$ = InstructionBlockGrammarActionBlock($1, $2); }
-	| instruction													{ $$ = InstructionGrammarActionBlock($1); }
+block: OPEN_BRACE CLOSE_BRACE										{ $$ = EmptyBlockGrammarAction(); }
+	| OPEN_BRACE instructions CLOSE_BRACE							{ $$ = InstructionsBlockGrammarAction($2); }
+	;
+
+instructions: instruction											{ $$ = InstructionGrammarAction($1); }
+	| instructions instruction										{ $$ = InstructionsGrammarAction($1, $2); }
 	;
 
 instruction: statement SEMICOLON									{ $$ = StatementGrammarActionInstruction($1); }
-	| void_function	SEMICOLON		 								{ $$ = VoidFunctionGrammarActionInstruction($1); }
 	| if															{ $$ = IfGrammarActionInstruction($1); }
 	| while															{ $$ = WhileGrammarActionInstruction($1); }
 	| for															{ $$ = ForGrammarActionInstruction($1); }
@@ -158,20 +163,22 @@ instruction: statement SEMICOLON									{ $$ = StatementGrammarActionInstructio
 statement: full_assignment											{ $$ = FullAssignmentGrammarActionStatement($1); }
 	| assignment													{ $$ = AssignmentGrammarActionStatement($1); }
 	| ret_function													{ $$ = ReturnFunctionGrammarActionStatement($1); }
+	| void_function													{ $$ = VoidFunctionGrammarActionStatement($1); }
+	| declaration													{ $$ = DeclarationGrammarActionStatement($1); }
 	;
 
-if: IF OPEN_PARENTHESIS expression CLOSE_PARENTHESIS OPEN_BRACE block if_closure { $$ = GrammarActionIf($3, $6, $7); }
+if: IF OPEN_PARENTHESIS expression CLOSE_PARENTHESIS block if_closure { $$ = GrammarActionIf($3, $5, $6); }
 	;
 
-if_closure: CLOSE_BRACE 											{ $$ = IfClosureGrammarAction(); }
-	| CLOSE_BRACE ELSE if											{ $$ = IfElseIfGrammarAction($3); }
-	| CLOSE_BRACE ELSE OPEN_BRACE block CLOSE_BRACE					{ $$ = IfElseBlockGrammarAction($4); }
+if_closure: ELSE if													{ $$ = IfElseIfGrammarAction($2); }
+	| ELSE block 													{ $$ = IfElseBlockGrammarAction($2); }
+	| %empty														{ $$ = IfClosureGrammarAction(); }
 	;
 
-while: WHILE OPEN_PARENTHESIS expression CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE 		{ $$ = WhileGrammarAction($3, $6); }
+while: WHILE OPEN_PARENTHESIS expression CLOSE_PARENTHESIS block 		{ $$ = WhileGrammarAction($3, $5); }
 	;
 
-for: FOR OPEN_PARENTHESIS for_loop_declaration CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE 	{ $$ = ExplicitForGrammarAction($3, $6); }
+for: FOR OPEN_PARENTHESIS for_loop_declaration CLOSE_PARENTHESIS block 	{ $$ = ExplicitForGrammarAction($3, $5); }
 	;
 
 for_loop_declaration: full_assignment SEMICOLON expression SEMICOLON assignment 				{ $$ = ForFullAssignmentForGrammarAction($1, $3, $5); }
@@ -231,7 +238,6 @@ factor: OPEN_PARENTHESIS expression CLOSE_PARENTHESIS				{ $$ = ExpressionFactor
 
 full_assignment: declaration ASSIGNMENT expression					{ $$ = FullAssignmentGrammarAction($1, $3); }
 	| declaration ASSIGNMENT OPEN_BRACE parameters CLOSE_BRACE		{ $$ = VectorFullAssignmentGrammarAction($1, $4); } 
-	| declaration													{ $$ = DeclarationAssignmentGrammarAction($1); }
 	;
 
 assignment: IDENTIFIER ASSIGNMENT expression						{ $$ = AssignmentGrammarAction($1, $3); }

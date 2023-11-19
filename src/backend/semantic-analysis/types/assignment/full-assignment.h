@@ -5,7 +5,13 @@
 #include "../expression.h"
 #include "../parameters.h"
 
+typedef enum {
+	ID_FULL_ASSIGNMENT,
+	VECTOR_FULL_ASSIGNMENT,
+} FullAssignmentType;
+
 typedef struct {
+	FullAssignmentType type;
 	Declaration* declaration;
 	Expression* expression;
 	Parameters* parameters;

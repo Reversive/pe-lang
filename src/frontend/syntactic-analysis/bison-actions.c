@@ -1,5 +1,6 @@
 #include "../../backend/domain-specific/calculator.h"
 #include "../../backend/support/logger.h"
+#include "../../backend/semantic-analysis/scope/context.h"
 #include "bison-actions.h"
 #include <stdio.h>
 #include <string.h>
@@ -39,24 +40,41 @@ Program* GrammarActionProgram(Block* block) {
 }
 
 // Block
-Block* InstructionBlockGrammarActionBlock(Instruction* instruction, Block* block) {
-	LogDebug("[Bison] InstructionBlockGrammarActionBlock");
-	Block* newBlock = calloc(1, sizeof(Block));
-	AssertNotNull(newBlock);
-	newBlock->type = INSTRUCTION_BLOCK_BLOCK;
-	newBlock->instruction = instruction;
-	newBlock->block = block;
-	return newBlock;
+Block* EmptyBlockGrammarAction() {
+	LogDebug("[Bison] EmptyBlockGrammarAction");
+	Block* block = calloc(1, sizeof(Block));
+	AssertNotNull(block);
+	block->type = EMPTY_BLOCK;
+	return block;
 }
 
-Block* InstructionGrammarActionBlock(Instruction* instruction) {
-	LogDebug("[Bison] InstructionGrammarActionBlock");
-	Block* newBlock = calloc(1, sizeof(Block));
-	AssertNotNull(newBlock);
-	newBlock->type = INSTRUCTION_BLOCK;
-	newBlock->instruction = instruction;
-	newBlock->block = NULL;
-	return newBlock;
+Block* InstructionsBlockGrammarAction(Instructions* instructions) {
+	LogDebug("[Bison] InstructionsBlockGrammarAction");
+	Block* block = calloc(1, sizeof(Block));
+	AssertNotNull(block);
+	block->type = INSTRUCTIONS_BLOCK;
+	block->instructions = instructions;
+	return block;
+}
+
+// Instructions
+Instructions* InstructionGrammarAction(Instruction* instruction) {
+	LogDebug("[Bison] InstructionGrammarAction");
+	Instructions* instructions = calloc(1, sizeof(Instructions));
+	AssertNotNull(instructions);
+	instructions->type = SINGLE_INSTRUCTION;
+	instructions->instruction = instruction;
+	return instructions;
+}
+
+Instructions* InstructionsGrammarAction(Instructions* instructions, Instruction* instruction) {
+	LogDebug("[Bison] InstructionsGrammarAction");
+	Instructions* newInstructions = calloc(1, sizeof(Instructions));
+	AssertNotNull(newInstructions);
+	newInstructions->type = MULTIPLE_INSTRUCTIONS;
+	newInstructions->instructions = instructions;
+	newInstructions->instruction = instruction;
+	return newInstructions;
 }
 
 // Instruction
@@ -66,15 +84,6 @@ Instruction* StatementGrammarActionInstruction(Statement* statement) {
 	AssertNotNull(instruction);
 	instruction->type = STATEMENT_INSTRUCTION;
 	instruction->statement = statement;
-	return instruction;
-}
-
-Instruction* VoidFunctionGrammarActionInstruction(VoidFunction* voidFunction) {
-	LogDebug("[Bison] VoidFunctionGrammarActionInstruction");
-	Instruction* instruction = calloc(1, sizeof(Instruction));
-	AssertNotNull(instruction);
-	instruction->type = VOID_FUNCTION_INSTRUCTION;
-	instruction->voidFunction = voidFunction;
 	return instruction;
 }
 
@@ -133,6 +142,24 @@ Statement* ReturnFunctionGrammarActionStatement(ReturnFunction* returnFunction) 
 	return statement;
 }
 
+Statement* VoidFunctionGrammarActionStatement(VoidFunction* voidFunction) {
+	LogDebug("[Bison] VoidFunctionGrammarActionStatement");
+	Statement* statement = calloc(1, sizeof(Statement));
+	AssertNotNull(statement);
+	statement->type = VOID_FUNCTION_STATEMENT;
+	statement->voidFunction = voidFunction;
+	return statement;
+}
+
+Statement* DeclarationGrammarActionStatement(Declaration* declaration) {
+	LogDebug("[Bison] DeclarationGrammarActionStatement");
+	Statement* statement = calloc(1, sizeof(Statement));
+	AssertNotNull(statement);
+	statement->type = DECLARATION_STATEMENT;
+	statement->declaration = declaration;
+	return statement;
+}
+
 // If
 If* GrammarActionIf(Expression* expression, Block* block, IfClosure* ifClosure) {
 	LogDebug("[Bison] GrammarActionIf");
@@ -170,6 +197,7 @@ IfClosure* IfElseBlockGrammarAction(Block* block) {
 	ifClosure->block = block;
 	return ifClosure;
 }
+
 
 // While
 While* WhileGrammarAction(Expression* expression, Block* block) {
@@ -532,6 +560,7 @@ FullAssignment* FullAssignmentGrammarAction(
 	LogDebug("[Bison] FullAssignmentGrammarAction");
 	FullAssignment* fullAssignment = calloc(1, sizeof(FullAssignment));
 	AssertNotNull(fullAssignment);
+	fullAssignment->type = ID_FULL_ASSIGNMENT;
 	fullAssignment->declaration = declaration;
 	fullAssignment->expression = expression;
 	return fullAssignment;
@@ -543,19 +572,11 @@ FullAssignment* VectorFullAssignmentGrammarAction(
 	LogDebug("[Bison] VectorFullAssignmentGrammarAction");
 	FullAssignment* fullAssignment = calloc(1, sizeof(FullAssignment));
 	AssertNotNull(fullAssignment);
+	fullAssignment->type = VECTOR_FULL_ASSIGNMENT;
 	fullAssignment->declaration = declaration;
 	fullAssignment->parameters = parameters;
 	return fullAssignment;
 }
-
-FullAssignment* DeclarationAssignmentGrammarAction(Declaration* declaration) {
-	LogDebug("[Bison] DeclarationAssignmentGrammarAction");
-	FullAssignment* fullAssignment = calloc(1, sizeof(FullAssignment));
-	AssertNotNull(fullAssignment);
-	fullAssignment->declaration = declaration;
-	return fullAssignment;
-}
-
 
 // Assignments
 Assignment* AssignmentGrammarAction(char* id, Expression* expression) {
@@ -583,6 +604,11 @@ Declaration* DeclarationGrammarAction(int type, char* id) {
 	LogDebug("[Bison] DeclarationGrammarAction: %d, %s", type, id);
 	Declaration *declaration = calloc(1, sizeof(Declaration));
 	AssertNotNull(declaration);
+	//SymbolEntry* entry = SE_New(id, type);
+	// if(AddSymbol(entry) == NULL) {
+	// 	LogError("La variable '%s' ya existe en el contexto actual.", id);
+	// 	exit(1);
+	// }
 	declaration->type = TYPE_DECLARATION;
 	declaration->declarationType = type;
 	declaration->id = id;

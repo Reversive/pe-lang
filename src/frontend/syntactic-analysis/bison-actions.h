@@ -8,12 +8,15 @@
 Program* GrammarActionProgram(Block* block);
 
 // Block
-Block* InstructionBlockGrammarActionBlock(Instruction* instruction, Block* block);
-Block* InstructionGrammarActionBlock(Instruction* instruction);
+Block* EmptyBlockGrammarAction();
+Block* InstructionsBlockGrammarAction(Instructions* instructions);
+
+// Instructions
+Instructions* InstructionGrammarAction(Instruction* instruction);
+Instructions* InstructionsGrammarAction(Instructions* instructions, Instruction* instruction);
 
 // Instruction
 Instruction* StatementGrammarActionInstruction(Statement* statement);
-Instruction* VoidFunctionGrammarActionInstruction(VoidFunction* voidFunction);
 Instruction* IfGrammarActionInstruction(If* ifInstruction);
 Instruction* WhileGrammarActionInstruction(While* whileInstruction);
 Instruction* ForGrammarActionInstruction(For* forInstruction);
@@ -22,6 +25,8 @@ Instruction* ForGrammarActionInstruction(For* forInstruction);
 Statement* FullAssignmentGrammarActionStatement(FullAssignment* fullAssignment);
 Statement* AssignmentGrammarActionStatement(Assignment* assignment);
 Statement* ReturnFunctionGrammarActionStatement(ReturnFunction* returnFunction);
+Statement* VoidFunctionGrammarActionStatement(VoidFunction* voidFunction);
+Statement* DeclarationGrammarActionStatement(Declaration* declaration);
 
 // If
 If* GrammarActionIf(Expression* expression, Block* block, IfClosure* ifClosure);
@@ -79,8 +84,6 @@ Factor* StringFactorGrammarAction(char *string);
 // Full assignment
 FullAssignment* FullAssignmentGrammarAction(Declaration* declaration, Expression* expression);
 FullAssignment* VectorFullAssignmentGrammarAction(Declaration* declaration, Parameters* parameters);
-FullAssignment* DeclarationAssignmentGrammarAction(Declaration* declaration);
-
 
 // Assignments
 Assignment* AssignmentGrammarAction(char* id, Expression* expression);

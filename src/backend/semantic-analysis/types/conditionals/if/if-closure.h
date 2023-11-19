@@ -7,7 +7,8 @@
 typedef enum {
 	IF_CLOSURE,
 	IF_CLOSURE_ELSE_IF,
-	IF_CLOSURE_ELSE
+	IF_CLOSURE_ELSE,
+	IF_CLOSURE_EMPTY
 } IfClosureType;
 
 typedef struct If If;
