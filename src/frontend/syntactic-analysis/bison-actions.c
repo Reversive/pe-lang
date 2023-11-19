@@ -572,7 +572,7 @@ Assignment* VectorAssignmentGrammarAction(Vector* vector, Expression* expression
 	LogDebug("[Bison] VectorAssignmentGrammarAction");
 	Assignment *assignment = calloc(1, sizeof(Assignment));
 	AssertNotNull(assignment);
-	assignment->type = VECTOR_ASSIGNMENT;
+	assignment->type = VVECTOR_ASSIGNMENT;
 	assignment->vector = vector;
 	assignment->expression = expression;
 	return assignment;
