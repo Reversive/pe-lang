@@ -70,22 +70,22 @@ add_executable(Compiler
 	src/frontend/lexical-analysis/flex-scanner.c
 	src/frontend/syntactic-analysis/bison-actions.c
 	src/frontend/syntactic-analysis/bison-parser.c
-	src/frontend/syntactic-analysis/actions/program.c
-	src/frontend/syntactic-analysis/actions/assignment/assignment.c
-	src/frontend/syntactic-analysis/actions/block/block.c
-	src/frontend/syntactic-analysis/actions/constant/constant.c
-	src/frontend/syntactic-analysis/actions/declaration/declaration.c
-	src/frontend/syntactic-analysis/actions/expression/expression.c
-	src/frontend/syntactic-analysis/actions/factor/factor.c
-	src/frontend/syntactic-analysis/actions/for/for.c
-	src/frontend/syntactic-analysis/actions/functions/functions.c
-	src/frontend/syntactic-analysis/actions/if/if.c
-	src/frontend/syntactic-analysis/actions/instructions/instructions.c
-	src/frontend/syntactic-analysis/actions/member/member.c
-	src/frontend/syntactic-analysis/actions/property/property.c
-	src/frontend/syntactic-analysis/actions/statement/statement.c
-	src/frontend/syntactic-analysis/actions/vector/vector.c
-	src/frontend/syntactic-analysis/actions/while/while.c
+	src/backend/semantic-analysis/ast/actions/program.c
+	src/backend/semantic-analysis/ast/actions/assignment/assignment.c
+	src/backend/semantic-analysis/ast/actions/block/block.c
+	src/backend/semantic-analysis/ast/actions/constant/constant.c
+	src/backend/semantic-analysis/ast/actions/declaration/declaration.c
+	src/backend/semantic-analysis/ast/actions/expression/expression.c
+	src/backend/semantic-analysis/ast/actions/factor/factor.c
+	src/backend/semantic-analysis/ast/actions/for/for.c
+	src/backend/semantic-analysis/ast/actions/functions/functions.c
+	src/backend/semantic-analysis/ast/actions/if/if.c
+	src/backend/semantic-analysis/ast/actions/instructions/instructions.c
+	src/backend/semantic-analysis/ast/actions/member/member.c
+	src/backend/semantic-analysis/ast/actions/property/property.c
+	src/backend/semantic-analysis/ast/actions/statement/statement.c
+	src/backend/semantic-analysis/ast/actions/vector/vector.c
+	src/backend/semantic-analysis/ast/actions/while/while.c
 	# Agregar otros archivos *.c (si no se incluyen, no se compilan).
 	# ...
 )
