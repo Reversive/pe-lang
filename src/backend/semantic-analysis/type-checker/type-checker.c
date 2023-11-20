@@ -72,7 +72,7 @@ Type GetVectorType(Vector* vector) {
 }
 
 Type GetPropertyType(Type type, char* property) {
-	LogInfo("Type %s, property %s", TypeToString(type), property);
+	LogDebug("Type %s, property %s", TypeToString(type), property);
 	switch(type) {
 		case TYPE_PEFILE:
 			if(strcmp(property, "imports") == 0) return TYPE_PEIMPORTS;
@@ -124,7 +124,8 @@ Type GetMemberType(Member* member) {
 }
 
 Type GetIdentifierType(char* id) {
-    return CtxGetSymbol(state.context, id)->type;
+	SymbolEntry* entry = CtxGetSymbol(state.context, id);
+    return entry == NULL ? TYPE_UNKNOWN : entry->type;
 }
 
 Type GetConstantType(Constant* constant) {

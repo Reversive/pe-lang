@@ -49,7 +49,7 @@
 %token <token> EQUAL NOT_EQUAL LESS_THAN LESS_THAN_OR_EQUAL GREATER_THAN GREATER_THAN_OR_EQUAL
 
 // logic operators
-%token <token> AND OR NOT
+%token <token> AND OR
 
 // built-in types
 %token <token> INT_TYPE STRING_TYPE
@@ -184,7 +184,6 @@ expression: expression[left] ADD expression[right]					{ $$ = AdditionExpression
 	| expression[left] GREATER_THAN_OR_EQUAL expression[right]		{ $$ = GreaterThanOrEqualExpressionGrammarAction($left, $right); }
 	| expression[left] AND expression[right]						{ $$ = AndExpressionGrammarAction($left, $right); }
 	| expression[left] OR expression[right]							{ $$ = OrExpressionGrammarAction($left, $right); }
-	| NOT expression												{ $$ = NotExpressionGrammarAction($2); }
 	| factor														{ $$ = FactorExpressionGrammarAction($1); }
 	| ret_function													{ $$ = FunctionExpressionGrammarAction($1); }
 	| vector														{ $$ = VectorExpressionGrammarAction($1); }

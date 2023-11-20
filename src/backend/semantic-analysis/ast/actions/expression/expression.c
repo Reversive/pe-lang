@@ -1,11 +1,26 @@
 #include "expression.h"
 
+void AssertTypeMatch(Expression* left, Expression* right, char* operation) {
+	Type leftType = GetExpressionType(left);
+	Type rightType = GetExpressionType(right);
+	
+	if (leftType != rightType) {
+		PushError("No se puede %s una expresion de tipo '%s' con una expresion de tipo '%s'.", 
+			operation, 
+			TypeToString(leftType), 
+			TypeToString(rightType)
+		);
+		state.succeed = false;
+	}
+}
+
 // Expression
 Expression* AdditionExpressionGrammarAction(
 	Expression* leftExpression, 
 	Expression* rightExpression
 ) {
 	LogDebug("[Bison] AdditionExpressionGrammarAction");
+	AssertTypeMatch(leftExpression, rightExpression, "sumar");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
 	expression->type = ADDITION_EXPRESSION;
@@ -19,11 +34,13 @@ Expression* SubtractionExpressionGrammarAction(
 	Expression* rightExpression
 ) {
 	LogDebug("[Bison] SubtractionExpressionGrammarAction");
+	AssertTypeMatch(leftExpression, rightExpression, "restar");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
 	expression->type = SUBTRACTION_EXPRESSION;
 	expression->leftExpression = leftExpression;
 	expression->rightExpression = rightExpression;
+	
 	return expression;
 }
 
@@ -32,6 +49,7 @@ Expression* MultiplicationExpressionGrammarAction(
 	Expression* rightExpression
 ) {
 	LogDebug("[Bison] MultiplicationExpressionGrammarAction");
+	AssertTypeMatch(leftExpression, rightExpression, "multiplicar");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
 	expression->type = MULTIPLICATION_EXPRESSION;
@@ -45,6 +63,7 @@ Expression* DivisionExpressionGrammarAction(
 	Expression* rightExpression
 ) {
 	LogDebug("[Bison] DivisionExpressionGrammarAction");
+	AssertTypeMatch(leftExpression, rightExpression, "dividir");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
 	expression->type = DIVISION_EXPRESSION;
@@ -57,7 +76,8 @@ Expression* EqualExpressionGrammarAction(
 	Expression* leftExpression, 
 	Expression* rightExpression
 ) {
-	LogDebug("[Bison] EqualExpressionGrammarAction");
+	LogDebug("[Bison] EqualExpressionGrammarAction = ENTREEEE");
+	AssertTypeMatch(leftExpression, rightExpression, "comparar");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
 	expression->type = EQUALITY_EXPRESSION;
@@ -71,6 +91,7 @@ Expression* NotEqualExpressionGrammarAction(
 	Expression* rightExpression
 ) {
 	LogDebug("[Bison] NotEqualExpressionGrammarAction");
+	AssertTypeMatch(leftExpression, rightExpression, "comparar");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
 	expression->type = INEQUALITY_EXPRESSION;
@@ -84,6 +105,7 @@ Expression* LessThanExpressionGrammarAction(
 	Expression* rightExpression
 ) {
 	LogDebug("[Bison] LessThanExpressionGrammarAction");
+	AssertTypeMatch(leftExpression, rightExpression, "comparar");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
 	expression->type = LESS_THAN_EXPRESSION;
@@ -97,6 +119,7 @@ Expression* LessThanOrEqualExpressionGrammarAction(
 	Expression* rightExpression
 ) {
 	LogDebug("[Bison] LessThanOrEqualExpressionGrammarAction");
+	AssertTypeMatch(leftExpression, rightExpression, "comparar");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
 	expression->type = LESS_THAN_OR_EQUAL_TO_EXPRESSION;
@@ -110,6 +133,7 @@ Expression* GreaterThanExpressionGrammarAction(
 	Expression* rightExpression
 ) {
 	LogDebug("[Bison] GreaterThanExpressionGrammarAction");
+	AssertTypeMatch(leftExpression, rightExpression, "comparar");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
 	expression->type = GREATER_THAN_EXPRESSION;
@@ -123,6 +147,7 @@ Expression* GreaterThanOrEqualExpressionGrammarAction(
 	Expression* rightExpression
 ) {
 	LogDebug("[Bison] GreaterThanOrEqualExpressionGrammarAction");
+	AssertTypeMatch(leftExpression, rightExpression, "comparar");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
 	expression->type = GREATER_THAN_OR_EQUAL_TO_EXPRESSION;
@@ -136,6 +161,7 @@ Expression* AndExpressionGrammarAction(
 	Expression* rightExpression
 ) {
 	LogDebug("[Bison] AndExpressionGrammarAction");
+	AssertTypeMatch(leftExpression, rightExpression, "comparar");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
 	expression->type = AND_EXPRESSION;
@@ -149,6 +175,7 @@ Expression* OrExpressionGrammarAction(
 	Expression* rightExpression
 ) {
 	LogDebug("[Bison] OrExpressionGrammarAction");
+	AssertTypeMatch(leftExpression, rightExpression, "comparar");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
 	expression->type = OR_EXPRESSION;
