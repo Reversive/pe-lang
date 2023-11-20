@@ -18,7 +18,6 @@ SymbolTable* AllocateSymbolTable() {
 
 int AddSymbol(SymbolTable* table, SymbolEntry* entry) {
     if(SymbolExists(table, entry->id)) {
-        LogInfo("Simbolo '%s' ya existe", entry->id);
         return 0;
     }
     if (table->size % SYMBOL_CHUNK == 0) {

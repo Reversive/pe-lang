@@ -88,7 +88,7 @@ Type GetPropertyType(Type type, char* property) {
 			if(strcmp(property, "characteristics") == 0) return TYPE_STRING;
 		case TYPE_PEIMPORT:
 			if(strcmp(property, "dll") == 0) return TYPE_STRING;
-			if(strcmp(property, "functions") == 0) return TYPE_PEFUNCTION;
+			if(strcmp(property, "functions") == 0) return TYPE_PEFUNCTIONS;
 			break;
 		case TYPE_PEFUNCTION:
 			if(strcmp(property, "address") == 0) return TYPE_STRING;
@@ -96,7 +96,7 @@ Type GetPropertyType(Type type, char* property) {
 			break;
 		case TYPE_PEEXPORT:
 			if(strcmp(property, "dll") == 0) return TYPE_STRING;
-			if(strcmp(property, "functions") == 0) return TYPE_PEFUNCTION;
+			if(strcmp(property, "functions") == 0) return TYPE_PEFUNCTIONS;
 			break;
 		case TYPE_PESECTION:
 			if(strcmp(property, "name") == 0) return TYPE_STRING;

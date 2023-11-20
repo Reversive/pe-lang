@@ -63,7 +63,7 @@ add_executable(Compiler
 	src/backend/code-generation/generator.c
 	src/backend/domain-specific/calculator.c
 	src/backend/semantic-analysis/symbol-scope/symbol-table/symbol-table.c
-	src/backend/semantic-analysis/symbol-scope/scope/context.c
+	src/backend/semantic-analysis/symbol-scope/context/context.c
 	src/backend/support/logger.c
 	src/backend/support/assert.c
 	src/backend/semantic-analysis/ast/actions/program.c

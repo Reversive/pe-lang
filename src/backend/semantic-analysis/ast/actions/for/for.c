@@ -63,6 +63,27 @@ ForLoopDeclaration* ForExpressionGrammarAction(Expression* expression) {
 	return forLoopDeclaration;
 }
 
+boolean IsTypeForEachable(Type left, Type right) {
+	return GetForEachableType(right) == left;
+}
+
+Type GetForEachableType(Type type) {
+	switch(type) {
+		case TYPE_PESECTIONS:
+			return TYPE_PESECTION;
+		case TYPE_PEIMPORTS:
+			return TYPE_PEIMPORT;
+		case TYPE_PEEXPORTS:
+			return TYPE_PEEXPORT;
+		case TYPE_PEFUNCTIONS:
+			return TYPE_PEFUNCTION;
+		default:
+			return TYPE_UNKNOWN;
+	}
+
+}
+
+
 ForLoopDeclaration* ForDeclarationMemberGrammarAction(Declaration* declaration, Member* member) {
 	LogDebug("[Bison] ForDeclarationMemberGrammarAction");
 	ForLoopDeclaration* forLoopDeclaration = calloc(1, sizeof(ForLoopDeclaration));
@@ -77,6 +98,17 @@ ForLoopDeclaration* ForDeclarationMemberGrammarAction(Declaration* declaration, 
 			declaration->id, 
 			TypeToString(GetDeclarationType(declaration)), 
 			member->rightIdentifier
+		);
+		state.succeed = false;
+	}
+	
+	if(!IsTypeForEachable(declaration->declarationType, member->dataType)) {
+		PushError("La variable '%s' de tipo '%s' no coincide con el tipo '%s', querias escribir: '%s %s'?", 
+			declaration->id, 
+			TypeToString(GetDeclarationType(declaration)), 
+			TypeToString(member->dataType),
+			TypeToString(GetForEachableType(declaration->declarationType)),
+			declaration->id
 		);
 		state.succeed = false;
 	}

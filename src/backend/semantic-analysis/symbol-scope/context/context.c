@@ -23,13 +23,11 @@ void CtxAddScope(Context* context) {
         context->scopes = (SymbolTable**) realloc(context->scopes, sizeof(SymbolTable*) * (context->size + SCOPE_CHUNK));
     }
     context->scopes[context->size++] = AllocateSymbolTable();
-    LogInfo("Agregado scope %d", context->size - 1);
     context->current++;
 }
 
 SymbolEntry* CtxAddSymbol(Context* context, SymbolEntry* entry) {
     if (AddSymbol(context->scopes[context->current], entry)) {
-        LogInfo("Agregado simbolo '%s' al scope %d", entry->id, context->current);
         return entry;
     }
     return NULL;
@@ -39,7 +37,6 @@ SymbolEntry* CtxGetSymbol(Context* context, char* id) {
     for (int i = context->current; i >= 0; i--) {
         SymbolEntry* entry = GetSymbol(context->scopes[i], id);
         if (entry != NULL) {
-            LogInfo("Se encontro simbolo '%s' en scope %d", id, i);
             return entry;
         }
     }

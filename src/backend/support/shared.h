@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include "../semantic-analysis/ast/ast.h"
-#include "../semantic-analysis/symbol-scope/scope/context.h"
+#include "../semantic-analysis/symbol-scope/context/context.h"
 #include <stdarg.h>  
 
 
