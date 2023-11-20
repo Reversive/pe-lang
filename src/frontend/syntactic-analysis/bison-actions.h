@@ -1,124 +1,21 @@
 #ifndef BISON_ACTIONS_HEADER
 #define BISON_ACTIONS_HEADER
 
-#include "../../backend/semantic-analysis/type-checking.h"
-
-// Program
-Program* GrammarActionProgram(Block* block);
-
-// Block
-Block* EmptyBlockGrammarAction();
-Block* InstructionsBlockGrammarAction(Instructions* instructions);
-Block* InstructionsBlockBlockGrammarAction(Instructions* instructions, Block* block);
-Block* InstructionsBlockBlockInstructionsGrammarAction(Instructions* instructions, Block* block, Instructions* bottomInstructions);
-
-// Instructions
-Instructions* InstructionGrammarAction(Instruction* instruction);
-Instructions* InstructionsGrammarAction(Instructions* instructions, Instruction* instruction);
-
-// Instruction
-Instruction* StatementGrammarActionInstruction(Statement* statement);
-Instruction* IfGrammarActionInstruction(If* ifInstruction);
-Instruction* WhileGrammarActionInstruction(While* whileInstruction);
-Instruction* ForGrammarActionInstruction(For* forInstruction);
-
-// Statement
-Statement* FullAssignmentGrammarActionStatement(FullAssignment* fullAssignment);
-Statement* AssignmentGrammarActionStatement(Assignment* assignment);
-Statement* ReturnFunctionGrammarActionStatement(ReturnFunction* returnFunction);
-Statement* VoidFunctionGrammarActionStatement(VoidFunction* voidFunction);
-Statement* DeclarationGrammarActionStatement(Declaration* declaration);
-
-// If
-If* GrammarActionIf(Expression* expression, Block* block, IfClosure* ifClosure);
-
-// IfClosure
-IfClosure* IfClosureGrammarAction();
-IfClosure* IfElseIfGrammarAction(If* ifInstruction);
-IfClosure* IfElseBlockGrammarAction(Block* block);
-
-// While
-While* WhileGrammarAction(Expression* expression, Block* block);
-
-// For
-For* ExplicitForGrammarAction(ForLoopDeclaration* ForLoopDeclaration, Block* block);
-
-// ForLoopDeclaration
-ForLoopDeclaration* ForFullAssignmentForGrammarAction(FullAssignment* leftAssignment, Expression* expression, Assignment* rightAssignment);
-ForLoopDeclaration* ForAssignmentExpressionAssignmentGrammarAction(Assignment* leftAssignment, Expression* expression, Assignment* rightAssignment);
-ForLoopDeclaration* ForExpressionAssignmentGrammarAction(Expression* expression, Assignment* rightAssignment);
-ForLoopDeclaration* ForExpressionGrammarAction(Expression* expression);
-ForLoopDeclaration* ForDeclarationMemberGrammarAction(Declaration* declaration, Member* member);
-
-// Expression
-Expression* AdditionExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
-Expression* SubtractionExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
-Expression* MultiplicationExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
-Expression* DivisionExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
-Expression* EqualExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
-Expression* NotEqualExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
-Expression* LessThanExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
-Expression* LessThanOrEqualExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
-Expression* GreaterThanExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
-Expression* GreaterThanOrEqualExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
-Expression* AndExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
-Expression* OrExpressionGrammarAction(Expression* leftExpression, Expression* rightExpression);
-Expression* NotExpressionGrammarAction(Expression* expression);
-Expression* FunctionExpressionGrammarAction(ReturnFunction* returnFunction);
-Expression* VectorExpressionGrammarAction(Vector* vector);
-Expression* FactorExpressionGrammarAction(Factor* factor);
-Expression* MemberExpressionGrammarAction(Member* member);
-
-// Member
-Member* MemberIdentifierGrammarAction(char* left, char* right);
-Member* MemberGrammarAction(Member* member, char* right);
-
-// Vector
-Vector* VectorGrammarAction(char* id, Factor* factor);
-
-// Factor
-Factor* ExpressionFactorGrammarAction(Expression* expression);
-Factor* ConstantFactorGrammarAction(Constant* value);
-Factor* IdentifierFactorGrammarAction(char *id);
-Factor* StringFactorGrammarAction(char *string);
-
-// Full assignment
-FullAssignment* FullAssignmentGrammarAction(Declaration* declaration, Expression* expression);
-FullAssignment* VectorFullAssignmentGrammarAction(Declaration* declaration, Parameters* parameters);
-
-// Assignments
-Assignment* AssignmentGrammarAction(char* id, Expression* expression);
-Assignment* VectorAssignmentGrammarAction(Vector* vector, Expression* expression);
-
-// Declaration
-Declaration* DeclarationGrammarAction(int type, char* id);
-Declaration* VectorDeclarationGrammarAction(int type, char* id);
-
-// Constant
-Constant* IntegerConstantGrammarAction(int value);
-
-// ReturnFunction
-ReturnFunction* PEOpenFunctionGrammarAction(PEOpen* peOpen);
-
-// VoidFunction
-VoidFunction* PrintFunctionGrammarAction(Print* print);
-VoidFunction* PECloseFunctionGrammarAction(PEClose* peClose);
-
-// Parameters
-Parameters* ParametersGrammarAction(Expression* expression);
-Parameters* ParametersCommaExpressionGrammarAction(Parameters* parameters, Expression* expression);
-
-// Property
-Property* PropertyGrammarAction(PropertyType type, Type dataType);
-
-// PEOpen
-PEOpen* PEOpenGrammarAction(char* path);
-PEOpen* PEOpenIdentifierGrammarAction(char* id);
-
-// PEClose
-PEClose* PECloseGrammarAction(char* id);
-
-// Print
-Print* PrintGrammarAction(Parameters* parameters);
+#include "actions/program.h"
+#include "actions/assignment/assignment.h"
+#include "actions/block/block.h"
+#include "actions/constant/constant.h"
+#include "actions/declaration/declaration.h"
+#include "actions/expression/expression.h"
+#include "actions/factor/factor.h"
+#include "actions/for/for.h"
+#include "actions/functions/functions.h"
+#include "actions/if/if.h"
+#include "actions/instructions/instructions.h"
+#include "actions/member/member.h"
+#include "actions/property/property.h"
+#include "actions/statement/statement.h"
+#include "actions/vector/vector.h"
+#include "actions/while/while.h"
 
 #endif

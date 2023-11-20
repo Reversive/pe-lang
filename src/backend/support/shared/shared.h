@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include "../../semantic-analysis/abstract-syntax-tree.h"
 #include "scope/context.h"
+#include <stdarg.h>  
+
 
 // Descriptor del archivo de entrada que utiliza Bison.
 extern FILE * yyin;
@@ -45,27 +47,47 @@ typedef enum {
 // El tipo de los tokens emitidos por Flex.
 typedef int token;
 
+#define MAX_ERRORS 100
+#define MAX_ERROR_LENGTH 1024
+
 // Estado global de toda la aplicación.
 typedef struct {
 
-	// Indica si la compilación tuvo problemas hasta el momento.
 	boolean succeed;
 
-	// Indica el resultado de la compilación (para la calculadora).
 	int result;
 
-	// El nodo raíz del AST (se usará cuando se implemente el backend).
 	Program * program;
 
 	Context * context;
-	// Agregar lo que sea necesario para el compilador.
-	// Agregar una pila para manipular scopes.
-	// Agregar una tabla de símbolos.
-	// ...
+
+	char * errors[MAX_ERRORS];
+
+	int errorsCount;
 
 } CompilerState;
 
-// El estado se define e inicializa en el archivo "main.c".
 extern CompilerState state;
+
+static inline void PushError(char* format, ...) {
+	va_list args;
+	va_start(args, format);
+	char* error = malloc(MAX_ERROR_LENGTH);
+	vsprintf(error, format, args);
+	va_end(args);
+	state.errors[state.errorsCount++] = error;
+}
+
+static inline void FreeErrors() {
+	for (int i = 0; i < state.errorsCount; i++) {
+		free(state.errors[i]);
+	}
+}
+
+static inline void PrintErrors() {
+	for (int i = 0; i < state.errorsCount; i++) {
+		LogError("%s", state.errors[i]);
+	}
+}
 
 #endif

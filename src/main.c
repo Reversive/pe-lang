@@ -35,8 +35,9 @@ const int main(const int argumentCount, const char **arguments)
 		}
 		else
 		{
-			LogError("Se produjo un error en la aplicacion.");
-			return -1;
+			PrintErrors();
+			FreeErrors();
+			CtxFree(state.context);
 		}
 		break;
 	case 1:
