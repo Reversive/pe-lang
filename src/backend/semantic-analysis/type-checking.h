@@ -66,7 +66,7 @@ static inline Type GetFactorType(Factor* factor) {
 }
 
 static inline Type GetReturnFunctionType(ReturnFunction* returnFunction) {
-    // For now only peopen exists, so it will just return a pefile instance
+    // For now only peopen exists, so it will just return this type
     return TYPE_PEFILE;
 }
 
@@ -74,11 +74,42 @@ static inline Type GetVectorType(Vector* vector) {
     return GetFactorType(vector->factor);
 }
 
+static inline Type GetPropertyType(Type type, char* property) {
+	LogInfo("Type %s, property %s", TypeToString(type), property);
+	switch(type) {
+		case TYPE_PEFILE:
+			if(strcmp(property, "imports") == 0) return TYPE_PEIMPORTS;
+			if(strcmp(property, "exports") == 0) return TYPE_PEEXPORTS;
+			if(strcmp(property, "sections") == 0) return TYPE_PESECTIONS;
+			if(strcmp(property, "optional_header") == 0) return TYPE_PEOPTIONALHEADER;
+			break;
+		case TYPE_PEIMPORTS:
+			if(strcmp(property, "name") == 0) return TYPE_STRING;
+			if(strcmp(property, "dll") == 0) return TYPE_STRING;
+			if(strcmp(property, "address") == 0) return TYPE_INT;
+			break;
+		case TYPE_PEEXPORTS:
+			if(strcmp(property, "name") == 0) return TYPE_STRING;
+			if(strcmp(property, "dll") == 0) return TYPE_STRING;
+			if(strcmp(property, "address") == 0) return TYPE_INT;
+			break;
+		case TYPE_PESECTIONS:
+			if(strcmp(property, "name") == 0) return TYPE_STRING;
+			if(strcmp(property, "virtualSize") == 0) return TYPE_INT;
+			if(strcmp(property, "virtualAddress") == 0) return TYPE_INT;
+			break;
+		case TYPE_PEOPTIONALHEADER:
+			if(strcmp(property, "magic") == 0) return TYPE_BYTE;
+			break;
+		default:
+			return TYPE_UNKNOWN;
+	}
+	return TYPE_UNKNOWN;
+}
+
+
 static inline Type GetMemberType(Member* member) {
-    if(member->type == IDENTIFIER_PROPERTY_MEMBER) {
-        return member->property->dataType;
-    }
-    return GetMemberType(member->member);
+    return member->dataType;
 }
 
 static inline Type GetIdentifierType(char* id) {

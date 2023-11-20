@@ -56,6 +56,8 @@ static char* TypeToString(Type type) {
             return "PEDirEntries";
         case TYPE_PESECTIONS:
             return "PESections";
+        case TYPE_PEOPTIONALHEADER:
+            return "PEOptionalHeader";
         default:
             return "unknown";
     }

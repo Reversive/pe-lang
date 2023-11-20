@@ -2,6 +2,7 @@
 #define MEMBER_H
 
 #include "property.h"
+#include "var-types.h"
 
 typedef enum {
 	IDENTIFIER_PROPERTY_MEMBER,
@@ -12,8 +13,9 @@ typedef struct Member Member;
 
 struct Member {
 	MemberType type;
-	char* id;
-	Property* property;
+	char* leftIdentifier;
+	char* rightIdentifier;
+	Type dataType;
 	Member* member;
 };
 
