@@ -76,7 +76,7 @@ static inline Type GetVectorType(Vector* vector) {
 
 static inline Type GetMemberType(Member* member) {
     if(member->type == IDENTIFIER_PROPERTY_MEMBER) {
-        return GetIdentifierType(member->id);
+        return member->property->dataType;
     }
     return GetMemberType(member->member);
 }

@@ -70,8 +70,8 @@ Expression* FactorExpressionGrammarAction(Factor* factor);
 Expression* MemberExpressionGrammarAction(Member* member);
 
 // Member
-Member* MemberIdentifierGrammarAction(char* id, int property);
-Member* MemberGrammarAction(Member* member, int property);
+Member* MemberIdentifierGrammarAction(char* id, Property* property);
+Member* MemberGrammarAction(Member* member, Property* property);
 
 // Vector
 Vector* VectorGrammarAction(char* id, Factor* factor);
@@ -107,6 +107,9 @@ VoidFunction* PECloseFunctionGrammarAction(PEClose* peClose);
 // Parameters
 Parameters* ParametersGrammarAction(Expression* expression);
 Parameters* ParametersCommaExpressionGrammarAction(Parameters* parameters, Expression* expression);
+
+// Property
+Property* PropertyGrammarAction(PropertyType type, Type dataType);
 
 // PEOpen
 PEOpen* PEOpenGrammarAction(char* path);

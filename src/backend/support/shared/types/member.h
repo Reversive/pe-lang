@@ -1,6 +1,8 @@
 #ifndef MEMBER_H
 #define MEMBER_H
 
+#include "property.h"
+
 typedef enum {
 	IDENTIFIER_PROPERTY_MEMBER,
 	MEMBER_PROPERTY_MEMBER
@@ -11,7 +13,7 @@ typedef struct Member Member;
 struct Member {
 	MemberType type;
 	char* id;
-	int property;
+	Property* property;
 	Member* member;
 };
 

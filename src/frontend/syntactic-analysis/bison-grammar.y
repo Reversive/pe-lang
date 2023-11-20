@@ -32,10 +32,10 @@
 	ForLoopDeclaration* for_loop_decl;
 	Vector* vector;
 	Member* member;
-	
+	Property* property;
+
 	// Terminales
-	int type;
-	int property;
+	Type type;
 	token token;
 	int integer;
 	char* string;
@@ -56,6 +56,7 @@
 // built-in types
 %token <token> INT_TYPE 
 %token <token> STRING_TYPE BYTE_TYPE PEFILE_TYPE PESECTION_TYPE PEIMPORT_TYPE PEEXPORT_TYPE PEHEADER_TYPE PERESOURCE_TYPE PESIGNATURE_TYPE PEDIRENTRY_TYPE
+%token <token> PEIMPORTS_TYPE PEEXPORTS_TYPE PERESOURCES_TYPE PEDIRENTRIES_TYPE PESECTIONS_TYPE PEOPTIONAL_HEADER_TYPE
 
 // symbols
 %token <token> OPEN_PARENTHESIS
@@ -72,8 +73,6 @@
 
 // member structure
 %token <token> DIRECTORY_ENTRIES
-%token <token> IMPORTS_DIRECTORY_ENTRIES
-%token <token> EXPORTS_DIRECTORY_ENTRIES
 %token <token> DLL
 %token <token> IMPORTS
 %token <token> EXPORTS
@@ -84,7 +83,6 @@
 %token <token> VIRTUAL_ADDRESS
 %token <token> OPTIONAL_HEADER
 %token <token> MAGIC
-%token <token> OPTIONAL_HEADER_MAGIC
 
 // conditional
 %token <token> IF
@@ -213,20 +211,17 @@ member: IDENTIFIER DOT property										{ $$ = MemberIdentifierGrammarAction($1
 	| member DOT property											{ $$ = MemberGrammarAction($1, $3); }
 	;
 
-property: DIRECTORY_ENTRIES											{ $$ = DIRECTORY_ENTRIES; }
-	| IMPORTS_DIRECTORY_ENTRIES										{ $$ = IMPORTS_DIRECTORY_ENTRIES; }
-	| EXPORTS_DIRECTORY_ENTRIES										{ $$ = EXPORTS_DIRECTORY_ENTRIES; }
-	| DLL															{ $$ = DLL; }
-	| IMPORTS														{ $$ = IMPORTS; }
-	| EXPORTS														{ $$ = EXPORTS; }
-	| ADDRESS														{ $$ = ADDRESS; }
-	| SECTIONS														{ $$ = SECTIONS; }
-	| NAME															{ $$ = NAME; }
-	| VIRTUAL_SIZE													{ $$ = VIRTUAL_SIZE; }
-	| VIRTUAL_ADDRESS												{ $$ = VIRTUAL_ADDRESS; }
-	| OPTIONAL_HEADER												{ $$ = OPTIONAL_HEADER; }
-	| MAGIC															{ $$ = MAGIC; }
-	| OPTIONAL_HEADER_MAGIC											{ $$ = OPTIONAL_HEADER_MAGIC; }
+property: DIRECTORY_ENTRIES											{ $$ = PropertyGrammarAction(PROPERTY_DIRECTORY_ENTRIES, TYPE_PEDIRENTRIES); }
+	| DLL															{ $$ = PropertyGrammarAction(PROPERTY_DLL, TYPE_STRING); }
+	| IMPORTS														{ $$ = PropertyGrammarAction(PROPERTY_IMPORTS, TYPE_PEIMPORTS); }
+	| EXPORTS														{ $$ = PropertyGrammarAction(PROPERTY_EXPORTS, TYPE_PEEXPORTS); }
+	| ADDRESS														{ $$ = PropertyGrammarAction(PROPERTY_ADDRESS, TYPE_INT); }
+	| SECTIONS														{ $$ = PropertyGrammarAction(PROPERTY_SECTIONS, TYPE_PESECTIONS); }
+	| NAME															{ $$ = PropertyGrammarAction(PROPERTY_NAME, TYPE_STRING); }
+	| VIRTUAL_SIZE													{ $$ = PropertyGrammarAction(PROPERTY_VIRTUAL_SIZE, TYPE_INT); }
+	| VIRTUAL_ADDRESS												{ $$ = PropertyGrammarAction(PROPERTY_VIRTUAL_ADDRESS, TYPE_INT); }
+	| OPTIONAL_HEADER												{ $$ = PropertyGrammarAction(PROPERTY_OPTIONAL_HEADER, TYPE_PEOPTIONALHEADER); }
+	| MAGIC															{ $$ = PropertyGrammarAction(PROPERTY_MAGIC, TYPE_INT); }
 	;
 
 vector: IDENTIFIER OPEN_BRACKET factor CLOSE_BRACKET				{ $$ = VectorGrammarAction($1, $3); }
@@ -261,6 +256,12 @@ type: PEFILE_TYPE													{ $$ = TYPE_PEFILE; }
 	| INT_TYPE														{ $$ = TYPE_INT; }
 	| STRING_TYPE													{ $$ = TYPE_STRING; }
 	| BYTE_TYPE														{ $$ = TYPE_BYTE; }
+	| PEIMPORTS_TYPE												{ $$ = TYPE_PEIMPORTS; }
+	| PEEXPORTS_TYPE												{ $$ = TYPE_PEEXPORTS; }
+	| PERESOURCES_TYPE												{ $$ = TYPE_PERESOURCES; }
+	| PEDIRENTRIES_TYPE												{ $$ = TYPE_PEDIRENTRIES; }
+	| PESECTIONS_TYPE												{ $$ = TYPE_PESECTIONS; }
+	| PEOPTIONAL_HEADER_TYPE										{ $$ = TYPE_PEOPTIONALHEADER; }
 	;
 
 constant: INTEGER													{ $$ = IntegerConstantGrammarAction($1); }

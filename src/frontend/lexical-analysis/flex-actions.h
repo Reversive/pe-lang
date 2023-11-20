@@ -86,6 +86,12 @@ token OptionalHeaderPatternAction();
 token MagicPatternAction();
 token OptionalHeaderMagicPatternAction();
 token DotPatternAction();
+token PEOptionalHeaderTypePatternAction();
+token PESectionsTypePatternAction();
+token PEImportsTypePatternAction();
+token PEExportsTypePatternAction();
+token PEResourcesTypePatternAction();
+token PEDirEntriesTypePatternAction();
 // Patrón desconocido, permite abortar debido a un error de sintaxis.
 token UnknownPatternAction(const char *lexeme, const int length);
 

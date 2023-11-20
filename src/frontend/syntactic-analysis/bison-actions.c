@@ -524,8 +524,8 @@ Expression* MemberExpressionGrammarAction(Member* member) {
 }
 
 // Member
-Member* MemberIdentifierGrammarAction(char* id, int property) {
-	LogDebug("[Bison] MemberIdentifierGrammarAction: %s, %d", id, property);
+Member* MemberIdentifierGrammarAction(char* id, Property* property) {
+	LogDebug("[Bison] MemberIdentifierGrammarAction: %s, %s", id, TypeToString(property->dataType));
 	Member* member = calloc(1, sizeof(Member));
 	AssertNotNullCallback(member, HandleOutOfMemoryError);
 	member->type = IDENTIFIER_PROPERTY_MEMBER;
@@ -534,7 +534,7 @@ Member* MemberIdentifierGrammarAction(char* id, int property) {
 	return member;
 }
 
-Member* MemberGrammarAction(Member* member, int property) {
+Member* MemberGrammarAction(Member* member, Property* property) {
 	LogDebug("[Bison] MemberGrammarAction: %d", property);
 	Member* newMember = calloc(1, sizeof(Member));
 	AssertNotNullCallback(newMember, HandleOutOfMemoryError);
@@ -754,4 +754,15 @@ Print* PrintGrammarAction(Parameters* parameters) {
 	AssertNotNullCallback(print, HandleOutOfMemoryError);
 	print->parameters = parameters;
 	return print;
+}
+
+
+// Property
+Property* PropertyGrammarAction(PropertyType type, Type dataType) {
+	LogDebug("[Bison] PropertyGrammarAction: %d, %d", type, dataType);
+	Property* property = calloc(1, sizeof(Property));
+	AssertNotNullCallback(property, HandleOutOfMemoryError);
+	property->type = type;
+	property->dataType = dataType;
+	return property;
 }

@@ -13,7 +13,13 @@ typedef enum {
     TYPE_PEDIRENTRY,
     TYPE_INT,
     TYPE_STRING,
-    TYPE_BYTE
+    TYPE_BYTE,
+    TYPE_PEIMPORTS,
+    TYPE_PEEXPORTS,
+    TYPE_PERESOURCES,
+    TYPE_PEDIRENTRIES,
+    TYPE_PESECTIONS,
+    TYPE_PEOPTIONALHEADER
 } Type;
 
 static char* TypeToString(Type type) {
@@ -40,6 +46,16 @@ static char* TypeToString(Type type) {
             return "string";
         case TYPE_BYTE:
             return "byte";
+        case TYPE_PEIMPORTS:
+            return "PEImports";
+        case TYPE_PEEXPORTS:
+            return "PEExports";
+        case TYPE_PERESOURCES:
+            return "PEResources";
+        case TYPE_PEDIRENTRIES:
+            return "PEDirEntries";
+        case TYPE_PESECTIONS:
+            return "PESections";
         default:
             return "unknown";
     }

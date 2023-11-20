@@ -198,6 +198,36 @@ token PEFileTypePatternAction()
 	return PEFILE_TYPE;
 }
 
+token PESectionsTypePatternAction() {
+	LogDebug("[Flex] PESectionsTypePatternAction: 'PESections'.");
+	yylval.token = PESECTIONS_TYPE;
+	return PESECTIONS_TYPE;
+}
+
+token PEImportsTypePatternAction() {
+	LogDebug("[Flex] PEImportsTypePatternAction: 'PEImports'.");
+	yylval.token = PEIMPORTS_TYPE;
+	return PEIMPORTS_TYPE;
+}
+
+token PEExportsTypePatternAction() {
+	LogDebug("[Flex] PEExportsTypePatternAction: 'PEExports'.");
+	yylval.token = PEEXPORTS_TYPE;
+	return PEEXPORTS_TYPE;
+}
+
+token PEResourcesTypePatternAction() {
+	LogDebug("[Flex] PEResourcesTypePatternAction: 'PEResources'.");
+	yylval.token = PERESOURCES_TYPE;
+	return PERESOURCES_TYPE;
+}
+
+token PEDirEntriesTypePatternAction() {
+	LogDebug("[Flex] PEDirEntriesTypePatternAction: 'PEDirEntries'.");
+	yylval.token = PEDIRENTRIES_TYPE;
+	return PEDIRENTRIES_TYPE;
+}
+
 token PESectionTypePatternAction()
 {
 	LogDebug("[Flex] PESectionTypePatternAction: 'PESection'.");
@@ -389,18 +419,11 @@ token DirectoryEntriesPatternAction()
 	return DIRECTORY_ENTRIES;
 }
 
-token ImportsDirectoryEntriesPatternAction()
+token PEOptionalHeaderTypePatternAction()
 {
-	LogDebug("[Flex] ImportsDirectoryEntriesPatternAction: 'ImportsDirectoryEntries'.");
-	yylval.token = IMPORTS_DIRECTORY_ENTRIES;
-	return IMPORTS_DIRECTORY_ENTRIES;
-}
-
-token ExportsDirectoryEntriesPatternAction()
-{
-	LogDebug("[Flex] ExportsDirectoryEntriesPatternAction: 'ExportsDirectoryEntries'.");
-	yylval.token = EXPORTS_DIRECTORY_ENTRIES;
-	return EXPORTS_DIRECTORY_ENTRIES;
+	LogDebug("[Flex] PEOptionalHeaderTypePatternAction: 'PEOptionalHeader'.");
+	yylval.token = PEOPTIONAL_HEADER_TYPE;
+	return PEOPTIONAL_HEADER_TYPE;
 }
 
 token DLLPatternAction()
@@ -471,13 +494,6 @@ token MagicPatternAction()
 	LogDebug("[Flex] MagicPatternAction: 'Magic'.");
 	yylval.token = MAGIC;
 	return MAGIC;
-}
-
-token OptionalHeaderMagicPatternAction()
-{
-	LogDebug("[Flex] OptionalHeaderMagicPatternAction: 'OptionalHeaderMagic'.");
-	yylval.token = OPTIONAL_HEADER_MAGIC;
-	return OPTIONAL_HEADER_MAGIC;
 }
 
 token DotPatternAction()
