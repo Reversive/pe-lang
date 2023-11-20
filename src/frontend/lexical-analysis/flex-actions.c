@@ -412,88 +412,12 @@ token CloseBracketPatternAction()
 	return CLOSE_BRACKET;
 }
 
-token DirectoryEntriesPatternAction()
-{
-	LogDebug("[Flex] DirectoryEntriesPatternAction: 'DirectoryEntries'.");
-	yylval.token = DIRECTORY_ENTRIES;
-	return DIRECTORY_ENTRIES;
-}
 
 token PEOptionalHeaderTypePatternAction()
 {
 	LogDebug("[Flex] PEOptionalHeaderTypePatternAction: 'PEOptionalHeader'.");
 	yylval.token = PEOPTIONAL_HEADER_TYPE;
 	return PEOPTIONAL_HEADER_TYPE;
-}
-
-token DLLPatternAction()
-{
-	LogDebug("[Flex] DLLPatternAction: 'DLL'.");
-	yylval.token = DLL;
-	return DLL;
-}
-
-token ImportsPatternAction()
-{
-	LogDebug("[Flex] ImportsPatternAction: 'Imports'.");
-	yylval.token = IMPORTS;
-	return IMPORTS;
-}
-
-token ExportsPatternAction()
-{
-	LogDebug("[Flex] ExportsPatternAction: 'Exports'.");
-	yylval.token = EXPORTS;
-	return EXPORTS;
-}
-
-token NamePatternAction()
-{
-	LogDebug("[Flex] NamePatternAction: 'Name'.");
-	yylval.token = NAME;
-	return NAME;
-}
-
-token AddressPatternAction()
-{
-	LogDebug("[Flex] AddressPatternAction: 'Address'.");
-	yylval.token = ADDRESS;
-	return ADDRESS;
-}
-
-token SectionsPatternAction()
-{
-	LogDebug("[Flex] SectionsPatternAction: 'Sections'.");
-	yylval.token = SECTIONS;
-	return SECTIONS;
-}
-
-token VirtualSizePatternAction()
-{
-	LogDebug("[Flex] VirtualSizePatternAction: 'VirtualSize'.");
-	yylval.token = VIRTUAL_SIZE;
-	return VIRTUAL_SIZE;
-}
-
-token VirtualAddressPatternAction()
-{
-	LogDebug("[Flex] VirtualAddressPatternAction: 'VirtualAddress'.");
-	yylval.token = VIRTUAL_ADDRESS;
-	return VIRTUAL_ADDRESS;
-}
-
-token OptionalHeaderPatternAction()
-{
-	LogDebug("[Flex] OptionalHeaderPatternAction: 'OptionalHeader'.");
-	yylval.token = OPTIONAL_HEADER;
-	return OPTIONAL_HEADER;
-}
-
-token MagicPatternAction()
-{
-	LogDebug("[Flex] MagicPatternAction: 'Magic'.");
-	yylval.token = MAGIC;
-	return MAGIC;
 }
 
 token DotPatternAction()

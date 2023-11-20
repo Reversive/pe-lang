@@ -23,7 +23,6 @@ endline			[\n]
 whitespace		[ \f\n\r\t\v]
 letter          [a-zA-Z]
 
-
 %%
 
 "/*"										{ BEGIN(COMMENT); BeginCommentPatternAction(); }
@@ -72,21 +71,6 @@ PEDirEntry                                  { return PEDirEntryTypePatternAction
 PEDirEntries                                { return PEDirEntriesTypePatternAction(); }
 PEOptionalHeader                            { return PEOptionalHeaderTypePatternAction(); }
 
-"directory_entries"                         { return DirectoryEntriesPatternAction(); }
-"dll"                                       { return DLLPatternAction(); }
-"imports"                                   { return ImportsPatternAction(); }
-"exports"                                   { return ExportsPatternAction(); }
-"name"                                      { return NamePatternAction(); }
-"address"                                   { return AddressPatternAction(); }
-
-"sections"                                  { return SectionsPatternAction(); }
-"virtual_size"                              { return VirtualSizePatternAction(); }
-"virtual_address"                           { return VirtualAddressPatternAction(); }
-
-"optional_header"                           { return OptionalHeaderPatternAction(); }
-"magic"                                     { return MagicPatternAction(); }
-
-
 int                                         { return IntTypePatternAction(); }
 string                                      { return StringTypePatternAction(); }
 byte                                        { return ByteTypePatternAction(); }
@@ -113,7 +97,7 @@ in                                          { return InPatternAction(); }
 
 {whitespace}+								{ IgnoredPatternAction(yytext, yyleng); }
 
-{letter}({letter}|{digit})*					{ return IdentifierPatternAction(yytext, yyleng); }
+{letter}({letter}|{digit}|_)*				{ return IdentifierPatternAction(yytext, yyleng); }
 
 "\""                                        { BEGIN(STRING); }
 <STRING>[^"]*                               { return StringPatternAction(yytext, yyleng); }
