@@ -2,8 +2,7 @@
 #include "../../backend/support/assert.h"
 #include "bison-actions.h"
 
-void yyerror(const char *string)
-{
+void yyerror(const char *string) {
 	LogErrorRaw("[ERROR] Mensaje: '%s', debido a '", string);
 	for (int i = 0; i < yyleng; ++i)
 	{
@@ -192,7 +191,7 @@ Statement* DeclarationGrammarActionStatement(Declaration* declaration) {
 	SymbolEntry* entry = CtxAddSymbol(state.context, SE_New(declaration->id, declaration->declarationType));
 	if(entry == NULL) {
 		LogError("La variable '%s' ya existe en el contexto actual.", declaration->id);
-		exit(1);
+		state.succeed = false;
 	}
 	statement->type = DECLARATION_STATEMENT;
 	statement->declaration = declaration;
@@ -315,6 +314,15 @@ ForLoopDeclaration* ForDeclarationMemberGrammarAction(Declaration* declaration, 
 	LogDebug("[Bison] ForDeclarationMemberGrammarAction");
 	ForLoopDeclaration* forLoopDeclaration = calloc(1, sizeof(ForLoopDeclaration));
 	AssertNotNullCallback(forLoopDeclaration, HandleOutOfMemoryError);
+	SymbolEntry* entry = CtxAddSymbol(state.context, SE_New(declaration->id, declaration->declarationType));
+	if(entry == NULL) {
+		LogError("La variable '%s' ya existe en el contexto actual.", declaration->id);
+		state.succeed = false;
+	}
+	if(member->dataType == TYPE_UNKNOWN) {
+		state.succeed = false;
+	}
+
 	forLoopDeclaration->type = MEMBER_DECLARATION;
 	forLoopDeclaration->declaration = declaration;
 	forLoopDeclaration->member = member;
