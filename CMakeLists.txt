@@ -66,10 +66,6 @@ add_executable(Compiler
 	src/backend/semantic-analysis/symbol-scope/scope/context.c
 	src/backend/support/logger.c
 	src/backend/support/assert.c
-	src/frontend/lexical-analysis/flex-actions.c
-	src/frontend/lexical-analysis/flex-scanner.c
-	src/frontend/syntactic-analysis/bison-actions.c
-	src/frontend/syntactic-analysis/bison-parser.c
 	src/backend/semantic-analysis/ast/actions/program.c
 	src/backend/semantic-analysis/ast/actions/assignment/assignment.c
 	src/backend/semantic-analysis/ast/actions/block/block.c
@@ -86,6 +82,11 @@ add_executable(Compiler
 	src/backend/semantic-analysis/ast/actions/statement/statement.c
 	src/backend/semantic-analysis/ast/actions/vector/vector.c
 	src/backend/semantic-analysis/ast/actions/while/while.c
+	src/backend/semantic-analysis/type-checker/type-checker.c
+	src/frontend/lexical-analysis/flex-actions.c
+	src/frontend/lexical-analysis/flex-scanner.c
+	src/frontend/syntactic-analysis/bison-actions.c
+	src/frontend/syntactic-analysis/bison-parser.c
 	# Agregar otros archivos *.c (si no se incluyen, no se compilan).
 	# ...
 )

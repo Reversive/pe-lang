@@ -1,7 +1,7 @@
 #ifndef ACTION_PROGRAM_H
 #define ACTION_PROGRAM_H
 
-#include "../../type-checking.h"
+#include "../../type-checker/type-checker.h"
 
 void HandleOutOfMemoryError();
 

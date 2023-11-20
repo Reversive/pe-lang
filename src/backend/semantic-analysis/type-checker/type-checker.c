@@ -1,20 +1,16 @@
-#ifndef TYPE_CHECKING_H
-#define TYPE_CHECKING_H
+#include "type-checker.h"
 
-#include "../support/shared.h"
-#include <string.h>
-
-static inline Type GetFullAssignmentType(FullAssignment* fullAssignment) {
+Type GetFullAssignmentType(FullAssignment* fullAssignment) {
     Declaration* declaration = fullAssignment->declaration;
     if(GetDeclarationType(declaration) != GetExpressionType(fullAssignment->expression)) return TYPE_UNKNOWN;
     return GetDeclarationType(declaration);
 }
 
-static inline Type GetDeclarationType(Declaration* declaration) {
+Type GetDeclarationType(Declaration* declaration) {
     return declaration->declarationType;
 }
 
-static inline Type GetExpressionType(Expression* expression) {
+Type GetExpressionType(Expression* expression) {
 	switch(expression->type) {
 		case ADDITION_EXPRESSION:
 		case SUBTRACTION_EXPRESSION:
@@ -51,7 +47,7 @@ static inline Type GetExpressionType(Expression* expression) {
 	}
 }
 
-static inline Type GetFactorType(Factor* factor) {
+Type GetFactorType(Factor* factor) {
     switch(factor->type) {
         case EXPRESSION_FACTOR:
             return GetExpressionType(factor->expression);
@@ -66,16 +62,16 @@ static inline Type GetFactorType(Factor* factor) {
     }
 }
 
-static inline Type GetReturnFunctionType(ReturnFunction* returnFunction) {
+Type GetReturnFunctionType(ReturnFunction* returnFunction) {
     // For now only peopen exists, so it will just return this type
     return TYPE_PEFILE;
 }
 
-static inline Type GetVectorType(Vector* vector) {
+Type GetVectorType(Vector* vector) {
     return GetFactorType(vector->factor);
 }
 
-static inline Type GetPropertyType(Type type, char* property) {
+Type GetPropertyType(Type type, char* property) {
 	LogInfo("Type %s, property %s", TypeToString(type), property);
 	switch(type) {
 		case TYPE_PEFILE:
@@ -123,18 +119,14 @@ static inline Type GetPropertyType(Type type, char* property) {
 }
 
 
-static inline Type GetMemberType(Member* member) {
+Type GetMemberType(Member* member) {
     return member->dataType;
 }
 
-static inline Type GetIdentifierType(char* id) {
+Type GetIdentifierType(char* id) {
     return CtxGetSymbol(state.context, id)->type;
 }
 
-static inline Type GetConstantType(Constant* constant) {
+Type GetConstantType(Constant* constant) {
     return TYPE_INT;
 }
-
-
-
-#endif
