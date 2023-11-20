@@ -2,6 +2,7 @@
 #define TYPE_CHECKING_H
 
 #include "../support/shared/shared.h"
+#include <string.h>
 
 static inline Type GetFullAssignmentType(FullAssignment* fullAssignment) {
     Declaration* declaration = fullAssignment->declaration;
@@ -82,24 +83,38 @@ static inline Type GetPropertyType(Type type, char* property) {
 			if(strcmp(property, "exports") == 0) return TYPE_PEEXPORTS;
 			if(strcmp(property, "sections") == 0) return TYPE_PESECTIONS;
 			if(strcmp(property, "optional_header") == 0) return TYPE_PEOPTIONALHEADER;
+			if(strcmp(property, "file_header") == 0) return TYPE_PEHEADER;
 			break;
-		case TYPE_PEIMPORTS:
-			if(strcmp(property, "name") == 0) return TYPE_STRING;
+		case TYPE_PEHEADER:
+			if(strcmp(property, "machine") == 0) return TYPE_INT;
+			if(strcmp(property, "number_of_sections") == 0) return TYPE_INT;
+			if(strcmp(property, "time_date_stamp") == 0) return TYPE_STRING;
+			if(strcmp(property, "characteristics") == 0) return TYPE_STRING;
+		case TYPE_PEIMPORT:
 			if(strcmp(property, "dll") == 0) return TYPE_STRING;
-			if(strcmp(property, "address") == 0) return TYPE_INT;
+			if(strcmp(property, "functions") == 0) return TYPE_PEFUNCTION;
 			break;
-		case TYPE_PEEXPORTS:
+		case TYPE_PEFUNCTION:
+			if(strcmp(property, "address") == 0) return TYPE_STRING;
 			if(strcmp(property, "name") == 0) return TYPE_STRING;
+			break;
+		case TYPE_PEEXPORT:
 			if(strcmp(property, "dll") == 0) return TYPE_STRING;
-			if(strcmp(property, "address") == 0) return TYPE_INT;
+			if(strcmp(property, "functions") == 0) return TYPE_PEFUNCTION;
 			break;
-		case TYPE_PESECTIONS:
+		case TYPE_PESECTION:
 			if(strcmp(property, "name") == 0) return TYPE_STRING;
-			if(strcmp(property, "virtualSize") == 0) return TYPE_INT;
-			if(strcmp(property, "virtualAddress") == 0) return TYPE_INT;
+			if(strcmp(property, "virtual_address") == 0) return TYPE_STRING;
+			if(strcmp(property, "virtual_size") == 0) return TYPE_INT;
+			if(strcmp(property, "raw_data_size") == 0) return TYPE_INT;
+			if(strcmp(property, "characteristics") == 0) return TYPE_STRING;
 			break;
 		case TYPE_PEOPTIONALHEADER:
-			if(strcmp(property, "magic") == 0) return TYPE_BYTE;
+			if(strcmp(property, "aoep") == 0) return TYPE_STRING;
+			if(strcmp(property, "image_base") == 0) return TYPE_STRING;
+			if(strcmp(property, "section_alignment") == 0) return TYPE_INT;
+			if(strcmp(property, "file_alignment") == 0) return TYPE_INT;
+			if(strcmp(property, "subsystem") == 0) return TYPE_INT;
 			break;
 		default:
 			return TYPE_UNKNOWN;
