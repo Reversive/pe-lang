@@ -1,7 +1,7 @@
 #ifndef CONTEXT_H
 #define CONTEXT_H
 #include "../symbol-table/symbol-table.h"
-#include "../../logger.h"
+#include "../../../support/logger.h"
 #include <stdlib.h>
 #define SCOPE_CHUNK 10
 

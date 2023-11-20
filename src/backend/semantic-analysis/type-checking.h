@@ -1,7 +1,7 @@
 #ifndef TYPE_CHECKING_H
 #define TYPE_CHECKING_H
 
-#include "../support/shared/shared.h"
+#include "../support/shared.h"
 #include <string.h>
 
 static inline Type GetFullAssignmentType(FullAssignment* fullAssignment) {

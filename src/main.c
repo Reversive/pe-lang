@@ -1,6 +1,6 @@
 #include "backend/code-generation/generator.h"
 #include "backend/support/logger.h"
-#include "backend/support/shared/shared.h"
+#include "backend/support/shared.h"
 #include "frontend/syntactic-analysis/bison-parser.h"
 #include <stdio.h>
 

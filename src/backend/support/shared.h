@@ -2,8 +2,8 @@
 #define SHARED_HEADER
 
 #include <stdio.h>
-#include "../../semantic-analysis/abstract-syntax-tree.h"
-#include "scope/context.h"
+#include "../semantic-analysis/ast/ast.h"
+#include "../semantic-analysis/symbol-scope/scope/context.h"
 #include <stdarg.h>  
 
 

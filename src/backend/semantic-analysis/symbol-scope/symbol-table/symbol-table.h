@@ -2,8 +2,8 @@
 #define SYMBOL_TABLE_H
 
 #include <stdlib.h>
-#include "../../logger.h"
-#include "../types/var-types.h"
+#include "../../../support/logger.h"
+#include "../../ast/types/var-types.h"
 #define SYMBOL_CHUNK 100
 
 typedef struct {

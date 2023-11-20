@@ -1,5 +1,4 @@
 #include "../../backend/support/logger.h"
-#include "../../backend/support/assert.h"
 #include "bison-actions.h"
 
 void yyerror(const char *string) {

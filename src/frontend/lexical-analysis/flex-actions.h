@@ -1,7 +1,7 @@
 #ifndef FLEX_ACTIONS_HEADER
 #define FLEX_ACTIONS_HEADER
 
-#include "../../backend/support/shared/shared.h"
+#include "../../backend/support/shared.h"
 #include "../syntactic-analysis/bison-parser.h"
 
 // Comments
