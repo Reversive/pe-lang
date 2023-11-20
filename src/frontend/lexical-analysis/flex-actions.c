@@ -3,13 +3,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Credits @agustin-golmar
+// Author: @agustin-golmar
 char *copyLexeme(const char *lexeme, const int length) {
 	char *lexemeCopy = (char *)calloc(length + 1, sizeof(char));
 	strncpy(lexemeCopy, lexeme, length);
 	return lexemeCopy;
 }
 
+// Comments
 void BeginCommentPatternAction() {
 	LogDebug("[Flex] [COMMENT] BeginCommentPatternAction............................");
 }
@@ -26,16 +27,11 @@ void EndStringPatternAction() {
 	LogDebug("[Flex] [STRING] EndStringPatternAction..............................");
 }
 
+// Operations
 token AdditionOperatorPatternAction() {
 	LogDebug("[Flex] AdditionOperatorPatternAction: '+'.");
 	yylval.token = ADD;
 	return ADD;
-}
-
-token CloseParenthesisPatternAction() {
-	LogDebug("[Flex] CloseParenthesisPatternAction: ')'.");
-	yylval.token = CLOSE_PARENTHESIS;
-	return CLOSE_PARENTHESIS;
 }
 
 token DivisionOperatorPatternAction() {
@@ -44,23 +40,10 @@ token DivisionOperatorPatternAction() {
 	return DIV;
 }
 
-token IntegerPatternAction(const char *lexeme, const int length) {
-	LogDebug("[Flex] IntegerPatternAction: '%s' (length = %d).", lexeme, length);
-	char *lexemeCopy = copyLexeme(lexeme, length);
-	yylval.integer = atoi(lexemeCopy);
-	return INTEGER;
-}
-
 token MultiplicationOperatorPatternAction() {
 	LogDebug("[Flex] MultiplicationOperatorPatternAction: '*'.");
 	yylval.token = MUL;
 	return MUL;
-}
-
-token OpenParenthesisPatternAction() {
-	LogDebug("[Flex] OpenParenthesisPatternAction: '('.");
-	yylval.token = OPEN_PARENTHESIS;
-	return OPEN_PARENTHESIS;
 }
 
 token SubtractionOperatorPatternAction() {
@@ -69,12 +52,60 @@ token SubtractionOperatorPatternAction() {
 	return SUB;
 }
 
+// Parenthesis
+
+token CloseParenthesisPatternAction() {
+	LogDebug("[Flex] CloseParenthesisPatternAction: ')'.");
+	yylval.token = CLOSE_PARENTHESIS;
+	return CLOSE_PARENTHESIS;
+}
+
+token OpenParenthesisPatternAction() {
+	LogDebug("[Flex] OpenParenthesisPatternAction: '('.");
+	yylval.token = OPEN_PARENTHESIS;
+	return OPEN_PARENTHESIS;
+}
+
+// Constants
+
+token IntegerPatternAction(const char *lexeme, const int length) {
+	LogDebug("[Flex] IntegerPatternAction: '%s' (length = %d).", lexeme, length);
+	char *lexemeCopy = copyLexeme(lexeme, length);
+	yylval.integer = atoi(lexemeCopy);
+	return INTEGER;
+}
+
+token IdentifierPatternAction(const char *lexeme, const int length) {
+	char *lexemeCopy = copyLexeme(lexeme, length);
+	LogDebug("[Flex] IdentifierPatternAction: '%s' (length = %d).", lexemeCopy, length);
+	yylval.token = IDENTIFIER;
+	yylval.string = lexemeCopy;
+	return IDENTIFIER;
+}
+
+token StringPatternAction(const char *lexeme, const int length) {
+	char *lexemeCopy = copyLexeme(lexeme, length);
+	LogDebug("[Flex] StringPatternAction: '%s' (length = %d).", lexemeCopy, length);
+	yylval.token = STRING;
+	yylval.string = lexemeCopy;
+	return STRING;
+}
+
+void IgnoredPatternAction(const char *lexeme, const int length) {
+	char *lexemeCopy = copyLexeme(lexeme, length);
+	free(lexemeCopy);
+}
+
+// Unknown
+
 token UnknownPatternAction(const char *lexeme, const int length) {
 	char *lexemeCopy = copyLexeme(lexeme, length);
 	LogDebug("[Flex] UnknownPatternAction: '%s' (length = %d).", lexemeCopy, length);
 	yylval.token = ERROR;
 	return ERROR;
 }
+
+// Comparators
 
 token EqualOperatorPatternAction() {
 	LogDebug("[Flex] EqualOperatorPatternAction: '='.");
@@ -112,6 +143,8 @@ token GreaterThanOrEqualOperatorPatternAction() {
 	return GREATER_THAN_OR_EQUAL;
 }
 
+// Logical operators
+
 token OrOperatorPatternAction() {
 	LogDebug("[Flex] OrOperatorPatternAction: '||'.");
 	yylval.token = OR;
@@ -130,26 +163,8 @@ token NotOperatorPatternAction() {
 	return NOT;
 }
 
-token IdentifierPatternAction(const char *lexeme, const int length) {
-	char *lexemeCopy = copyLexeme(lexeme, length);
-	LogDebug("[Flex] IdentifierPatternAction: '%s' (length = %d).", lexemeCopy, length);
-	yylval.token = IDENTIFIER;
-	yylval.string = lexemeCopy;
-	return IDENTIFIER;
-}
 
-token StringPatternAction(const char *lexeme, const int length) {
-	char *lexemeCopy = copyLexeme(lexeme, length);
-	LogDebug("[Flex] StringPatternAction: '%s' (length = %d).", lexemeCopy, length);
-	yylval.token = STRING;
-	yylval.string = lexemeCopy;
-	return STRING;
-}
-
-void IgnoredPatternAction(const char *lexeme, const int length) {
-	char *lexemeCopy = copyLexeme(lexeme, length);
-	free(lexemeCopy);
-}
+// Types
 
 token PEFileTypePatternAction() {
 	LogDebug("[Flex] PEFileTypePatternAction: 'PEFile'.");
@@ -211,11 +226,34 @@ token StringTypePatternAction() {
 	return STRING_TYPE;
 }
 
+token PEOptionalHeaderTypePatternAction() {
+	LogDebug("[Flex] PEOptionalHeaderTypePatternAction: 'PEOptionalHeader'.");
+	yylval.token = PEOPTIONAL_HEADER_TYPE;
+	return PEOPTIONAL_HEADER_TYPE;
+}
+
+token PEFunctionsTypePatternAction() {
+	LogDebug("[Flex] PEFunctionsTypePatternAction: 'PEFunctions'.");
+	yylval.token = PEFUNCTIONS_TYPE;
+	return PEFUNCTIONS_TYPE;
+}
+
+token PEFunctionTypePatternAction() {
+	LogDebug("[Flex] PEFunctionTypePatternAction: 'PEFunction'.");
+	yylval.token = PEFUNCTION_TYPE;
+	return PEFUNCTION_TYPE;
+}
+
+// Assignment
+
 token AssignmentPatternAction() {
 	LogDebug("[Flex] AssignmentPatternAction: ':='.");
 	yylval.token = ASSIGNMENT;
 	return ASSIGNMENT;
 }
+
+
+// Functions
 
 token PEOpenPatternAction() {
 	LogDebug("[Flex] PEOpenPatternAction: 'PEOpen'.");
@@ -229,23 +267,29 @@ token PrintPatternAction() {
 	return PRINT;
 }
 
-token CommaPatternAction() {
-	LogDebug("[Flex] CommaPatternAction: ','.");
-	yylval.token = COMMA;
-	return COMMA;
-}
-
 token PEClosePatternAction() {
 	LogDebug("[Flex] PEClosePatternAction: 'PEClose'.");
 	yylval.token = PECLOSE;
 	return PECLOSE;
 }
 
+// Comma
+
+token CommaPatternAction() {
+	LogDebug("[Flex] CommaPatternAction: ','.");
+	yylval.token = COMMA;
+	return COMMA;
+}
+
+// Semicolon
+
 token SemicolonPatternAction() {
 	LogDebug("[Flex] SemicolonPatternAction: ';'.");
 	yylval.token = SEMICOLON;
 	return SEMICOLON;
 }
+
+// Conditional
 
 token IfPatternAction() {
 	LogDebug("[Flex] IfPatternAction: 'If'.");
@@ -258,6 +302,8 @@ token ElsePatternAction() {
 	yylval.token = ELSE;
 	return ELSE;
 }
+
+// Braces
 
 token OpenBracePatternAction() {
 	LogDebug("[Flex] OpenBracePatternAction: '{'.");
@@ -272,6 +318,8 @@ token CloseBracePatternAction() {
 	yylval.token = CLOSE_BRACE;
 	return CLOSE_BRACE;
 }
+
+// Loops
 
 token WhilePatternAction() {
 	LogDebug("[Flex] WhilePatternAction: 'While'.");
@@ -291,11 +339,15 @@ token InPatternAction() {
 	return IN;
 }
 
+// Main
+
 token MainPatternAction() {
 	LogDebug("[Flex] MainPatternAction: 'Main'.");
 	yylval.token = MAIN;
 	return MAIN;
 }
+
+// Bracket
 
 token OpenBracketPatternAction() {
 	LogDebug("[Flex] OpenBracketPatternAction: '['.");
@@ -310,27 +362,10 @@ token CloseBracketPatternAction() {
 }
 
 
-token PEOptionalHeaderTypePatternAction() {
-	LogDebug("[Flex] PEOptionalHeaderTypePatternAction: 'PEOptionalHeader'.");
-	yylval.token = PEOPTIONAL_HEADER_TYPE;
-	return PEOPTIONAL_HEADER_TYPE;
-}
+// Dot
 
 token DotPatternAction() {
 	LogDebug("[Flex] DotPatternAction: '.'.");
 	yylval.token = DOT;
 	return DOT;
-}
-
-
-token PEFunctionsTypePatternAction() {
-	LogDebug("[Flex] PEFunctionsTypePatternAction: 'PEFunctions'.");
-	yylval.token = PEFUNCTIONS_TYPE;
-	return PEFUNCTIONS_TYPE;
-}
-
-token PEFunctionTypePatternAction() {
-	LogDebug("[Flex] PEFunctionTypePatternAction: 'PEFunction'.");
-	yylval.token = PEFUNCTION_TYPE;
-	return PEFUNCTION_TYPE;
 }
