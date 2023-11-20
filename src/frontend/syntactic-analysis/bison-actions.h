@@ -70,8 +70,8 @@ Expression* FactorExpressionGrammarAction(Factor* factor);
 Expression* MemberExpressionGrammarAction(Member* member);
 
 // Member
-Member* MemberIdentifierGrammarAction(char* id, Property* property);
-Member* MemberGrammarAction(Member* member, Property* property);
+Member* MemberIdentifierGrammarAction(char* left, char* right);
+Member* MemberGrammarAction(Member* member, char* right);
 
 // Vector
 Vector* VectorGrammarAction(char* id, Factor* factor);

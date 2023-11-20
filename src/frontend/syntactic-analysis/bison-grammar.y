@@ -32,8 +32,6 @@
 	ForLoopDeclaration* for_loop_decl;
 	Vector* vector;
 	Member* member;
-	Property* property;
-
 	// Terminales
 	Type type;
 	token token;
@@ -70,19 +68,6 @@
 %token <token> OPEN_BRACKET
 %token <token> CLOSE_BRACKET
 %token <token> DOT
-
-// member structure
-%token <token> DIRECTORY_ENTRIES
-%token <token> DLL
-%token <token> IMPORTS
-%token <token> EXPORTS
-%token <token> ADDRESS
-%token <token> SECTIONS
-%token <token> NAME
-%token <token> VIRTUAL_SIZE
-%token <token> VIRTUAL_ADDRESS
-%token <token> OPTIONAL_HEADER
-%token <token> MAGIC
 
 // conditional
 %token <token> IF
@@ -128,7 +113,6 @@
 %type <for_loop_decl> for_loop_declaration
 %type <vector> vector
 %type <member> member
-%type <property> property
 %type <instructions> instructions
 
 // Associative and precedence rules.
@@ -207,21 +191,8 @@ expression: expression[left] ADD expression[right]					{ $$ = AdditionExpression
 	| member														{ $$ = MemberExpressionGrammarAction($1); }
 	;
 
-member: IDENTIFIER DOT property										{ $$ = MemberIdentifierGrammarAction($1, $3); }
-	| member DOT property											{ $$ = MemberGrammarAction($1, $3); }
-	;
-
-property: DIRECTORY_ENTRIES											{ $$ = PropertyGrammarAction(PROPERTY_DIRECTORY_ENTRIES, TYPE_PEDIRENTRIES); }
-	| DLL															{ $$ = PropertyGrammarAction(PROPERTY_DLL, TYPE_STRING); }
-	| IMPORTS														{ $$ = PropertyGrammarAction(PROPERTY_IMPORTS, TYPE_PEIMPORTS); }
-	| EXPORTS														{ $$ = PropertyGrammarAction(PROPERTY_EXPORTS, TYPE_PEEXPORTS); }
-	| ADDRESS														{ $$ = PropertyGrammarAction(PROPERTY_ADDRESS, TYPE_INT); }
-	| SECTIONS														{ $$ = PropertyGrammarAction(PROPERTY_SECTIONS, TYPE_PESECTIONS); }
-	| NAME															{ $$ = PropertyGrammarAction(PROPERTY_NAME, TYPE_STRING); }
-	| VIRTUAL_SIZE													{ $$ = PropertyGrammarAction(PROPERTY_VIRTUAL_SIZE, TYPE_INT); }
-	| VIRTUAL_ADDRESS												{ $$ = PropertyGrammarAction(PROPERTY_VIRTUAL_ADDRESS, TYPE_INT); }
-	| OPTIONAL_HEADER												{ $$ = PropertyGrammarAction(PROPERTY_OPTIONAL_HEADER, TYPE_PEOPTIONALHEADER); }
-	| MAGIC															{ $$ = PropertyGrammarAction(PROPERTY_MAGIC, TYPE_INT); }
+member: IDENTIFIER DOT IDENTIFIER									{ $$ = MemberIdentifierGrammarAction($1, $3); }
+	| member DOT IDENTIFIER											{ $$ = MemberGrammarAction($1, $3); }
 	;
 
 vector: IDENTIFIER OPEN_BRACKET factor CLOSE_BRACKET				{ $$ = VectorGrammarAction($1, $3); }
