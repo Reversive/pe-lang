@@ -64,16 +64,12 @@ PEImports                                   { return PEImportsTypePatternAction(
 PEExport                                    { return PEExportTypePatternAction(); }
 PEExports                                   { return PEExportsTypePatternAction(); }
 PEHeader                                    { return PEHeaderTypePatternAction(); }
-PEResource                                  { return PEResourceTypePatternAction(); }
-PEResources                                 { return PEResourcesTypePatternAction(); }
-PESignature                                 { return PESignatureTypePatternAction(); }
-PEDirEntry                                  { return PEDirEntryTypePatternAction(); }
-PEDirEntries                                { return PEDirEntriesTypePatternAction(); }
 PEOptionalHeader                            { return PEOptionalHeaderTypePatternAction(); }
+PEFunctions                                 { return PEFunctionsTypePatternAction(); }
+PEFunction                                  { return PEFunctionTypePatternAction(); }
 
 int                                         { return IntTypePatternAction(); }
 string                                      { return StringTypePatternAction(); }
-byte                                        { return ByteTypePatternAction(); }
 
 if                                          { return IfPatternAction(); }
 else                                        { return ElsePatternAction(); }
@@ -92,12 +88,10 @@ in                                          { return InPatternAction(); }
 
 "("											{ return OpenParenthesisPatternAction(); }
 ")"											{ return CloseParenthesisPatternAction(); }
-
-{digit}+									{ return IntegerPatternAction(yytext, yyleng); }
-
-{whitespace}+								{ IgnoredPatternAction(yytext, yyleng); }
-
-{letter}({letter}|{digit}|_)*				{ return IdentifierPatternAction(yytext, yyleng); }
+ 
+ {digit}+									{ return IntegerPatternAction(yytext, yyleng); }
+ {whitespace}+								{ IgnoredPatternAction(yytext, yyleng); }
+ {letter}({letter}|{digit}|_)*				{ return IdentifierPatternAction(yytext, yyleng); }
 
 "\""                                        { BEGIN(STRING); }
 <STRING>[^"]*                               { return StringPatternAction(yytext, yyleng); }
