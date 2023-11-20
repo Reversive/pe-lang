@@ -188,9 +188,6 @@ token StringPatternAction(const char *lexeme, const int length)
 void IgnoredPatternAction(const char *lexeme, const int length)
 {
 	char *lexemeCopy = copyLexeme(lexeme, length);
-	LogRaw("[DEBUG] [Flex] IgnoredPatternAction: '");
-	LogText(lexemeCopy, length);
-	LogRaw("' (length = %d).\n", length);
 	free(lexemeCopy);
 }
 
@@ -330,6 +327,7 @@ token ElsePatternAction()
 token OpenBracePatternAction()
 {
 	LogDebug("[Flex] OpenBracePatternAction: '{'.");
+	CtxAddScope(state.context);
 	yylval.token = OPEN_BRACE;
 	return OPEN_BRACE;
 }
@@ -337,6 +335,7 @@ token OpenBracePatternAction()
 token CloseBracePatternAction()
 {
 	LogDebug("[Flex] CloseBracePatternAction: '}'.");
+	CtxMoveDown(state.context);
 	yylval.token = CLOSE_BRACE;
 	return CLOSE_BRACE;
 }

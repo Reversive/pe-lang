@@ -2,7 +2,8 @@
 #define SHARED_HEADER
 
 #include <stdio.h>
-#include "../semantic-analysis/abstract-syntax-tree.h"
+#include "../../semantic-analysis/abstract-syntax-tree.h"
+#include "scope/context.h"
 
 // Descriptor del archivo de entrada que utiliza Bison.
 extern FILE * yyin;
@@ -31,10 +32,15 @@ extern int yyparse(void);
 
 // Emular tipo "boolean".
 typedef enum {
-
 	false = 0,
 	true = 1
 } boolean;
+
+typedef enum {
+	RESULT_OK = 0,
+	SYNTAX_ERROR = 1,
+	BISON_MEMORY_ERROR = 2,
+} ResultStates;
 
 // El tipo de los tokens emitidos por Flex.
 typedef int token;
@@ -51,6 +57,7 @@ typedef struct {
 	// El nodo raíz del AST (se usará cuando se implemente el backend).
 	Program * program;
 
+	Context * context;
 	// Agregar lo que sea necesario para el compilador.
 	// Agregar una pila para manipular scopes.
 	// Agregar una tabla de símbolos.

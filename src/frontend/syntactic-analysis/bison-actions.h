@@ -1,8 +1,7 @@
 #ifndef BISON_ACTIONS_HEADER
 #define BISON_ACTIONS_HEADER
 
-#include "../../backend/support/shared.h"
-#include "../../backend/semantic-analysis/abstract-syntax-tree.h"
+#include "../../backend/semantic-analysis/type-checking.h"
 
 // Program
 Program* GrammarActionProgram(Block* block);
@@ -10,6 +9,8 @@ Program* GrammarActionProgram(Block* block);
 // Block
 Block* EmptyBlockGrammarAction();
 Block* InstructionsBlockGrammarAction(Instructions* instructions);
+Block* InstructionsBlockBlockGrammarAction(Instructions* instructions, Block* block);
+Block* InstructionsBlockBlockInstructionsGrammarAction(Instructions* instructions, Block* block, Instructions* bottomInstructions);
 
 // Instructions
 Instructions* InstructionGrammarAction(Instruction* instruction);

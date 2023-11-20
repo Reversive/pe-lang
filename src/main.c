@@ -1,7 +1,6 @@
 #include "backend/code-generation/generator.h"
 #include "backend/support/logger.h"
-#include "backend/support/shared.h"
-#include "backend/semantic-analysis/scope/context.h"
+#include "backend/support/shared/shared.h"
 #include "frontend/syntactic-analysis/bison-parser.h"
 #include <stdio.h>
 
@@ -14,7 +13,8 @@ const int main(const int argumentCount, const char **arguments)
 	// Inicializar estado de la aplicación.
 	state.program = NULL;
 	state.result = 0;
-	state.succeed = false;
+	state.succeed = true;
+	state.context = CtxAllocate();
 	
 	// Mostrar parámetros recibidos por consola.
 	for (int i = 0; i < argumentCount; ++i)
@@ -23,14 +23,11 @@ const int main(const int argumentCount, const char **arguments)
 	}
 
 	LogInfo("Compilando...\n");
-	AllocateContext();
-	AddScope();
+	
 	const int result = yyparse();
 	switch (result)
 	{
 	case 0:
-		// La variable "succeed" es la que setea Bison al identificar el símbolo
-		// inicial de la gramática satisfactoriamente.
 		if (state.succeed)
 		{
 			LogInfo("La compilacion fue exitosa.");

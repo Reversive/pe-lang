@@ -2,6 +2,7 @@
 #define DECLARATION_H
 
 #include "structures/token.h"
+#include "var-types.h"
 
 typedef enum {
 	TYPE_DECLARATION,
@@ -10,7 +11,7 @@ typedef enum {
 
 typedef struct {
 	DeclarationType type;
-	int declarationType;
+	Type declarationType;
 	Token* token;
 	char* id;
 } Declaration;

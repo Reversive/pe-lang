@@ -147,7 +147,9 @@ program: MAIN block 												{ $$ = GrammarActionProgram($2); }
 	;
 
 block: OPEN_BRACE CLOSE_BRACE										{ $$ = EmptyBlockGrammarAction(); }
-	| OPEN_BRACE instructions CLOSE_BRACE							{ $$ = InstructionsBlockGrammarAction($2); }
+	| OPEN_BRACE instructions CLOSE_BRACE							{ $$ = InstructionsBlockGrammarAction($2); } 
+	| OPEN_BRACE instructions block CLOSE_BRACE						{ $$ = InstructionsBlockBlockGrammarAction($2, $3); }
+	| OPEN_BRACE instructions block instructions CLOSE_BRACE		{ $$ = InstructionsBlockBlockInstructionsGrammarAction($2, $3, $4); }
 	;
 
 instructions: instruction											{ $$ = InstructionGrammarAction($1); }
@@ -237,7 +239,7 @@ factor: OPEN_PARENTHESIS expression CLOSE_PARENTHESIS				{ $$ = ExpressionFactor
 	;
 
 full_assignment: declaration ASSIGNMENT expression					{ $$ = FullAssignmentGrammarAction($1, $3); }
-	| declaration ASSIGNMENT OPEN_BRACE parameters CLOSE_BRACE		{ $$ = VectorFullAssignmentGrammarAction($1, $4); } 
+	// | declaration ASSIGNMENT OPEN_BRACE parameters CLOSE_BRACE		{ $$ = VectorFullAssignmentGrammarAction($1, $4); } Dropping vector support, not used regardless
 	;
 
 assignment: IDENTIFIER ASSIGNMENT expression						{ $$ = AssignmentGrammarAction($1, $3); }
@@ -248,17 +250,17 @@ declaration: type IDENTIFIER										{ $$ = DeclarationGrammarAction($1, $2); }
 	| type IDENTIFIER OPEN_BRACKET CLOSE_BRACKET					{ $$ = VectorDeclarationGrammarAction($1, $2); }
 	;
 
-type: PEFILE_TYPE													{ $$ = PEFILE_TYPE; }
-	| PESECTION_TYPE												{ $$ = PESECTION_TYPE; }
-	| PEIMPORT_TYPE													{ $$ = PEIMPORT_TYPE; }
-	| PEEXPORT_TYPE													{ $$ = PEEXPORT_TYPE; }
-	| PEHEADER_TYPE													{ $$ = PEHEADER_TYPE; }
-	| PERESOURCE_TYPE												{ $$ = PERESOURCE_TYPE; }
-	| PESIGNATURE_TYPE												{ $$ = PESIGNATURE_TYPE; }
-	| PEDIRENTRY_TYPE												{ $$ = PEDIRENTRY_TYPE; }
-	| INT_TYPE														{ $$ = INT_TYPE; }
-	| STRING_TYPE													{ $$ = STRING_TYPE; }
-	| BYTE_TYPE														{ $$ = BYTE_TYPE; }
+type: PEFILE_TYPE													{ $$ = TYPE_PEFILE; }
+	| PESECTION_TYPE												{ $$ = TYPE_PESECTION; }
+	| PEIMPORT_TYPE													{ $$ = TYPE_PEIMPORT; }
+	| PEEXPORT_TYPE													{ $$ = TYPE_PEEXPORT; }
+	| PEHEADER_TYPE													{ $$ = TYPE_PEHEADER; }
+	| PERESOURCE_TYPE												{ $$ = TYPE_PERESOURCE; }
+	| PESIGNATURE_TYPE												{ $$ = TYPE_PESIGNATURE; }
+	| PEDIRENTRY_TYPE												{ $$ = TYPE_PEDIRENTRY; }
+	| INT_TYPE														{ $$ = TYPE_INT; }
+	| STRING_TYPE													{ $$ = TYPE_STRING; }
+	| BYTE_TYPE														{ $$ = TYPE_BYTE; }
 	;
 
 constant: INTEGER													{ $$ = IntegerConstantGrammarAction($1); }
