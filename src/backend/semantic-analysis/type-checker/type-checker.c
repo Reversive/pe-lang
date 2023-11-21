@@ -32,8 +32,6 @@ Type GetExpressionType(Expression* expression) {
 			}
 			return TYPE_UNKNOWN;
 		}
-		case NOT_EXPRESSION:
-			return GetExpressionType(expression->leftExpression);
 		case FACTOR_EXPRESSION:
 			return GetFactorType(expression->factor);
 		case RETURN_FUNCTION_EXPRESSION:
