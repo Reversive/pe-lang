@@ -265,6 +265,17 @@ void GenerateWhile(While* whileInstruction) {
 	GenerateBlock(whileInstruction->block);
 }
 
+void GenerateForEachIterator(ForEachIterator* iterator) {
+	switch(iterator->type) {
+		case IDENTIFIER_ITERATOR:
+			OB_WriteWT(state.output, "%s", GetSymbolId(iterator->id));
+			break;
+		case MEMBER_ITERATOR:
+			GenerateMember(iterator->member);
+			break;
+	}
+}
+
 void GenerateForLoopDeclaration(ForLoopDeclaration* forLoopDeclaration) {
 	switch(forLoopDeclaration->type) {
 		case FULL_FOR_ASSIGNMENT:
@@ -292,17 +303,17 @@ void GenerateForLoopDeclaration(ForLoopDeclaration* forLoopDeclaration) {
 			GenerateExpression(forLoopDeclaration->expression);
 			OB_WriteWT(state.output, "; ");
 			break;
-		case MEMBER_DECLARATION:
+		case FOREACH_ITERATOR:
 			GenerateDeclaration(forLoopDeclaration->declaration, true);
 			OB_WriteWT(state.output, " in ");
-			GenerateMember(forLoopDeclaration->member);
+			GenerateForEachIterator(forLoopDeclaration->forEachIterator);
 			break;
 	}
 }
 
 void GenerateFor(For* forInstruction) {
 	ForLoopDeclaration* forLoopDeclaration = forInstruction->forLoopDeclaration;
-	boolean isForEach = forLoopDeclaration->type == MEMBER_DECLARATION;
+	boolean isForEach = forLoopDeclaration->type == FOREACH_ITERATOR;
 	OB_Write(state.output, isForEach ? "for " :"for (");
 	GenerateForLoopDeclaration(forLoopDeclaration);
 	OB_Write(state.output, isForEach ? ":\n" : "):\n");

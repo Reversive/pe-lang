@@ -32,6 +32,7 @@
 	ForLoopDeclaration* for_loop_decl;
 	Vector* vector;
 	Member* member;
+	ForEachIterator* for_each_iterator;
 	// Terminales
 	Type type;
 	token token;
@@ -114,6 +115,7 @@
 %type <vector> vector
 %type <member> member
 %type <instructions> instructions
+%type <for_each_iterator> for_each_iterator
 
 // Associative and precedence rules.
 %left ADD SUB
@@ -169,7 +171,11 @@ for_loop_declaration: full_assignment SEMICOLON expression SEMICOLON assignment 
 	| assignment SEMICOLON expression SEMICOLON assignment										{ $$ = ForAssignmentExpressionAssignmentGrammarAction($1, $3, $5); }
 	| SEMICOLON expression SEMICOLON assignment													{ $$ = ForExpressionAssignmentGrammarAction($2, $4); }
 	| SEMICOLON expression SEMICOLON															{ $$ = ForExpressionGrammarAction($2); }
-	| declaration IN member																		{ $$ = ForDeclarationMemberGrammarAction($1, $3); }
+	| declaration IN for_each_iterator															{ $$ = ForDeclarationMemberGrammarAction($1, $3); }
+	;
+
+for_each_iterator: member																		{ $$ = ForEachIteratorGrammarAction($1); }
+	| IDENTIFIER																				{ $$ = ForEachIteratorIdentifierGrammarAction($1); }
 	;
 
 expression: expression[left] ADD expression[right]					{ $$ = AdditionExpressionGrammarAction($left, $right); }

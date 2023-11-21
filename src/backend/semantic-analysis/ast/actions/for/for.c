@@ -77,11 +77,31 @@ ForLoopDeclaration* ForExpressionGrammarAction(Expression* expression) {
 	return forLoopDeclaration;
 }
 
-boolean IsTypeForEachable(Type left, Type right) {
-	return GetForEachableType(right) == left;
+
+boolean IsTypeForEachable(Type type) {
+	return GetIterableType(type) != TYPE_UNKNOWN;
 }
 
-Type GetForEachableType(Type type) {
+boolean CompareForEachable(Type left, Type right) {
+	return GetIterableType(right) == left;
+}
+
+Type GetIteratorType(Type type) {
+	switch(type) {
+		case TYPE_PESECTION:
+			return TYPE_PESECTIONS;
+		case TYPE_PEIMPORT:
+			return TYPE_PEIMPORTS;
+		case TYPE_PEEXPORT:
+			return TYPE_PEEXPORTS;
+		case TYPE_PEFUNCTION:
+			return TYPE_PEFUNCTIONS;
+		default:
+			return TYPE_UNKNOWN;
+	}
+}
+
+Type GetIterableType(Type type) {
 	switch(type) {
 		case TYPE_PESECTIONS:
 			return TYPE_PESECTION;
@@ -94,34 +114,63 @@ Type GetForEachableType(Type type) {
 		default:
 			return TYPE_UNKNOWN;
 	}
-
 }
 
-ForLoopDeclaration* ForDeclarationMemberGrammarAction(Declaration* declaration, Member* member) {
+ForLoopDeclaration* ForDeclarationMemberGrammarAction(Declaration* declaration, ForEachIterator* iterator) {
 	LogDebug("[Bison] ForDeclarationMemberGrammarAction");
 	ForLoopDeclaration* forLoopDeclaration = calloc(1, sizeof(ForLoopDeclaration));
 	AssertNotNullCallback(forLoopDeclaration, HandleOutOfMemoryError);
-	if (member->dataType == TYPE_UNKNOWN) {
-		PushError("La variable '%s' de tipo '%s' no contiene el miembro '%s'.", 
-			declaration->id, 
-			TypeToString(GetDeclarationType(declaration)), 
-			member->rightIdentifier
-		);
+	SymbolEntry* entry = CX_GetSymbol(state.context, iterator->id);
+	Type iteratorDataType = iterator->type == MEMBER_ITERATOR ? 
+		iterator->member->dataType : 
+		entry == NULL ? TYPE_UNKNOWN : entry->type;
+	if(!CompareForEachable(declaration->declarationType, iteratorDataType)) {
+		if(!IsTypeForEachable(iteratorDataType)) {
+			PushError("La variable de tipo '%s' no es iterable.", 
+				TypeToString(iteratorDataType)
+			);
+		} else {
+			PushError("La variable '%s' de tipo '%s' no puede iterar una instancia de tipo '%s', querias escribir: '%s %s'?", 
+				declaration->id, 
+				TypeToString(GetDeclarationType(declaration)), 
+				TypeToString(iteratorDataType),
+				TypeToString(GetIterableType(iteratorDataType)),
+				declaration->id
+			);
+		}
 		state.succeed = false;
 	}
-	
-	if(!IsTypeForEachable(declaration->declarationType, member->dataType)) {
-		PushError("La variable '%s' de tipo '%s' no coincide con el tipo '%s', querias escribir: '%s %s'?", 
-			declaration->id, 
-			TypeToString(GetDeclarationType(declaration)), 
-			TypeToString(member->dataType),
-			TypeToString(GetForEachableType(declaration->declarationType)),
-			declaration->id
-		);
-		state.succeed = false;
-	}
-	forLoopDeclaration->type = MEMBER_DECLARATION;
+	forLoopDeclaration->type = FOREACH_ITERATOR;
 	forLoopDeclaration->declaration = declaration;
-	forLoopDeclaration->member = member;
+	forLoopDeclaration->forEachIterator = iterator;
 	return forLoopDeclaration;
+}
+
+ForEachIterator* ForEachIteratorGrammarAction(Member* member) {
+	LogDebug("[Bison] ForEachIteratorGrammarAction");
+	ForEachIterator* iterator = calloc(1, sizeof(ForEachIterator));
+	AssertNotNullCallback(iterator, HandleOutOfMemoryError);
+	SymbolEntry* entry = CX_GetSymbol(state.context, member->leftIdentifier);
+	if (entry == NULL) {
+		PushError("La variable '%s' no existe en el contexto actual.", member->leftIdentifier);
+		state.succeed = false;
+	}
+	iterator->type = MEMBER_ITERATOR;
+	iterator->member = member;
+	return iterator;
+
+}
+
+ForEachIterator* ForEachIteratorIdentifierGrammarAction(char* id) {
+	LogDebug("[Bison] ForEachIteratorIdentifierGrammarAction");
+	ForEachIterator* iterator = calloc(1, sizeof(ForEachIterator));
+	AssertNotNullCallback(iterator, HandleOutOfMemoryError);
+	SymbolEntry* entry = CX_GetSymbol(state.context, id);
+	if (entry == NULL) {
+		PushError("La variable '%s' no existe en el contexto actual.", id);
+		state.succeed = false;
+	}
+	iterator->type = IDENTIFIER_ITERATOR;
+	iterator->id = id;
+	return iterator;
 }

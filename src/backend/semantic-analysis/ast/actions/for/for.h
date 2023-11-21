@@ -10,20 +10,19 @@ ForLoopDeclaration* ForFullAssignmentForGrammarAction(
 	Expression* expression, 
 	Assignment* rightAssignment
 );
-
 ForLoopDeclaration* ForAssignmentExpressionAssignmentGrammarAction(
 	Assignment* leftAssignment, 
 	Expression* expression, 
 	Assignment* rightAssignment
 );
-
 ForLoopDeclaration* ForExpressionAssignmentGrammarAction(
 	Expression* expression, 
 	Assignment* rightAssignment
 );
-
 ForLoopDeclaration* ForExpressionGrammarAction(Expression* expression);
+ForLoopDeclaration* ForDeclarationMemberGrammarAction(Declaration* declaration, ForEachIterator* member);
 
-ForLoopDeclaration* ForDeclarationMemberGrammarAction(Declaration* declaration, Member* member);
 
+ForEachIterator* ForEachIteratorGrammarAction(Member* member);
+ForEachIterator* ForEachIteratorIdentifierGrammarAction(char* id);
 #endif
