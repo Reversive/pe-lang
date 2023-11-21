@@ -43,6 +43,16 @@ SymbolEntry* CtxGetSymbol(Context* context, char* id) {
     return NULL;
 }
 
+SymbolEntry* CtxGetSymbolFromAll(Context* context, char* id) {
+    for (int i = 0; i < context->size; i++) {
+        SymbolEntry* entry = GetSymbol(context->scopes[i], id);
+        if (entry != NULL) {
+            return entry;
+        }
+    }
+    return NULL;
+}
+
 int CtxSymbolExists(Context* context, char* id) {
     for (int i = context->current; i >= 0; i--) {
         if (SymbolExists(context->scopes[i], id)) {

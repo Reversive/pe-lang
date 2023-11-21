@@ -18,6 +18,7 @@ SymbolEntry* CtxAddSymbol(Context* context, SymbolEntry* entry);
 SymbolEntry* CtxGetSymbol(Context* context, char* id);
 int CtxSymbolExists(Context* context, char* id);
 void CtxMoveDown(Context* context);
+SymbolEntry* CtxGetSymbolFromAll(Context* context, char* id);
 
 
 #endif
