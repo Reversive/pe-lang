@@ -13,6 +13,7 @@ typedef struct {
         int  intVal;
         char *strVal;
     } value;
+    int uid;
 } SymbolEntry;
 
 typedef struct {

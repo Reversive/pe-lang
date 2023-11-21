@@ -1,10 +1,13 @@
 #include "symbol-table.h"
 #include <stdlib.h>
 
+static int uid = 0;
+
 SymbolEntry* SE_New(char* id, Type type) {
     SymbolEntry* entry = (SymbolEntry*) malloc(sizeof(SymbolEntry));
     entry->id = id;
     entry->type = type;
+    entry->uid = uid++;
     return entry;
 
 }
