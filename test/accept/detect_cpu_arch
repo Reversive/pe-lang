@@ -1,12 +1,10 @@
 main {
-    PEFile pe = peopen("file.exe");
+    string file = "file.exe";
+    PEFile pe = peopen(file);
     int arch = pe.file_header.machine;
-    if (arch == 267)
-    {
+    if (arch == 267) {
         print "32";
-    }
-    else if (arch == 523)
-    {
+    } else if (arch == 523) {
         print "64";
     }
 }
