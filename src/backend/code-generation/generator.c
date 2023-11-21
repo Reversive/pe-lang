@@ -1,360 +1,362 @@
 #include "generator.h"
 
 char* GetSymbolId(char *identifier) {
-	SymbolEntry* entry = CtxGetSymbolFromAll(state.context, identifier);
+	SymbolEntry* entry = CX_GetSymbolFromAll(state.context, identifier);
 	char* id = (char*) malloc(sizeof(char) * (strlen(entry->id) + 1));
 	sprintf(id, "%s_%d", entry->id, entry->uid);
 	return id;
 }
 
-void GenerateConstant(Constant* constant, FILE* out) {
-	fprintf(out, "%d", constant->value);
+void GenerateConstant(Constant* constant) {
+	OB_WriteWT(state.output, "%d", constant->value);
 }
 
-void GenerateFactor(Factor* factor, FILE* out) {
+void GenerateFactor(Factor* factor) {
 	switch(factor->type) {
 		case EXPRESSION_FACTOR:
-			GenerateExpression(factor->expression, out);
+			GenerateExpression(factor->expression);
 			break;
 		case CONSTANT_FACTOR:
-			GenerateConstant(factor->constant, out);
+			GenerateConstant(factor->constant);
 			break;
 		case IDENTIFIER_FACTOR:
-			fprintf(out, "%s", GetSymbolId(factor->id));
+			OB_WriteWT(state.output, "%s", GetSymbolId(factor->id));
 			break;
 		case STRING_FACTOR:
-			fprintf(out, "\"%s\"", factor->string);
+			OB_WriteWT(state.output, "\"%s\"", factor->string);
 			break;
 	}
 }
 
-void GeneratePEOpen(PEOpen* peOpen, FILE* out) {
+void GeneratePEOpen(PEOpen* peOpen) {
 	switch(peOpen->type) {
 		case PE_OPEN_PATH:
-			fprintf(out, "PEAnalyzer(\"%s\")", peOpen->path);
+			OB_Write(state.output, "PEAnalyzer(\"%s\")", peOpen->path);
 			break;
 		case PE_OPEN_ID:
-			fprintf(out, "PEAnalyzer(%s)", GetSymbolId(peOpen->id));
+			OB_Write(state.output, "PEAnalyzer(%s)", GetSymbolId(peOpen->id));
 			break;
 	}
 }
 
-void GenerateReturnFunction(ReturnFunction* returnFunction, FILE* out) {
-	GeneratePEOpen(returnFunction->peOpen, out);
+void GenerateReturnFunction(ReturnFunction* returnFunction) {
+	GeneratePEOpen(returnFunction->peOpen);
 }
 
-void GenerateVector(Vector* vector, FILE* out) {
-	fprintf(out, "%s[", GetSymbolId(vector->id));
-	GenerateFactor(vector->factor, out);
-	fprintf(out, "]");
+void GenerateVector(Vector* vector) {
+	OB_Write(state.output, "%s[", GetSymbolId(vector->id));
+	GenerateFactor(vector->factor);
+	OB_Write(state.output, "]");
 }
 
-void GenerateMember(Member* member, FILE* out) {
+void GenerateMember(Member* member) {
 	switch(member->type) {
 		case IDENTIFIER_PROPERTY_MEMBER:
-			fprintf(out, "%s[\'%s\']", GetSymbolId(member->leftIdentifier), member->rightIdentifier);
+			OB_WriteWT(state.output, "%s[\'%s\']", GetSymbolId(member->leftIdentifier), member->rightIdentifier);
 			break;
 		case MEMBER_PROPERTY_MEMBER:
-			GenerateMember(member->member, out);
-			fprintf(out, ".[\'%s\']", member->rightIdentifier);
+			GenerateMember(member->member);
+			OB_WriteWT(state.output, "[\'%s\']", member->rightIdentifier);
 			break;
 	}
 }
 
-void GenerateExpression(Expression* expression, FILE* out) {
+void GenerateExpression(Expression* expression) {
 	switch(expression->type) {
 		case ADDITION_EXPRESSION:
-			GenerateExpression(expression->leftExpression, out);
-			fprintf(out, " + ");
-			GenerateExpression(expression->rightExpression, out);
+			GenerateExpression(expression->leftExpression);
+			OB_WriteWT(state.output, " + ");
+			GenerateExpression(expression->rightExpression);
 			break;
 		case SUBTRACTION_EXPRESSION:
-			GenerateExpression(expression->leftExpression, out);
-			fprintf(out, " - ");
-			GenerateExpression(expression->rightExpression, out);
+			GenerateExpression(expression->leftExpression);
+			OB_WriteWT(state.output, " - ");
+			GenerateExpression(expression->rightExpression);
 			break;
 		case MULTIPLICATION_EXPRESSION:
-			GenerateExpression(expression->leftExpression, out);
-			fprintf(out, " * ");
-			GenerateExpression(expression->rightExpression, out);
+			GenerateExpression(expression->leftExpression);
+			OB_WriteWT(state.output, " * ");
+			GenerateExpression(expression->rightExpression);
 			break;
 		case DIVISION_EXPRESSION:
-			GenerateExpression(expression->leftExpression, out);
-			fprintf(out, " / ");
-			GenerateExpression(expression->rightExpression, out);
+			GenerateExpression(expression->leftExpression);
+			OB_WriteWT(state.output, " / ");
+			GenerateExpression(expression->rightExpression);
 			break;
 		case FACTOR_EXPRESSION:
-			GenerateFactor(expression->factor, out);
+			GenerateFactor(expression->factor);
 			break;
 		case EQUALITY_EXPRESSION:
-			GenerateExpression(expression->leftExpression, out);
-			fprintf(out, " == ");
-			GenerateExpression(expression->rightExpression, out);
+			GenerateExpression(expression->leftExpression);
+			OB_WriteWT(state.output, " == ");
+			GenerateExpression(expression->rightExpression);
 			break;
 		case INEQUALITY_EXPRESSION:
-			GenerateExpression(expression->leftExpression, out);
-			fprintf(out, " != ");
-			GenerateExpression(expression->rightExpression, out);
+			GenerateExpression(expression->leftExpression);
+			OB_WriteWT(state.output, " != ");
+			GenerateExpression(expression->rightExpression);
 			break;
 		case LESS_THAN_EXPRESSION:
-			GenerateExpression(expression->leftExpression, out);
-			fprintf(out, " < ");
-			GenerateExpression(expression->rightExpression, out);
+			GenerateExpression(expression->leftExpression);
+			OB_WriteWT(state.output, " < ");
+			GenerateExpression(expression->rightExpression);
 			break;
 		case LESS_THAN_OR_EQUAL_TO_EXPRESSION:
-			GenerateExpression(expression->leftExpression, out);
-			fprintf(out, " <= ");
-			GenerateExpression(expression->rightExpression, out);
+			GenerateExpression(expression->leftExpression);
+			OB_WriteWT(state.output, " <= ");
+			GenerateExpression(expression->rightExpression);
 			break;
 		case GREATER_THAN_EXPRESSION:
-			GenerateExpression(expression->leftExpression, out);
-			fprintf(out, " > ");
-			GenerateExpression(expression->rightExpression, out);
+			GenerateExpression(expression->leftExpression);
+			OB_WriteWT(state.output, " > ");
+			GenerateExpression(expression->rightExpression);
 			break;
 		case GREATER_THAN_OR_EQUAL_TO_EXPRESSION:
-			GenerateExpression(expression->leftExpression, out);
-			fprintf(out, " >= ");
-			GenerateExpression(expression->rightExpression, out);
+			GenerateExpression(expression->leftExpression);
+			OB_WriteWT(state.output, " >= ");
+			GenerateExpression(expression->rightExpression);
 			break;
 		case AND_EXPRESSION:
-			GenerateExpression(expression->leftExpression, out);
-			fprintf(out, " and ");
-			GenerateExpression(expression->rightExpression, out);
+			GenerateExpression(expression->leftExpression);
+			OB_WriteWT(state.output, " and ");
+			GenerateExpression(expression->rightExpression);
 			break;
 		case OR_EXPRESSION:
-			GenerateExpression(expression->leftExpression, out);
-			fprintf(out, " or ");
-			GenerateExpression(expression->rightExpression, out);
+			GenerateExpression(expression->leftExpression);
+			OB_WriteWT(state.output, " or ");
+			GenerateExpression(expression->rightExpression);
 			break;
 		case RETURN_FUNCTION_EXPRESSION:
-			GenerateReturnFunction(expression->returnFunction, out);
+			GenerateReturnFunction(expression->returnFunction);
 			break;
 		case VECTOR_EXPRESSION:
-			GenerateVector(expression->vector, out);
+			GenerateVector(expression->vector);
 			break;
 		case MEMBER_EXPRESSION:
-			GenerateMember(expression->member, out);
+			GenerateMember(expression->member);
 			break;
 	}
 }
 
-void GenerateAssignment(Assignment* assignment, FILE* out) {
+void GenerateAssignment(Assignment* assignment) {
 	switch(assignment->type) {
 		case IDENTIFIER_ASSIGNMENT:
-			fprintf(out, "%s = ", GetSymbolId(assignment->id));
-			GenerateExpression(assignment->expression, out);
+			OB_WriteWT(state.output, "%s = ", GetSymbolId(assignment->id));
+			GenerateExpression(assignment->expression);
 			break;
 		case VVECTOR_ASSIGNMENT:
-			fprintf(out, "%s[", GetSymbolId(assignment->id));
-			GenerateVector(assignment->vector, out);
-			fprintf(out, "] = ");
-			GenerateExpression(assignment->expression, out);
+			OB_Write(state.output, "%s[", GetSymbolId(assignment->id));
+			GenerateVector(assignment->vector);
+			OB_Write(state.output, "] = ");
+			GenerateExpression(assignment->expression);
 			break;
 	}
 }
 
-void GenerateFullAssignment(FullAssignment* fullAssignment, FILE* out) {
+void GenerateFullAssignment(FullAssignment* fullAssignment) {
 	
 	switch (fullAssignment->type) {
 		case ID_FULL_ASSIGNMENT:
-			GenerateDeclaration(fullAssignment->declaration, out, true);
-			fprintf(out, " = ");
-			GenerateExpression(fullAssignment->expression, out);
+			GenerateDeclaration(fullAssignment->declaration, true);
+			OB_WriteWT(state.output, " = ");
+			GenerateExpression(fullAssignment->expression);
 			if(fullAssignment->expression->type == RETURN_FUNCTION_EXPRESSION) {			  
-				fprintf(out, "\n");
-				GenerateDeclaration(fullAssignment->declaration, out, true);
-				fprintf(out, " = ");
-				GenerateDeclaration(fullAssignment->declaration, out, true);
-				fprintf(out, ".analyze()\n");
-				GenerateDeclaration(fullAssignment->declaration, out, true);
-				fprintf(out, " = json.loads(");
-				GenerateDeclaration(fullAssignment->declaration, out, true);
-				fprintf(out, ")\n");				
+				OB_WriteWT(state.output, "\n");
+				GenerateDeclaration(fullAssignment->declaration, true);
+				OB_WriteWT(state.output, " = ");
+				GenerateDeclaration(fullAssignment->declaration, true);
+				OB_WriteWT(state.output, ".analyze()\n");
+				GenerateDeclaration(fullAssignment->declaration, true);
+				OB_WriteWT(state.output, " = json.loads(");
+				GenerateDeclaration(fullAssignment->declaration, true);
+				OB_WriteWT(state.output, ")\n");				
 			}
 			break;
 	}
 }
 
-void GenerateParameters(Parameters* parameters, FILE* out) {
+void GenerateParameters(Parameters* parameters) {
 	switch (parameters->type) {
 		case EXPRESSION_PARAMETERS:
-			GenerateExpression(parameters->expression, out);
+			GenerateExpression(parameters->expression);
 		break;
 		case PARAMETERS_EXPRESSION_PARAMETERS:
-			GenerateParameters(parameters->parameters, out);
-			fprintf(out, ", ");
-			GenerateExpression(parameters->expression, out);
+			GenerateParameters(parameters->parameters);
+			OB_WriteWT(state.output, ", ");
+			GenerateExpression(parameters->expression);
 		break;
 	}
 }
 
-void GenerateVoidFunction(VoidFunction* voidFunction, FILE* out) {
+void GenerateVoidFunction(VoidFunction* voidFunction) {
 	switch(voidFunction->type) {
 		case PRINT_FUNCTION:
-			fprintf(out, "print(");
-			GenerateParameters(voidFunction->print->parameters, out);
-			fprintf(out, ")");
+			OB_Write(state.output, "print(");
+			GenerateParameters(voidFunction->print->parameters);
+			OB_WriteWT(state.output, ")");
 			break;
 		case PE_CLOSE_FUNCTION:
-			fprintf(out, "%s.close()", GetSymbolId(voidFunction->peClose->id));
+			OB_Write(state.output, "%s.close()", GetSymbolId(voidFunction->peClose->id));
 			break;
 	}
 }
 
-void GenerateDeclaration(Declaration* declaration, FILE* out, boolean shouldSkip) {
+void GenerateDeclaration(Declaration* declaration, boolean shouldSkip) {
 	switch (declaration->type) {
 		case TYPE_DECLARATION:
-			fprintf(out, shouldSkip ? "%s" : "%s = None", GetSymbolId(declaration->id));
+			OB_WriteWT(state.output, shouldSkip ? "%s" : "%s = None", GetSymbolId(declaration->id));
 			break;
 		case VECTOR_DECLARATION:
-			fprintf(out, "%s = []", GetSymbolId(declaration->id));
+			OB_WriteWT(state.output, "%s = []", GetSymbolId(declaration->id));
 			break;
 	}
 }
 
-void GenerateStatement(Statement* statement, FILE* out) {
+void GenerateStatement(Statement* statement) {
 	
 	switch(statement->type) {
 		case ASSIGNMENT_STATEMENT:
-			GenerateAssignment(statement->assignment, out);
+			GenerateAssignment(statement->assignment);
 			break;
 		case FULL_ASSIGNMENT_STATEMENT:
-			GenerateFullAssignment(statement->fullAssignment, out);
+			GenerateFullAssignment(statement->fullAssignment);
 			break;
 		case RETURN_FUNCTION_STATEMENT:
-			GenerateReturnFunction(statement->returnFunction, out);
+			GenerateReturnFunction(statement->returnFunction);
 			break;
 		case VOID_FUNCTION_STATEMENT:
-			GenerateVoidFunction(statement->voidFunction, out);
+			GenerateVoidFunction(statement->voidFunction);
 			break;
 		case DECLARATION_STATEMENT:
-			GenerateDeclaration(statement->declaration, out, false);
+			GenerateDeclaration(statement->declaration, false);
 			break;
 	}
-	fprintf(out, "\n");
+	OB_WriteWT(state.output, "\n");
 }
 
-void GenerateIfClosure(IfClosure* ifClosure, FILE* out) {
+void GenerateIfClosure(IfClosure* ifClosure) {
 	switch (ifClosure->type) {
 		case IF_CLOSURE:
 			break;
 		case IF_CLOSURE_ELSE_IF:
-			GenerateIf(ifClosure->ifClosure, out, true);
+			GenerateIf(ifClosure->ifClosure, true);
 			break;
 		case IF_CLOSURE_ELSE:
-			fprintf(out, "else:\n");
-			GenerateBlock(ifClosure->block, out);
+			OB_Write(state.output, "else:\n");
+			GenerateBlock(ifClosure->block);
 			break;
 	}
 }
 
-void GenerateIf(If* ifInstruction, FILE* out, boolean isElseIf) {
-	fprintf(out, isElseIf ? "elif " : "if ");
-	GenerateExpression(ifInstruction->expression, out);
-	fprintf(out, ":\n");
-	GenerateBlock(ifInstruction->block, out);
+void GenerateIf(If* ifInstruction, boolean isElseIf) {
+	OB_Write(state.output, isElseIf ? "elif " : "if ");
+	GenerateExpression(ifInstruction->expression);
+	OB_WriteWT(state.output, ":\n");
+	GenerateBlock(ifInstruction->block);
 	if(ifInstruction->ifClosure != NULL) {
-		GenerateIfClosure(ifInstruction->ifClosure, out);
+		GenerateIfClosure(ifInstruction->ifClosure);
 	}
 }
 
-void GenerateWhile(While* whileInstruction, FILE* out) {
-	fprintf(out, "while ");
-	GenerateExpression(whileInstruction->expression, out);
-	fprintf(out, ":\n");
-	GenerateBlock(whileInstruction->block, out);
+void GenerateWhile(While* whileInstruction) {
+	OB_Write(state.output, "while ");
+	GenerateExpression(whileInstruction->expression);
+	OB_Write(state.output, ":\n");
+	GenerateBlock(whileInstruction->block);
 }
 
-void GenerateForLoopDeclaration(ForLoopDeclaration* forLoopDeclaration, FILE* out) {
+void GenerateForLoopDeclaration(ForLoopDeclaration* forLoopDeclaration) {
 	switch(forLoopDeclaration->type) {
 		case FULL_FOR_ASSIGNMENT:
-			GenerateFullAssignment(forLoopDeclaration->fullAssignment, out);
-			fprintf(out, "; ");
-			GenerateExpression(forLoopDeclaration->expression, out);
-			fprintf(out, "; ");
-			GenerateAssignment(forLoopDeclaration->assignment, out);
+			GenerateFullAssignment(forLoopDeclaration->fullAssignment);
+			OB_WriteWT(state.output, "; ");
+			GenerateExpression(forLoopDeclaration->expression);
+			OB_WriteWT(state.output, "; ");
+			GenerateAssignment(forLoopDeclaration->rightAssignment);
 			break;
 		case FOR_ASSIGNMENT:
-			GenerateAssignment(forLoopDeclaration->assignment, out);
-			fprintf(out, "; ");
-			GenerateExpression(forLoopDeclaration->expression, out);
-			fprintf(out, "; ");
-			GenerateAssignment(forLoopDeclaration->assignment, out);
+			GenerateAssignment(forLoopDeclaration->leftAssignment);
+			OB_WriteWT(state.output, "; ");
+			GenerateExpression(forLoopDeclaration->expression);
+			OB_WriteWT(state.output, "; ");
+			GenerateAssignment(forLoopDeclaration->rightAssignment);
 			break;
 		case EXPRESSION_AND_ASSIGNMENT:
-			fprintf(out, "; ");
-			GenerateExpression(forLoopDeclaration->expression, out);
-			fprintf(out, "; ");
-			GenerateAssignment(forLoopDeclaration->assignment, out);
+			OB_WriteWT(state.output, "; ");
+			GenerateExpression(forLoopDeclaration->expression);
+			OB_WriteWT(state.output, "; ");
+			GenerateAssignment(forLoopDeclaration->rightAssignment);
 			break;
 		case ONLY_EXPRESSION:
-			fprintf(out, "; ");
-			GenerateExpression(forLoopDeclaration->expression, out);
-			fprintf(out, "; ");
+			OB_WriteWT(state.output, "; ");
+			GenerateExpression(forLoopDeclaration->expression);
+			OB_WriteWT(state.output, "; ");
 			break;
 		case MEMBER_DECLARATION:
-			GenerateDeclaration(forLoopDeclaration->declaration, out, true);
-			fprintf(out, " in ");
-			GenerateMember(forLoopDeclaration->member, out);
+			GenerateDeclaration(forLoopDeclaration->declaration, true);
+			OB_WriteWT(state.output, " in ");
+			GenerateMember(forLoopDeclaration->member);
 			break;
 	}
 }
 
-void GenerateFor(For* forInstruction, FILE* out) {
+void GenerateFor(For* forInstruction) {
 	ForLoopDeclaration* forLoopDeclaration = forInstruction->forLoopDeclaration;
 	boolean isForEach = forLoopDeclaration->type == MEMBER_DECLARATION;
-	fprintf(out, isForEach ? "for " :"for (");
-	GenerateForLoopDeclaration(forLoopDeclaration, out);
-	fprintf(out, isForEach ? ":\n" : "):\n");
-	GenerateBlock(forInstruction->block, out);
+	OB_Write(state.output, isForEach ? "for " :"for (");
+	GenerateForLoopDeclaration(forLoopDeclaration);
+	OB_Write(state.output, isForEach ? ":\n" : "):\n");
+	GenerateBlock(forInstruction->block);
 }
 
-void GenerateInstruction(Instruction* instruction, FILE* out) {
+void GenerateInstruction(Instruction* instruction) {
 	switch(instruction->type) {
 		case STATEMENT_INSTRUCTION:
-			GenerateStatement(instruction->statement, out);
+			GenerateStatement(instruction->statement);
 			break;
 		case IF_INSTRUCTION:
-			GenerateIf(instruction->ifInstruction, out, false);
+			GenerateIf(instruction->ifInstruction, false);
 			break;
 		case WHILE_INSTRUCTION:
-			GenerateWhile(instruction->whileInstruction, out);
+			GenerateWhile(instruction->whileInstruction);
 			break;
 		case FOR_INSTRUCTION:
-			GenerateFor(instruction->forInstruction, out);
+			GenerateFor(instruction->forInstruction);
 			break;
 	}
 }
 
-void GenerateInstructions(Instructions* instructions, FILE* out) {
+void GenerateInstructions(Instructions* instructions) {
 	switch(instructions->type) {
 		case SINGLE_INSTRUCTION:
-			GenerateInstruction(instructions->instruction, out);
+			GenerateInstruction(instructions->instruction);
 			break;
 		case MULTIPLE_INSTRUCTIONS:
-			GenerateInstructions(instructions->instructions, out);
-			GenerateInstruction(instructions->instruction, out);
+			GenerateInstructions(instructions->instructions);
+			GenerateInstruction(instructions->instruction);
 			break;
 	}
 }
 
-void GenerateBlock(Block* block, FILE* out) {
+void GenerateBlock(Block* block) {
+	OB_IncreaseLevel(state.output);
 	switch(block->type) {
 		case EMPTY_BLOCK:
 			break;
 		case INSTRUCTIONS_BLOCK:
-			GenerateInstructions(block->instructions, out);
+			GenerateInstructions(block->instructions);
 			break;
 		case RECURSIVE_BLOCK:
-			GenerateBlock(block->block, out);
+			GenerateBlock(block->block);
 			break;
 		case INSTRUCTIONS_BLOCK_INSTRUCTIONS:
-			GenerateInstructions(block->instructions, out);
-			GenerateBlock(block->block, out);
+			GenerateInstructions(block->instructions);
+			GenerateBlock(block->block);
 			break;
 	}
+	OB_DecreaseLevel(state.output);
 }
 
-void GenerateProgram(Program* program, FILE* out) {
-	GenerateBlock(program->block, out);
+void GenerateProgram(Program* program) {
+	GenerateBlock(program->block);
 }

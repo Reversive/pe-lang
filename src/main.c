@@ -12,8 +12,9 @@ const int main(const int argumentCount, const char **arguments)
 	state.program = NULL;
 	state.result = 0;
 	state.succeed = true;
-	state.context = CtxAllocate();
-	
+	state.context = CX_New();
+	state.output = OB_New("assets/output.py");
+
 	for (int i = 0; i < argumentCount; ++i)
 	{
 		LogInfo("Argumento %d: '%s'", i, arguments[i]);
@@ -28,18 +29,18 @@ const int main(const int argumentCount, const char **arguments)
 		if (state.succeed)
 		{
 			LogInfo("La compilacion fue exitosa.");
-			FILE* template = fopen("assets/template.py", "r");
-			FILE* output = fopen("assets/output.py", "w");
-			CopyFile(template, output);
-			GenerateProgram(state.program, output);
+			FILE* template = fopen("assets/template.py", "r"); // TODO: Check if file exists.
+			CopyFile(template, state.output->file);
+			GenerateProgram(state.program);
 			fclose(template);
-			fclose(output);
+			OB_Free(state.output);
 		}
 		else
 		{
 			PrintErrors();
 			FreeErrors();
-			CtxFree(state.context);
+			CX_Free(state.context);
+			OB_Free(state.output);
 		}
 		break;
 	case 1:

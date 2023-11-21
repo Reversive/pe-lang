@@ -19,7 +19,8 @@ typedef struct {
 	ForLoopDeclarationType type;
 	FullAssignment* fullAssignment;
 	Expression* expression;
-	Assignment* assignment;
+	Assignment* leftAssignment;
+	Assignment* rightAssignment;
 	Declaration* declaration;
 	Member* member;
 } ForLoopDeclaration;

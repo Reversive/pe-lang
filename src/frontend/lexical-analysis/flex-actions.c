@@ -307,14 +307,14 @@ token ElsePatternAction() {
 
 token OpenBracePatternAction() {
 	LogDebug("[Flex] OpenBracePatternAction: '{'.");
-	CtxAddScope(state.context);
+	CX_AddScope(state.context);
 	yylval.token = OPEN_BRACE;
 	return OPEN_BRACE;
 }
 
 token CloseBracePatternAction() {
 	LogDebug("[Flex] CloseBracePatternAction: '}'.");
-	CtxMoveDown(state.context);
+	CX_MoveDown(state.context);
 	yylval.token = CLOSE_BRACE;
 	return CLOSE_BRACE;
 }

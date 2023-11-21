@@ -11,14 +11,14 @@ typedef struct {
     int current;
 } Context;
 
-Context* CtxAllocate();
-void CtxFree(Context* context);
-void CtxAddScope(Context* context);
-SymbolEntry* CtxAddSymbol(Context* context, SymbolEntry* entry);
-SymbolEntry* CtxGetSymbol(Context* context, char* id);
-int CtxSymbolExists(Context* context, char* id);
-void CtxMoveDown(Context* context);
-SymbolEntry* CtxGetSymbolFromAll(Context* context, char* id);
+Context* CX_New();
+void CX_Free(Context* context);
+void CX_AddScope(Context* context);
+SymbolEntry* CX_AddSymbol(Context* context, SymbolEntry* entry);
+SymbolEntry* CX_GetSymbol(Context* context, char* id);
+int CX_SymbolExists(Context* context, char* id);
+void CX_MoveDown(Context* context);
+SymbolEntry* CX_GetSymbolFromAll(Context* context, char* id);
 
 
 #endif

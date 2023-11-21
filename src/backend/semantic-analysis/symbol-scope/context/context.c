@@ -1,6 +1,6 @@
 #include "context.h"
 
-Context* CtxAllocate() {
+Context* CX_New() {
     LogDebug("Allocating context");
     Context* context = malloc(sizeof(Context));
     context->scopes = (SymbolTable**) malloc(sizeof(SymbolTable*) * SCOPE_CHUNK);
@@ -9,33 +9,33 @@ Context* CtxAllocate() {
     return context;
 }
 
-void CtxFree(Context* context) {
+void CX_Free(Context* context) {
     LogDebug("Freeing context");
     for (int i = 0; i < context->size; i++) {
-        FreeSymbolTable(context->scopes[i]);
+        ST_Free(context->scopes[i]);
     }
     free(context->scopes);
     free(context);
 }
 
-void CtxAddScope(Context* context) {
+void CX_AddScope(Context* context) {
     if (context->size % SCOPE_CHUNK == 0) {
         context->scopes = (SymbolTable**) realloc(context->scopes, sizeof(SymbolTable*) * (context->size + SCOPE_CHUNK));
     }
-    context->scopes[context->size++] = AllocateSymbolTable();
+    context->scopes[context->size++] = ST_New();
     context->current++;
 }
 
-SymbolEntry* CtxAddSymbol(Context* context, SymbolEntry* entry) {
-    if (AddSymbol(context->scopes[context->current], entry)) {
+SymbolEntry* CX_AddSymbol(Context* context, SymbolEntry* entry) {
+    if (ST_AddSymbol(context->scopes[context->current], entry)) {
         return entry;
     }
     return NULL;
 }
 
-SymbolEntry* CtxGetSymbol(Context* context, char* id) {
+SymbolEntry* CX_GetSymbol(Context* context, char* id) {
     for (int i = context->current; i >= 0; i--) {
-        SymbolEntry* entry = GetSymbol(context->scopes[i], id);
+        SymbolEntry* entry = ST_GetSymbol(context->scopes[i], id);
         if (entry != NULL) {
             return entry;
         }
@@ -43,9 +43,9 @@ SymbolEntry* CtxGetSymbol(Context* context, char* id) {
     return NULL;
 }
 
-SymbolEntry* CtxGetSymbolFromAll(Context* context, char* id) {
+SymbolEntry* CX_GetSymbolFromAll(Context* context, char* id) {
     for (int i = 0; i < context->size; i++) {
-        SymbolEntry* entry = GetSymbol(context->scopes[i], id);
+        SymbolEntry* entry = ST_GetSymbol(context->scopes[i], id);
         if (entry != NULL) {
             return entry;
         }
@@ -53,15 +53,15 @@ SymbolEntry* CtxGetSymbolFromAll(Context* context, char* id) {
     return NULL;
 }
 
-int CtxSymbolExists(Context* context, char* id) {
+int CX_SymbolExists(Context* context, char* id) {
     for (int i = context->current; i >= 0; i--) {
-        if (SymbolExists(context->scopes[i], id)) {
+        if (ST_SymbolExists(context->scopes[i], id)) {
             return 1;
         }
     }
     return 0;
 }
 
-void CtxMoveDown(Context* context) {
+void CX_MoveDown(Context* context) {
     context->current--;
 }

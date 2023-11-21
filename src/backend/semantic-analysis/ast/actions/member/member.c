@@ -5,7 +5,7 @@ Member* MemberIdentifierGrammarAction(char* left, char* right) {
 	LogDebug("[Bison] MemberIdentifierGrammarAction: %s, %s", left, right);
 	Member* member = calloc(1, sizeof(Member));
 	AssertNotNullCallback(member, HandleOutOfMemoryError);
-	SymbolEntry* entry = CtxGetSymbol(state.context, left);
+	SymbolEntry* entry = CX_GetSymbol(state.context, left);
 	if(entry == NULL) {
 		PushError("La variable '%s' no existe en el contexto actual.", left);
 	}

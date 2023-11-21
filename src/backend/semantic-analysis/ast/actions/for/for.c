@@ -19,10 +19,18 @@ ForLoopDeclaration* ForFullAssignmentForGrammarAction(
 	LogDebug("[Bison] ForFullAssignmentForGrammarAction");
 	ForLoopDeclaration* forLoopDeclaration = calloc(1, sizeof(ForLoopDeclaration));
 	AssertNotNullCallback(forLoopDeclaration, HandleOutOfMemoryError);
+	if (GetFullAssignmentType(leftAssignment) == TYPE_UNKNOWN) {
+		PushError("La variable '%s' de tipo '%s' no coincide con el tipo '%s'.", 
+			leftAssignment->declaration->id, 
+			TypeToString(GetDeclarationType(leftAssignment->declaration)), 
+			TypeToString(GetExpressionType(leftAssignment->expression))
+		);
+		state.succeed = false;
+	}
 	forLoopDeclaration->type = FULL_FOR_ASSIGNMENT;
 	forLoopDeclaration->fullAssignment = leftAssignment;
 	forLoopDeclaration->expression = expression;
-	forLoopDeclaration->assignment = rightAssignment;
+	forLoopDeclaration->rightAssignment = rightAssignment;
 	return forLoopDeclaration;
 }
 
@@ -34,10 +42,16 @@ ForLoopDeclaration* ForAssignmentExpressionAssignmentGrammarAction(
 	LogDebug("[Bison] ForAssignmentExpressionAssignmentGrammarAction");
 	ForLoopDeclaration* forLoopDeclaration = calloc(1, sizeof(ForLoopDeclaration));
 	AssertNotNullCallback(forLoopDeclaration, HandleOutOfMemoryError);
+	SymbolEntry* entry = CX_GetSymbol(state.context, leftAssignment->id);
+	if (entry == NULL) {
+		PushError("La variable '%s' no existe en el contexto actual.", leftAssignment->id);
+		state.succeed = false;
+	}
+
 	forLoopDeclaration->type = FOR_ASSIGNMENT;
-	forLoopDeclaration->assignment = leftAssignment;
+	forLoopDeclaration->leftAssignment = leftAssignment;
 	forLoopDeclaration->expression = expression;
-	forLoopDeclaration->assignment = rightAssignment;
+	forLoopDeclaration->rightAssignment = rightAssignment;
 	return forLoopDeclaration;
 }
 
@@ -50,7 +64,7 @@ ForLoopDeclaration* ForExpressionAssignmentGrammarAction(
 	AssertNotNullCallback(forLoopDeclaration, HandleOutOfMemoryError);
 	forLoopDeclaration->type = EXPRESSION_AND_ASSIGNMENT;
 	forLoopDeclaration->expression = expression;
-	forLoopDeclaration->assignment = rightAssignment;
+	forLoopDeclaration->rightAssignment = rightAssignment;
 	return forLoopDeclaration;
 }
 
@@ -83,16 +97,10 @@ Type GetForEachableType(Type type) {
 
 }
 
-
 ForLoopDeclaration* ForDeclarationMemberGrammarAction(Declaration* declaration, Member* member) {
 	LogDebug("[Bison] ForDeclarationMemberGrammarAction");
 	ForLoopDeclaration* forLoopDeclaration = calloc(1, sizeof(ForLoopDeclaration));
 	AssertNotNullCallback(forLoopDeclaration, HandleOutOfMemoryError);
-	SymbolEntry* entry = CtxAddSymbol(state.context, SE_New(declaration->id, declaration->declarationType));
-	if (entry == NULL) {
-		PushError("La variable '%s' ya existe en el contexto actual.", declaration->id);
-		state.succeed = false;
-	}
 	if (member->dataType == TYPE_UNKNOWN) {
 		PushError("La variable '%s' de tipo '%s' no contiene el miembro '%s'.", 
 			declaration->id, 

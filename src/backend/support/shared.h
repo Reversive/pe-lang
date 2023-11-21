@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "../semantic-analysis/ast/ast.h"
 #include "../semantic-analysis/symbol-scope/context/context.h"
+#include "output-builder.h"
 #include <stdarg.h>  
 
 
@@ -52,19 +53,13 @@ typedef int token;
 
 // Estado global de toda la aplicación.
 typedef struct {
-
 	boolean succeed;
-
 	int result;
-
 	Program * program;
-
 	Context * context;
-
 	char * errors[MAX_ERRORS];
-
 	int errorsCount;
-
+	OutputBuilder * output;
 } CompilerState;
 
 extern CompilerState state;

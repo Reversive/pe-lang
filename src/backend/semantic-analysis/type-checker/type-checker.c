@@ -122,7 +122,7 @@ Type GetMemberType(Member* member) {
 }
 
 Type GetIdentifierType(char* id) {
-	SymbolEntry* entry = CtxGetSymbol(state.context, id);
+	SymbolEntry* entry = CX_GetSymbol(state.context, id);
     return entry == NULL ? TYPE_UNKNOWN : entry->type;
 }
 
