@@ -184,14 +184,6 @@ Expression* OrExpressionGrammarAction(
 	return expression;
 }
 
-Expression* NotExpressionGrammarAction(Expression* expression) {
-	LogDebug("[Bison] NotExpressionGrammarAction");
-	Expression* newExpression = calloc(1, sizeof(Expression));
-	AssertNotNullCallback(newExpression, HandleOutOfMemoryError);
-	newExpression->type = NOT_EXPRESSION;
-	newExpression->leftExpression = expression;
-	return newExpression;
-}
 
 Expression* FunctionExpressionGrammarAction(ReturnFunction* returnFunction) {
 	LogDebug("[Bison] FunctionExpressionGrammarAction");
