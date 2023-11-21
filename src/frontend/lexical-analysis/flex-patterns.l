@@ -23,7 +23,6 @@ endline			[\n]
 whitespace		[ \f\n\r\t\v]
 letter          [a-zA-Z]
 
-/* Define a Start condition for STRING */
 %%
 
 "/*"										{ BEGIN(COMMENT); BeginCommentPatternAction(); }
@@ -59,31 +58,18 @@ main                                        { return MainPatternAction(); }
 
 PEFile                                      { return PEFileTypePatternAction(); }
 PESection                                   { return PESectionTypePatternAction(); }
+PESections                                  { return PESectionsTypePatternAction(); }
 PEImport                                    { return PEImportTypePatternAction(); }
+PEImports                                   { return PEImportsTypePatternAction(); }
 PEExport                                    { return PEExportTypePatternAction(); }
+PEExports                                   { return PEExportsTypePatternAction(); }
 PEHeader                                    { return PEHeaderTypePatternAction(); }
-PEResource                                  { return PEResourceTypePatternAction(); }
-PESignature                                 { return PESignatureTypePatternAction(); }
-PEDirEntry                                  { return PEDirEntryTypePatternAction(); }
-
-"directory_entries"                         { return DirectoryEntriesPatternAction(); }
-"dll"                                       { return DLLPatternAction(); }
-"imports"                                   { return ImportsPatternAction(); }
-"exports"                                   { return ExportsPatternAction(); }
-"name"                                      { return NamePatternAction(); }
-"address"                                   { return AddressPatternAction(); }
-
-"sections"                                  { return SectionsPatternAction(); }
-"virtual_size"                              { return VirtualSizePatternAction(); }
-"virtual_address"                           { return VirtualAddressPatternAction(); }
-
-"optional_header"                           { return OptionalHeaderPatternAction(); }
-"magic"                                     { return MagicPatternAction(); }
-
+PEOptionalHeader                            { return PEOptionalHeaderTypePatternAction(); }
+PEFunctions                                 { return PEFunctionsTypePatternAction(); }
+PEFunction                                  { return PEFunctionTypePatternAction(); }
 
 int                                         { return IntTypePatternAction(); }
 string                                      { return StringTypePatternAction(); }
-byte                                        { return ByteTypePatternAction(); }
 
 if                                          { return IfPatternAction(); }
 else                                        { return ElsePatternAction(); }
@@ -102,12 +88,10 @@ in                                          { return InPatternAction(); }
 
 "("											{ return OpenParenthesisPatternAction(); }
 ")"											{ return CloseParenthesisPatternAction(); }
-
-{digit}+									{ return IntegerPatternAction(yytext, yyleng); }
-
-{whitespace}+								{ IgnoredPatternAction(yytext, yyleng); }
-
-{letter}({letter}|{digit})*					{ return IdentifierPatternAction(yytext, yyleng); }
+ 
+ {digit}+									{ return IntegerPatternAction(yytext, yyleng); }
+ {whitespace}+								{ IgnoredPatternAction(yytext, yyleng); }
+ {letter}({letter}|{digit}|_)*				{ return IdentifierPatternAction(yytext, yyleng); }
 
 "\""                                        { BEGIN(STRING); }
 <STRING>[^"]*                               { return StringPatternAction(yytext, yyleng); }

@@ -4,92 +4,96 @@
 #include "../../backend/support/shared.h"
 #include "../syntactic-analysis/bison-parser.h"
 
-/**
- * Se definen las acciones a ejecutar sobre cada patrón hallado mediante el
- * analizador léxico Flex. Este analizador solo puede identificar
- * construcciones regulares, ya que utiliza un autómata finito determinístico
- * (a.k.a. DFA), como mecanismo de escaneo y reconocimiento.
- *
- * Debería existir una acción por cada patrón disponible en Flex (es decir,
- * por cada regla).
- *
- * Solo aquellas acciones que tengan interés en conocer el largo del lexema
- * emplean el parámetro adicional "length". Esto es útil cuando se desea
- * asignar memoria dinámica, y por lo tanto, se debe saber exactamente el
- * largo de aquello que se va a almacenar.
- */
-
-// Bloque de comentarios multilínea.
+// Comments
 void BeginCommentPatternAction();
 void EndCommentPatternAction();
 void BeginStringPatternAction();
 void EndStringPatternAction();
 
-// Patrones terminales del lenguaje diseñado.
-token AdditionOperatorPatternAction();
-token CloseParenthesisPatternAction();
-token DivisionOperatorPatternAction();
-token IntegerPatternAction(const char *lexeme, const int length);
-token MultiplicationOperatorPatternAction();
+// Parenthesis
 token OpenParenthesisPatternAction();
+token CloseParenthesisPatternAction();
+
+// Constants/Identifiers
+token IntegerPatternAction(const char *lexeme, const int length);
+token IdentifierPatternAction(const char *lexeme, const int length);
+token StringPatternAction(const char *lexeme, const int length);
+
+// Functions
+token PEOpenPatternAction();
+token PrintPatternAction();
+token PEClosePatternAction();
+
+// Conditionals
+token IfPatternAction();
+token ElsePatternAction();
+
+// Assignment
+token AssignmentPatternAction();
+
+// Comma
+token CommaPatternAction();
+
+// Semicolon
+token SemicolonPatternAction();
+
+// Braces
+token OpenBracePatternAction();
+token CloseBracePatternAction();
+
+// Loops
+token WhilePatternAction();
+token ForPatternAction();
+
+// Foreach
+token InPatternAction();
+
+// Main
+token MainPatternAction();
+
+// Brackets
+token OpenBracketPatternAction();
+token CloseBracketPatternAction();
+
+// Dot
+token DotPatternAction();
+
+// Operators
 token SubtractionOperatorPatternAction();
+token AdditionOperatorPatternAction();
+token DivisionOperatorPatternAction();
+token MultiplicationOperatorPatternAction();
+
+// Comparators
 token EqualOperatorPatternAction();
 token NotEqualOperatorPatternAction();
 token LessThanOperatorPatternAction();
 token LessThanOrEqualOperatorPatternAction();
 token GreaterThanOperatorPatternAction();
 token GreaterThanOrEqualOperatorPatternAction();
+
+// Logical Operators
 token OrOperatorPatternAction();
 token AndOperatorPatternAction();
 token NotOperatorPatternAction();
-token IdentifierPatternAction(const char *lexeme, const int length);
-token StringPatternAction(const char *lexeme, const int length);
+
+// Types
 token PEFileTypePatternAction();
 token PESectionTypePatternAction();
 token PEImportTypePatternAction();
 token PEExportTypePatternAction();
 token PEHeaderTypePatternAction();
-token PEResourceTypePatternAction();
-token PESignatureTypePatternAction();
-token PEDirEntryTypePatternAction();
 token IntTypePatternAction();
 token StringTypePatternAction();
-token ByteTypePatternAction();
-token AssignmentPatternAction();
-token PEOpenPatternAction();
-token PrintPatternAction();
-token CommaPatternAction();
-token PEClosePatternAction();
-token SemicolonPatternAction();
-token IfPatternAction();
-token ElsePatternAction();
-token OpenBracePatternAction();
-token CloseBracePatternAction();
-token WhilePatternAction();
-token ForPatternAction();
-token InPatternAction();
-token MainPatternAction();
-token OpenBracketPatternAction();
-token CloseBracketPatternAction();
-token DirectoryEntriesPatternAction();
-token ImportsDirectoryEntriesPatternAction();
-token ExportsDirectoryEntriesPatternAction();
-token DLLPatternAction();
-token ImportsPatternAction();
-token ExportsPatternAction();
-token AddressPatternAction();
-token SectionsPatternAction();
-token NamePatternAction();
-token VirtualSizePatternAction();
-token VirtualAddressPatternAction();
-token OptionalHeaderPatternAction();
-token MagicPatternAction();
-token OptionalHeaderMagicPatternAction();
-token DotPatternAction();
-// Patrón desconocido, permite abortar debido a un error de sintaxis.
+token PEFunctionsTypePatternAction();
+token PEFunctionTypePatternAction();
+token PEOptionalHeaderTypePatternAction();
+token PESectionsTypePatternAction();
+token PEImportsTypePatternAction();
+token PEExportsTypePatternAction();
+
 token UnknownPatternAction(const char *lexeme, const int length);
 
-// Regla que no hace nada, permite ignorar parte de la entrada.
 void IgnoredPatternAction(const char *lexeme, const int length);
 
 #endif

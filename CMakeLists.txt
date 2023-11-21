@@ -62,7 +62,27 @@ add_executable(Compiler
 	src/main.c
 	src/backend/code-generation/generator.c
 	src/backend/domain-specific/calculator.c
+	src/backend/semantic-analysis/symbol-scope/symbol-table/symbol-table.c
+	src/backend/semantic-analysis/symbol-scope/context/context.c
 	src/backend/support/logger.c
+	src/backend/support/assert.c
+	src/backend/semantic-analysis/ast/actions/program.c
+	src/backend/semantic-analysis/ast/actions/assignment/assignment.c
+	src/backend/semantic-analysis/ast/actions/block/block.c
+	src/backend/semantic-analysis/ast/actions/constant/constant.c
+	src/backend/semantic-analysis/ast/actions/declaration/declaration.c
+	src/backend/semantic-analysis/ast/actions/expression/expression.c
+	src/backend/semantic-analysis/ast/actions/factor/factor.c
+	src/backend/semantic-analysis/ast/actions/for/for.c
+	src/backend/semantic-analysis/ast/actions/functions/functions.c
+	src/backend/semantic-analysis/ast/actions/if/if.c
+	src/backend/semantic-analysis/ast/actions/instructions/instructions.c
+	src/backend/semantic-analysis/ast/actions/member/member.c
+	src/backend/semantic-analysis/ast/actions/property/property.c
+	src/backend/semantic-analysis/ast/actions/statement/statement.c
+	src/backend/semantic-analysis/ast/actions/vector/vector.c
+	src/backend/semantic-analysis/ast/actions/while/while.c
+	src/backend/semantic-analysis/type-checker/type-checker.c
 	src/frontend/lexical-analysis/flex-actions.c
 	src/frontend/lexical-analysis/flex-scanner.c
 	src/frontend/syntactic-analysis/bison-actions.c

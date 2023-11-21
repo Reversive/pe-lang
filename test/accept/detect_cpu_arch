@@ -1,7 +1,6 @@
-main
-{
+main {
     PEFile pe = peopen("file.exe");
-    byte arch = pe.optional_header.magic;
+    int arch = pe.file_header.machine;
     if (arch == 267)
     {
         print "32";

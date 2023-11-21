@@ -23,6 +23,7 @@
 	Parameters* parameters;
 	Statement* statement;
 	Instruction* instruction;
+	Instructions* instructions;
 	Block* block;
 	If* if_condition;
 	IfClosure* if_closure_condition;
@@ -31,10 +32,8 @@
 	ForLoopDeclaration* for_loop_decl;
 	Vector* vector;
 	Member* member;
-	
 	// Terminales
-	int type;
-	int property;
+	Type type;
 	token token;
 	int integer;
 	char* string;
@@ -50,11 +49,12 @@
 %token <token> EQUAL NOT_EQUAL LESS_THAN LESS_THAN_OR_EQUAL GREATER_THAN GREATER_THAN_OR_EQUAL
 
 // logic operators
-%token <token> AND OR NOT
+%token <token> AND OR
 
 // built-in types
-%token <token> INT_TYPE 
-%token <token> STRING_TYPE BYTE_TYPE PEFILE_TYPE PESECTION_TYPE PEIMPORT_TYPE PEEXPORT_TYPE PEHEADER_TYPE PERESOURCE_TYPE PESIGNATURE_TYPE PEDIRENTRY_TYPE
+%token <token> INT_TYPE STRING_TYPE
+%token <token> PEFILE_TYPE PESECTION_TYPE PEIMPORT_TYPE PEEXPORT_TYPE PEHEADER_TYPE PEFUNCTION_TYPE
+%token <token> PEIMPORTS_TYPE PEEXPORTS_TYPE PESECTIONS_TYPE PEOPTIONAL_HEADER_TYPE PEFUNCTIONS_TYPE
 
 // symbols
 %token <token> OPEN_PARENTHESIS
@@ -68,22 +68,6 @@
 %token <token> OPEN_BRACKET
 %token <token> CLOSE_BRACKET
 %token <token> DOT
-
-// member structure
-%token <token> DIRECTORY_ENTRIES
-%token <token> IMPORTS_DIRECTORY_ENTRIES
-%token <token> EXPORTS_DIRECTORY_ENTRIES
-%token <token> DLL
-%token <token> IMPORTS
-%token <token> EXPORTS
-%token <token> ADDRESS
-%token <token> SECTIONS
-%token <token> NAME
-%token <token> VIRTUAL_SIZE
-%token <token> VIRTUAL_ADDRESS
-%token <token> OPTIONAL_HEADER
-%token <token> MAGIC
-%token <token> OPTIONAL_HEADER_MAGIC
 
 // conditional
 %token <token> IF
@@ -129,7 +113,7 @@
 %type <for_loop_decl> for_loop_declaration
 %type <vector> vector
 %type <member> member
-%type <property> property
+%type <instructions> instructions
 
 // Associative and precedence rules.
 %left ADD SUB
@@ -141,15 +125,20 @@
 
 %%
 
-program: MAIN OPEN_BRACE block CLOSE_BRACE							{ $$ = GrammarActionProgram($3); }
+program: MAIN block 												{ $$ = GrammarActionProgram($2); }
 	;
 
-block: instruction block 											{ $$ = InstructionBlockGrammarActionBlock($1, $2); }
-	| instruction													{ $$ = InstructionGrammarActionBlock($1); }
+block: OPEN_BRACE CLOSE_BRACE										{ $$ = EmptyBlockGrammarAction(); }
+	| OPEN_BRACE instructions CLOSE_BRACE							{ $$ = InstructionsBlockGrammarAction($2); } 
+	| OPEN_BRACE instructions block CLOSE_BRACE						{ $$ = InstructionsBlockBlockGrammarAction($2, $3); }
+	| OPEN_BRACE instructions block instructions CLOSE_BRACE		{ $$ = InstructionsBlockBlockInstructionsGrammarAction($2, $3, $4); }
+	;
+
+instructions: instruction											{ $$ = InstructionGrammarAction($1); }
+	| instructions instruction										{ $$ = InstructionsGrammarAction($1, $2); }
 	;
 
 instruction: statement SEMICOLON									{ $$ = StatementGrammarActionInstruction($1); }
-	| void_function	SEMICOLON		 								{ $$ = VoidFunctionGrammarActionInstruction($1); }
 	| if															{ $$ = IfGrammarActionInstruction($1); }
 	| while															{ $$ = WhileGrammarActionInstruction($1); }
 	| for															{ $$ = ForGrammarActionInstruction($1); }
@@ -158,20 +147,22 @@ instruction: statement SEMICOLON									{ $$ = StatementGrammarActionInstructio
 statement: full_assignment											{ $$ = FullAssignmentGrammarActionStatement($1); }
 	| assignment													{ $$ = AssignmentGrammarActionStatement($1); }
 	| ret_function													{ $$ = ReturnFunctionGrammarActionStatement($1); }
+	| void_function													{ $$ = VoidFunctionGrammarActionStatement($1); }
+	| declaration													{ $$ = DeclarationGrammarActionStatement($1); }
 	;
 
-if: IF OPEN_PARENTHESIS expression CLOSE_PARENTHESIS OPEN_BRACE block if_closure { $$ = GrammarActionIf($3, $6, $7); }
+if: IF OPEN_PARENTHESIS expression CLOSE_PARENTHESIS block if_closure { $$ = GrammarActionIf($3, $5, $6); }
 	;
 
-if_closure: CLOSE_BRACE 											{ $$ = IfClosureGrammarAction(); }
-	| CLOSE_BRACE ELSE if											{ $$ = IfElseIfGrammarAction($3); }
-	| CLOSE_BRACE ELSE OPEN_BRACE block CLOSE_BRACE					{ $$ = IfElseBlockGrammarAction($4); }
+if_closure: ELSE if													{ $$ = IfElseIfGrammarAction($2); }
+	| ELSE block 													{ $$ = IfElseBlockGrammarAction($2); }
+	| %empty														{ $$ = IfClosureGrammarAction(); }
 	;
 
-while: WHILE OPEN_PARENTHESIS expression CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE 		{ $$ = WhileGrammarAction($3, $6); }
+while: WHILE OPEN_PARENTHESIS expression CLOSE_PARENTHESIS block 		{ $$ = WhileGrammarAction($3, $5); }
 	;
 
-for: FOR OPEN_PARENTHESIS for_loop_declaration CLOSE_PARENTHESIS OPEN_BRACE block CLOSE_BRACE 	{ $$ = ExplicitForGrammarAction($3, $6); }
+for: FOR OPEN_PARENTHESIS for_loop_declaration CLOSE_PARENTHESIS block 	{ $$ = ExplicitForGrammarAction($3, $5); }
 	;
 
 for_loop_declaration: full_assignment SEMICOLON expression SEMICOLON assignment 				{ $$ = ForFullAssignmentForGrammarAction($1, $3, $5); }
@@ -193,31 +184,14 @@ expression: expression[left] ADD expression[right]					{ $$ = AdditionExpression
 	| expression[left] GREATER_THAN_OR_EQUAL expression[right]		{ $$ = GreaterThanOrEqualExpressionGrammarAction($left, $right); }
 	| expression[left] AND expression[right]						{ $$ = AndExpressionGrammarAction($left, $right); }
 	| expression[left] OR expression[right]							{ $$ = OrExpressionGrammarAction($left, $right); }
-	| NOT expression												{ $$ = NotExpressionGrammarAction($2); }
 	| factor														{ $$ = FactorExpressionGrammarAction($1); }
 	| ret_function													{ $$ = FunctionExpressionGrammarAction($1); }
 	| vector														{ $$ = VectorExpressionGrammarAction($1); }
 	| member														{ $$ = MemberExpressionGrammarAction($1); }
 	;
 
-member: IDENTIFIER DOT property										{ $$ = MemberIdentifierGrammarAction($1, $3); }
-	| member DOT property											{ $$ = MemberGrammarAction($1, $3); }
-	;
-
-property: DIRECTORY_ENTRIES											{ $$ = DIRECTORY_ENTRIES; }
-	| IMPORTS_DIRECTORY_ENTRIES										{ $$ = IMPORTS_DIRECTORY_ENTRIES; }
-	| EXPORTS_DIRECTORY_ENTRIES										{ $$ = EXPORTS_DIRECTORY_ENTRIES; }
-	| DLL															{ $$ = DLL; }
-	| IMPORTS														{ $$ = IMPORTS; }
-	| EXPORTS														{ $$ = EXPORTS; }
-	| ADDRESS														{ $$ = ADDRESS; }
-	| SECTIONS														{ $$ = SECTIONS; }
-	| NAME															{ $$ = NAME; }
-	| VIRTUAL_SIZE													{ $$ = VIRTUAL_SIZE; }
-	| VIRTUAL_ADDRESS												{ $$ = VIRTUAL_ADDRESS; }
-	| OPTIONAL_HEADER												{ $$ = OPTIONAL_HEADER; }
-	| MAGIC															{ $$ = MAGIC; }
-	| OPTIONAL_HEADER_MAGIC											{ $$ = OPTIONAL_HEADER_MAGIC; }
+member: IDENTIFIER DOT IDENTIFIER									{ $$ = MemberIdentifierGrammarAction($1, $3); }
+	| member DOT IDENTIFIER											{ $$ = MemberGrammarAction($1, $3); }
 	;
 
 vector: IDENTIFIER OPEN_BRACKET factor CLOSE_BRACKET				{ $$ = VectorGrammarAction($1, $3); }
@@ -230,8 +204,6 @@ factor: OPEN_PARENTHESIS expression CLOSE_PARENTHESIS				{ $$ = ExpressionFactor
 	;
 
 full_assignment: declaration ASSIGNMENT expression					{ $$ = FullAssignmentGrammarAction($1, $3); }
-	| declaration ASSIGNMENT OPEN_BRACE parameters CLOSE_BRACE		{ $$ = VectorFullAssignmentGrammarAction($1, $4); } 
-	| declaration													{ $$ = DeclarationAssignmentGrammarAction($1); }
 	;
 
 assignment: IDENTIFIER ASSIGNMENT expression						{ $$ = AssignmentGrammarAction($1, $3); }
@@ -242,17 +214,19 @@ declaration: type IDENTIFIER										{ $$ = DeclarationGrammarAction($1, $2); }
 	| type IDENTIFIER OPEN_BRACKET CLOSE_BRACKET					{ $$ = VectorDeclarationGrammarAction($1, $2); }
 	;
 
-type: PEFILE_TYPE													{ $$ = PEFILE_TYPE; }
-	| PESECTION_TYPE												{ $$ = PESECTION_TYPE; }
-	| PEIMPORT_TYPE													{ $$ = PEIMPORT_TYPE; }
-	| PEEXPORT_TYPE													{ $$ = PEEXPORT_TYPE; }
-	| PEHEADER_TYPE													{ $$ = PEHEADER_TYPE; }
-	| PERESOURCE_TYPE												{ $$ = PERESOURCE_TYPE; }
-	| PESIGNATURE_TYPE												{ $$ = PESIGNATURE_TYPE; }
-	| PEDIRENTRY_TYPE												{ $$ = PEDIRENTRY_TYPE; }
-	| INT_TYPE														{ $$ = INT_TYPE; }
-	| STRING_TYPE													{ $$ = STRING_TYPE; }
-	| BYTE_TYPE														{ $$ = BYTE_TYPE; }
+type: PEFILE_TYPE													{ $$ = TYPE_PEFILE; }
+	| PESECTION_TYPE												{ $$ = TYPE_PESECTION; }
+	| PEIMPORT_TYPE													{ $$ = TYPE_PEIMPORT; }
+	| PEEXPORT_TYPE													{ $$ = TYPE_PEEXPORT; }
+	| PEHEADER_TYPE													{ $$ = TYPE_PEHEADER; }
+	| INT_TYPE														{ $$ = TYPE_INT; }
+	| STRING_TYPE													{ $$ = TYPE_STRING; }
+	| PEIMPORTS_TYPE												{ $$ = TYPE_PEIMPORTS; }
+	| PEEXPORTS_TYPE												{ $$ = TYPE_PEEXPORTS; }
+	| PESECTIONS_TYPE												{ $$ = TYPE_PESECTIONS; }
+	| PEOPTIONAL_HEADER_TYPE										{ $$ = TYPE_PEOPTIONALHEADER; }
+	| PEFUNCTIONS_TYPE												{ $$ = TYPE_PEFUNCTIONS; }
+	| PEFUNCTION_TYPE												{ $$ = TYPE_PEFUNCTION; }
 	;
 
 constant: INTEGER													{ $$ = IntegerConstantGrammarAction($1); }
