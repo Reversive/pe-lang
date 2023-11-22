@@ -74,7 +74,7 @@ Expression* EqualExpressionGrammarAction(
 	Expression* leftExpression, 
 	Expression* rightExpression
 ) {
-	LogDebug("[Bison] EqualExpressionGrammarAction = ENTREEEE");
+	LogDebug("[Bison] EqualExpressionGrammarAction");
 	AssertTypeMatch(leftExpression, rightExpression, "comparar");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
@@ -205,6 +205,9 @@ Expression* FactorExpressionGrammarAction(Factor* factor) {
 	LogDebug("[Bison] FactorExpressionGrammarAction");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
+	if(GetFactorType(factor) == TYPE_UNKNOWN) {
+		PushError("La variable '%s' no ha sido declarada por lo que no puede ser utilizada como una expresion.", factor->id);
+	}
 	expression->type = FACTOR_EXPRESSION;
 	expression->factor = factor;
 	return expression;

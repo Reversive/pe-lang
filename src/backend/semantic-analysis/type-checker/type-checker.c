@@ -123,7 +123,9 @@ Type GetMemberType(Member* member) {
 
 Type GetIdentifierType(char* id) {
 	SymbolEntry* entry = CX_GetSymbol(state.context, id);
-    return entry == NULL ? TYPE_UNKNOWN : entry->type;
+	if(entry == NULL) return TYPE_UNKNOWN;
+	if(entry->value.expVal == NULL) return TYPE_UNKNOWN;
+    return entry->type;
 }
 
 Type GetConstantType(Constant* constant) {

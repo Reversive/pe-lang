@@ -15,7 +15,7 @@ void GenerateAssignment(Assignment* assignment);
 void GenerateFullAssignment(FullAssignment* fullAssignment);
 void GenerateParameters(Parameters* parameters);
 void GenerateVoidFunction(VoidFunction* voidFunction);
-void GenerateDeclaration(Declaration* declaration, boolean shouldSkip);
+void GenerateDeclaration(Declaration* declaration, boolean shouldSkip, boolean shouldIndent);
 void GenerateStatement(Statement* statement);
 void GenerateIf(If* ifInstruction, boolean isElseIf);
 void GenerateWhile(While* whileInstruction);

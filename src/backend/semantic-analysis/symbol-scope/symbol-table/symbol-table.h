@@ -6,12 +6,15 @@
 #include "../../ast/types/var-types.h"
 #define SYMBOL_CHUNK 100
 
+typedef struct Expression Expression;
+
 typedef struct {
     char* id;
     Type type;
     union {
         int  intVal;
         char *strVal;
+        Expression *expVal;
     } value;
     int uid;
 } SymbolEntry;

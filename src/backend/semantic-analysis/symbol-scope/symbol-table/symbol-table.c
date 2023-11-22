@@ -7,6 +7,7 @@ SymbolEntry* SE_New(char* id, Type type) {
     SymbolEntry* entry = (SymbolEntry*) malloc(sizeof(SymbolEntry));
     entry->id = id;
     entry->type = type;
+    entry->value.strVal = NULL;
     entry->uid = uid++;
     return entry;
 
