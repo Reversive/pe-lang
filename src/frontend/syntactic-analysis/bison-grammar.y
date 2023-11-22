@@ -127,44 +127,44 @@
 
 %%
 
-program: MAIN block 												{ $$ = GrammarActionProgram($2); }
+program: MAIN block 																			{ $$ = GrammarActionProgram($2); }
 	;
 
-block: OPEN_BRACE CLOSE_BRACE										{ $$ = EmptyBlockGrammarAction(); }
-	| OPEN_BRACE instructions CLOSE_BRACE							{ $$ = InstructionsBlockGrammarAction($2); } 
-	| OPEN_BRACE instructions block CLOSE_BRACE						{ $$ = InstructionsBlockBlockGrammarAction($2, $3); }
-	| OPEN_BRACE instructions block instructions CLOSE_BRACE		{ $$ = InstructionsBlockBlockInstructionsGrammarAction($2, $3, $4); }
+block: OPEN_BRACE CLOSE_BRACE																	{ $$ = EmptyBlockGrammarAction(); }
+	| OPEN_BRACE instructions CLOSE_BRACE														{ $$ = InstructionsBlockGrammarAction($2); } 
+	| OPEN_BRACE instructions block CLOSE_BRACE													{ $$ = InstructionsBlockBlockGrammarAction($2, $3); }
+	| OPEN_BRACE instructions block instructions CLOSE_BRACE									{ $$ = InstructionsBlockBlockInstructionsGrammarAction($2, $3, $4); }
 	;
 
-instructions: instruction											{ $$ = InstructionGrammarAction($1); }
-	| instructions instruction										{ $$ = InstructionsGrammarAction($1, $2); }
+instructions: instruction																		{ $$ = InstructionGrammarAction($1); }
+	| instructions instruction																	{ $$ = InstructionsGrammarAction($1, $2); }
 	;
 
-instruction: statement SEMICOLON									{ $$ = StatementGrammarActionInstruction($1); }
-	| if															{ $$ = IfGrammarActionInstruction($1); }
-	| while															{ $$ = WhileGrammarActionInstruction($1); }
-	| for															{ $$ = ForGrammarActionInstruction($1); }
+instruction: statement SEMICOLON																{ $$ = StatementGrammarActionInstruction($1); }
+	| if																						{ $$ = IfGrammarActionInstruction($1); }
+	| while																						{ $$ = WhileGrammarActionInstruction($1); }
+	| for																						{ $$ = ForGrammarActionInstruction($1); }
 	;
 
-statement: full_assignment											{ $$ = FullAssignmentGrammarActionStatement($1); }
-	| assignment													{ $$ = AssignmentGrammarActionStatement($1); }
-	| ret_function													{ $$ = ReturnFunctionGrammarActionStatement($1); }
-	| void_function													{ $$ = VoidFunctionGrammarActionStatement($1); }
-	| declaration													{ $$ = DeclarationGrammarActionStatement($1); }
+statement: full_assignment																		{ $$ = FullAssignmentGrammarActionStatement($1); }
+	| assignment																				{ $$ = AssignmentGrammarActionStatement($1); }
+	| ret_function																				{ $$ = ReturnFunctionGrammarActionStatement($1); }
+	| void_function																				{ $$ = VoidFunctionGrammarActionStatement($1); }
+	| declaration																				{ $$ = DeclarationGrammarActionStatement($1); }
 	;
 
-if: IF OPEN_PARENTHESIS expression CLOSE_PARENTHESIS block if_closure { $$ = GrammarActionIf($3, $5, $6); }
+if: IF OPEN_PARENTHESIS expression CLOSE_PARENTHESIS block if_closure 							{ $$ = GrammarActionIf($3, $5, $6); }
 	;
 
-if_closure: ELSE if													{ $$ = IfElseIfGrammarAction($2); }
-	| ELSE block 													{ $$ = IfElseBlockGrammarAction($2); }
-	| %empty														{ $$ = IfClosureGrammarAction(); }
+if_closure: ELSE if																				{ $$ = IfElseIfGrammarAction($2); }
+	| ELSE block 																				{ $$ = IfElseBlockGrammarAction($2); }
+	| %empty																					{ $$ = IfClosureGrammarAction(); }
 	;
 
-while: WHILE OPEN_PARENTHESIS expression CLOSE_PARENTHESIS block 		{ $$ = WhileGrammarAction($3, $5); }
+while: WHILE OPEN_PARENTHESIS expression CLOSE_PARENTHESIS block 								{ $$ = WhileGrammarAction($3, $5); }
 	;
 
-for: FOR OPEN_PARENTHESIS for_loop_declaration CLOSE_PARENTHESIS block 	{ $$ = ExplicitForGrammarAction($3, $5); }
+for: FOR OPEN_PARENTHESIS for_loop_declaration CLOSE_PARENTHESIS block 							{ $$ = ExplicitForGrammarAction($3, $5); }
 	;
 
 for_loop_declaration: full_assignment SEMICOLON expression SEMICOLON assignment 				{ $$ = ForFullAssignmentForGrammarAction($1, $3, $5); }
@@ -178,85 +178,85 @@ for_each_iterator: member																		{ $$ = ForEachIteratorGrammarAction($
 	| IDENTIFIER																				{ $$ = ForEachIteratorIdentifierGrammarAction($1); }
 	;
 
-expression: expression[left] ADD expression[right]					{ $$ = AdditionExpressionGrammarAction($left, $right); }
-	| expression[left] SUB expression[right]						{ $$ = SubtractionExpressionGrammarAction($left, $right); }
-	| expression[left] MUL expression[right]						{ $$ = MultiplicationExpressionGrammarAction($left, $right); }
-	| expression[left] DIV expression[right]						{ $$ = DivisionExpressionGrammarAction($left, $right); }
-	| expression[left] EQUAL expression[right]						{ $$ = EqualExpressionGrammarAction($left, $right); }
-	| expression[left] NOT_EQUAL expression[right]					{ $$ = NotEqualExpressionGrammarAction($left, $right); }
-	| expression[left] LESS_THAN expression[right]					{ $$ = LessThanExpressionGrammarAction($left, $right); }
-	| expression[left] LESS_THAN_OR_EQUAL expression[right]			{ $$ = LessThanOrEqualExpressionGrammarAction($left, $right); }
-	| expression[left] GREATER_THAN expression[right]				{ $$ = GreaterThanExpressionGrammarAction($left, $right); }
-	| expression[left] GREATER_THAN_OR_EQUAL expression[right]		{ $$ = GreaterThanOrEqualExpressionGrammarAction($left, $right); }
-	| expression[left] AND expression[right]						{ $$ = AndExpressionGrammarAction($left, $right); }
-	| expression[left] OR expression[right]							{ $$ = OrExpressionGrammarAction($left, $right); }
-	| factor														{ $$ = FactorExpressionGrammarAction($1); }
-	| ret_function													{ $$ = FunctionExpressionGrammarAction($1); }
-	| vector														{ $$ = VectorExpressionGrammarAction($1); }
-	| member														{ $$ = MemberExpressionGrammarAction($1); }
+expression: expression[left] ADD expression[right]												{ $$ = AdditionExpressionGrammarAction($left, $right); }
+	| expression[left] SUB expression[right]													{ $$ = SubtractionExpressionGrammarAction($left, $right); }
+	| expression[left] MUL expression[right]													{ $$ = MultiplicationExpressionGrammarAction($left, $right); }
+	| expression[left] DIV expression[right]													{ $$ = DivisionExpressionGrammarAction($left, $right); }
+	| expression[left] EQUAL expression[right]													{ $$ = EqualExpressionGrammarAction($left, $right); }
+	| expression[left] NOT_EQUAL expression[right]												{ $$ = NotEqualExpressionGrammarAction($left, $right); }
+	| expression[left] LESS_THAN expression[right]												{ $$ = LessThanExpressionGrammarAction($left, $right); }
+	| expression[left] LESS_THAN_OR_EQUAL expression[right]										{ $$ = LessThanOrEqualExpressionGrammarAction($left, $right); }
+	| expression[left] GREATER_THAN expression[right]											{ $$ = GreaterThanExpressionGrammarAction($left, $right); }
+	| expression[left] GREATER_THAN_OR_EQUAL expression[right]									{ $$ = GreaterThanOrEqualExpressionGrammarAction($left, $right); }
+	| expression[left] AND expression[right]													{ $$ = AndExpressionGrammarAction($left, $right); }
+	| expression[left] OR expression[right]														{ $$ = OrExpressionGrammarAction($left, $right); }
+	| factor																					{ $$ = FactorExpressionGrammarAction($1); }
+	| ret_function																				{ $$ = FunctionExpressionGrammarAction($1); }
+	| vector																					{ $$ = VectorExpressionGrammarAction($1); }
+	| member																					{ $$ = MemberExpressionGrammarAction($1); }
 	;
 
-member: IDENTIFIER DOT IDENTIFIER									{ $$ = MemberIdentifierGrammarAction($1, $3); }
-	| member DOT IDENTIFIER											{ $$ = MemberGrammarAction($1, $3); }
+member: IDENTIFIER DOT IDENTIFIER																{ $$ = MemberIdentifierGrammarAction($1, $3); }
+	| member DOT IDENTIFIER																		{ $$ = MemberGrammarAction($1, $3); }
 	;
 
-vector: IDENTIFIER OPEN_BRACKET factor CLOSE_BRACKET				{ $$ = VectorGrammarAction($1, $3); }
+vector: IDENTIFIER OPEN_BRACKET factor CLOSE_BRACKET											{ $$ = VectorGrammarAction($1, $3); }
 	;
 
-factor: OPEN_PARENTHESIS expression CLOSE_PARENTHESIS				{ $$ = ExpressionFactorGrammarAction($2); }
-	| constant														{ $$ = ConstantFactorGrammarAction($1); }
-	| IDENTIFIER													{ $$ = IdentifierFactorGrammarAction($1); }
-	| STRING 														{ $$ = StringFactorGrammarAction($1); }
+factor: OPEN_PARENTHESIS expression CLOSE_PARENTHESIS											{ $$ = ExpressionFactorGrammarAction($2); }
+	| constant																					{ $$ = ConstantFactorGrammarAction($1); }
+	| IDENTIFIER																				{ $$ = IdentifierFactorGrammarAction($1); }
+	| STRING 																					{ $$ = StringFactorGrammarAction($1); }
 	;
 
-full_assignment: declaration ASSIGNMENT expression					{ $$ = FullAssignmentGrammarAction($1, $3); }
+full_assignment: declaration ASSIGNMENT expression												{ $$ = FullAssignmentGrammarAction($1, $3); }
 	;
 
-assignment: IDENTIFIER ASSIGNMENT expression						{ $$ = AssignmentGrammarAction($1, $3); }
-	| vector ASSIGNMENT expression									{ $$ = VectorAssignmentGrammarAction($1, $3); } 
+assignment: IDENTIFIER ASSIGNMENT expression													{ $$ = AssignmentGrammarAction($1, $3); }
+	| vector ASSIGNMENT expression																{ $$ = VectorAssignmentGrammarAction($1, $3); } 
 	;
 
-declaration: type IDENTIFIER										{ $$ = DeclarationGrammarAction($1, $2); }
-	| type IDENTIFIER OPEN_BRACKET CLOSE_BRACKET					{ $$ = VectorDeclarationGrammarAction($1, $2); }
+declaration: type IDENTIFIER																	{ $$ = DeclarationGrammarAction($1, $2); }
+	| type IDENTIFIER OPEN_BRACKET CLOSE_BRACKET												{ $$ = VectorDeclarationGrammarAction($1, $2); }
 	;
 
-type: PEFILE_TYPE													{ $$ = TYPE_PEFILE; }
-	| PESECTION_TYPE												{ $$ = TYPE_PESECTION; }
-	| PEIMPORT_TYPE													{ $$ = TYPE_PEIMPORT; }
-	| PEEXPORT_TYPE													{ $$ = TYPE_PEEXPORT; }
-	| PEHEADER_TYPE													{ $$ = TYPE_PEHEADER; }
-	| INT_TYPE														{ $$ = TYPE_INT; }
-	| STRING_TYPE													{ $$ = TYPE_STRING; }
-	| PEIMPORTS_TYPE												{ $$ = TYPE_PEIMPORTS; }
-	| PEEXPORTS_TYPE												{ $$ = TYPE_PEEXPORTS; }
-	| PESECTIONS_TYPE												{ $$ = TYPE_PESECTIONS; }
-	| PEOPTIONAL_HEADER_TYPE										{ $$ = TYPE_PEOPTIONALHEADER; }
-	| PEFUNCTIONS_TYPE												{ $$ = TYPE_PEFUNCTIONS; }
-	| PEFUNCTION_TYPE												{ $$ = TYPE_PEFUNCTION; }
+type: PEFILE_TYPE																				{ $$ = TYPE_PEFILE; }
+	| PESECTION_TYPE																			{ $$ = TYPE_PESECTION; }
+	| PEIMPORT_TYPE																				{ $$ = TYPE_PEIMPORT; }
+	| PEEXPORT_TYPE																				{ $$ = TYPE_PEEXPORT; }
+	| PEHEADER_TYPE																				{ $$ = TYPE_PEHEADER; }
+	| INT_TYPE																					{ $$ = TYPE_INT; }
+	| STRING_TYPE																				{ $$ = TYPE_STRING; }
+	| PEIMPORTS_TYPE																			{ $$ = TYPE_PEIMPORTS; }
+	| PEEXPORTS_TYPE																			{ $$ = TYPE_PEEXPORTS; }
+	| PESECTIONS_TYPE																			{ $$ = TYPE_PESECTIONS; }
+	| PEOPTIONAL_HEADER_TYPE																	{ $$ = TYPE_PEOPTIONALHEADER; }
+	| PEFUNCTIONS_TYPE																			{ $$ = TYPE_PEFUNCTIONS; }
+	| PEFUNCTION_TYPE																			{ $$ = TYPE_PEFUNCTION; }
 	;
 
-constant: INTEGER													{ $$ = IntegerConstantGrammarAction($1); }
+constant: INTEGER																				{ $$ = IntegerConstantGrammarAction($1); }
 	;
 
-ret_function: peopen												{ $$ = PEOpenFunctionGrammarAction($1); }
+ret_function: peopen																			{ $$ = PEOpenFunctionGrammarAction($1); }
 	;
 
-void_function: print												{ $$ = PrintFunctionGrammarAction($1); }
-	| peclose														{ $$ = PECloseFunctionGrammarAction($1); }
+void_function: print																			{ $$ = PrintFunctionGrammarAction($1); }
+	| peclose																					{ $$ = PECloseFunctionGrammarAction($1); }
 	;
 
-parameters: expression												{ $$ = ParametersGrammarAction($1); }
-	| parameters COMMA expression									{ $$ = ParametersCommaExpressionGrammarAction($1, $3); }
+parameters: expression																			{ $$ = ParametersGrammarAction($1); }
+	| parameters COMMA expression																{ $$ = ParametersCommaExpressionGrammarAction($1, $3); }
 	;
 
-peopen: PEOPEN OPEN_PARENTHESIS STRING CLOSE_PARENTHESIS			{ $$ = PEOpenGrammarAction($3); }
-	| 	PEOPEN OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS		{ $$ = PEOpenIdentifierGrammarAction($3); }
+peopen: PEOPEN OPEN_PARENTHESIS STRING CLOSE_PARENTHESIS										{ $$ = PEOpenGrammarAction($3); }
+	| 	PEOPEN OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS									{ $$ = PEOpenIdentifierGrammarAction($3); }
 	;
 
-peclose: PECLOSE OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS		{ $$ = PECloseGrammarAction($3); }
+peclose: PECLOSE OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS									{ $$ = PECloseGrammarAction($3); }
 	;
 
-print: PRINT parameters												{ $$ = PrintGrammarAction($2); }
+print: PRINT parameters																			{ $$ = PrintGrammarAction($2); }
 	;
 
 %%
