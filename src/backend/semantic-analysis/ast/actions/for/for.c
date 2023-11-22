@@ -25,7 +25,6 @@ ForLoopDeclaration* ForFullAssignmentForGrammarAction(
 			TypeToString(GetDeclarationType(leftAssignment->declaration)), 
 			TypeToString(GetExpressionType(leftAssignment->expression))
 		);
-		state.succeed = false;
 	}
 	forLoopDeclaration->type = FULL_FOR_ASSIGNMENT;
 	forLoopDeclaration->fullAssignment = leftAssignment;
@@ -45,7 +44,6 @@ ForLoopDeclaration* ForAssignmentExpressionAssignmentGrammarAction(
 	SymbolEntry* entry = CX_GetSymbol(state.context, leftAssignment->id);
 	if (entry == NULL) {
 		PushError("La variable '%s' no existe en el contexto actual.", leftAssignment->id);
-		state.succeed = false;
 	}
 
 	forLoopDeclaration->type = FOR_ASSIGNMENT;
@@ -76,7 +74,6 @@ ForLoopDeclaration* ForExpressionGrammarAction(Expression* expression) {
 	forLoopDeclaration->expression = expression;
 	return forLoopDeclaration;
 }
-
 
 boolean IsTypeForEachable(Type type) {
 	return GetIterableType(type) != TYPE_UNKNOWN;
@@ -120,13 +117,14 @@ ForLoopDeclaration* ForDeclarationMemberGrammarAction(Declaration* declaration, 
 	LogDebug("[Bison] ForDeclarationMemberGrammarAction");
 	ForLoopDeclaration* forLoopDeclaration = calloc(1, sizeof(ForLoopDeclaration));
 	AssertNotNullCallback(forLoopDeclaration, HandleOutOfMemoryError);
-	SymbolEntry* entry = CX_GetSymbol(state.context, iterator->id);
+	SymbolEntry* entry = CX_GetSymbol(state.context, GetForEachIteratorId(iterator));
 	Type iteratorDataType = iterator->type == MEMBER_ITERATOR ? 
 		iterator->member->dataType : 
 		entry == NULL ? TYPE_UNKNOWN : entry->type;
 	if(!CompareForEachable(declaration->declarationType, iteratorDataType)) {
 		if(!IsTypeForEachable(iteratorDataType)) {
-			PushError("La variable de tipo '%s' no es iterable.", 
+			PushError("La variable '%s' de tipo '%s' no es iterable.",
+				GetForEachIteratorId(iterator), 
 				TypeToString(iteratorDataType)
 			);
 		} else {
@@ -138,7 +136,6 @@ ForLoopDeclaration* ForDeclarationMemberGrammarAction(Declaration* declaration, 
 				declaration->id
 			);
 		}
-		state.succeed = false;
 	}
 	forLoopDeclaration->type = FOREACH_ITERATOR;
 	forLoopDeclaration->declaration = declaration;
@@ -150,15 +147,9 @@ ForEachIterator* ForEachIteratorGrammarAction(Member* member) {
 	LogDebug("[Bison] ForEachIteratorGrammarAction");
 	ForEachIterator* iterator = calloc(1, sizeof(ForEachIterator));
 	AssertNotNullCallback(iterator, HandleOutOfMemoryError);
-	SymbolEntry* entry = CX_GetSymbol(state.context, member->leftIdentifier);
-	if (entry == NULL) {
-		PushError("La variable '%s' no existe en el contexto actual.", member->leftIdentifier);
-		state.succeed = false;
-	}
 	iterator->type = MEMBER_ITERATOR;
 	iterator->member = member;
 	return iterator;
-
 }
 
 ForEachIterator* ForEachIteratorIdentifierGrammarAction(char* id) {
@@ -168,7 +159,6 @@ ForEachIterator* ForEachIteratorIdentifierGrammarAction(char* id) {
 	SymbolEntry* entry = CX_GetSymbol(state.context, id);
 	if (entry == NULL) {
 		PushError("La variable '%s' no existe en el contexto actual.", id);
-		state.succeed = false;
 	}
 	iterator->type = IDENTIFIER_ITERATOR;
 	iterator->id = id;

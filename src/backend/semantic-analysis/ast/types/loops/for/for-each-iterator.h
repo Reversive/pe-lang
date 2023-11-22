@@ -14,4 +14,15 @@ typedef struct {
     char* id;
 } ForEachIterator;
 
+static inline char* GetForEachIteratorId(ForEachIterator* iterator) {
+	switch(iterator->type) {
+		case MEMBER_ITERATOR:
+			return GetMemberId(iterator->member);
+		case IDENTIFIER_ITERATOR:
+			return iterator->id;
+		default:
+			return NULL;
+	}
+}
+
 #endif
