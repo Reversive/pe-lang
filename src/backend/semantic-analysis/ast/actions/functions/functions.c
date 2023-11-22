@@ -65,6 +65,14 @@ PEOpen* PEOpenIdentifierGrammarAction(char* id) {
 	LogDebug("[Bison] PEOpenIdentifierGrammarAction: %s", id);
 	PEOpen* peOpen = calloc(1, sizeof(PEOpen));
 	AssertNotNullCallback(peOpen, HandleOutOfMemoryError);
+	SymbolEntry* entry = CX_GetSymbol(state.context, id);
+	if(entry == NULL) {
+		PushError("La variable '%s' no existe.", id);
+	} else if(entry->type != TYPE_STRING) {
+		PushError("La variable '%s' debe ser de tipo 'string'.", id);
+	} else if(entry->value.expVal == NULL) {
+		PushError("La variable '%s' no fue inicializada.", id);
+	}
 	peOpen->type = PE_OPEN_ID;
 	peOpen->id = id;
 	return peOpen;
