@@ -2,7 +2,6 @@
 
 void HandleOutOfMemoryError() {
 	PushError("No hay memoria disponible.");
-	state.succeed = false;
 }
 
 Program* GrammarActionProgram(Block* block) {

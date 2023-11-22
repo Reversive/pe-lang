@@ -71,6 +71,7 @@ static inline void PushError(char* format, ...) {
 	vsprintf(error, format, args);
 	va_end(args);
 	state.errors[state.errorsCount++] = error;
+	state.succeed = false;
 }
 
 static inline void FreeErrors() {

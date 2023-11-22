@@ -3,14 +3,12 @@
 void AssertTypeMatch(Expression* left, Expression* right, char* operation) {
 	Type leftType = GetExpressionType(left);
 	Type rightType = GetExpressionType(right);
-	LogInfo("AssertTypeMatch: %s %s %s", TypeToString(leftType), operation, TypeToString(rightType));
 	if (leftType != rightType) {
 		PushError("No se puede %s una expresion de tipo '%s' con una expresion de tipo '%s'.", 
 			operation, 
 			TypeToString(leftType), 
 			TypeToString(rightType)
 		);
-		state.succeed = false;
 	}
 }
 

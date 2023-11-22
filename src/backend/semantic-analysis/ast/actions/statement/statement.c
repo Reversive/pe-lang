@@ -14,7 +14,6 @@ Statement* FullAssignmentGrammarActionStatement(FullAssignment* fullAssignment) 
 			TypeToString(GetDeclarationType(declaration)), 
 			TypeToString(GetExpressionType(expression))
 		);
-		state.succeed = false;
 	}
 	statement->type = FULL_ASSIGNMENT_STATEMENT;
 	statement->fullAssignment = fullAssignment;
