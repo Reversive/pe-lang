@@ -141,7 +141,7 @@ void GenerateExpression(Expression* expression) {
 void GenerateAssignment(Assignment* assignment) {
 	switch(assignment->type) {
 		case IDENTIFIER_ASSIGNMENT:
-			OB_WriteWT(state.output, "%s = ", GetSymbolId(assignment->id));
+			OB_Write(state.output, "%s = ", GetSymbolId(assignment->id));
 			GenerateExpression(assignment->expression);
 			break;
 		case VVECTOR_ASSIGNMENT:
@@ -157,18 +157,18 @@ void GenerateFullAssignment(FullAssignment* fullAssignment) {
 	
 	switch (fullAssignment->type) {
 		case ID_FULL_ASSIGNMENT:
-			GenerateDeclaration(fullAssignment->declaration, true);
+			GenerateDeclaration(fullAssignment->declaration, true, true);
 			OB_WriteWT(state.output, " = ");
 			GenerateExpression(fullAssignment->expression);
 			if(fullAssignment->expression->type == RETURN_FUNCTION_EXPRESSION) {			  
 				OB_WriteWT(state.output, "\n");
-				GenerateDeclaration(fullAssignment->declaration, true);
+				GenerateDeclaration(fullAssignment->declaration, true, true);
 				OB_WriteWT(state.output, " = ");
-				GenerateDeclaration(fullAssignment->declaration, true);
+				GenerateDeclaration(fullAssignment->declaration, true, true);
 				OB_WriteWT(state.output, ".analyze()\n");
-				GenerateDeclaration(fullAssignment->declaration, true);
+				GenerateDeclaration(fullAssignment->declaration, true, true);
 				OB_WriteWT(state.output, " = json.loads(");
-				GenerateDeclaration(fullAssignment->declaration, true);
+				GenerateDeclaration(fullAssignment->declaration, true, true);
 				OB_WriteWT(state.output, ")\n");				
 			}
 			break;
@@ -201,13 +201,22 @@ void GenerateVoidFunction(VoidFunction* voidFunction) {
 	}
 }
 
-void GenerateDeclaration(Declaration* declaration, boolean shouldSkip) {
+void GenerateDeclaration(Declaration* declaration, boolean shouldSkip, boolean shouldIndent) {
+	if(!shouldSkip) return;
 	switch (declaration->type) {
 		case TYPE_DECLARATION:
-			OB_WriteWT(state.output, shouldSkip ? "%s" : "%s = None", GetSymbolId(declaration->id));
+			if(shouldIndent) {
+				OB_Write(state.output, "%s", GetSymbolId(declaration->id));
+			} else {
+				OB_WriteWT(state.output, "%s", GetSymbolId(declaration->id));
+			}
 			break;
 		case VECTOR_DECLARATION:
-			OB_WriteWT(state.output, "%s = []", GetSymbolId(declaration->id));
+			if(shouldIndent) {
+				OB_Write(state.output, "%s = []", GetSymbolId(declaration->id));
+			} else {
+				OB_WriteWT(state.output, "%s = []", GetSymbolId(declaration->id));
+			}
 			break;
 	}
 }
@@ -228,7 +237,7 @@ void GenerateStatement(Statement* statement) {
 			GenerateVoidFunction(statement->voidFunction);
 			break;
 		case DECLARATION_STATEMENT:
-			GenerateDeclaration(statement->declaration, false);
+			GenerateDeclaration(statement->declaration, false, true);
 			break;
 	}
 	OB_WriteWT(state.output, "\n");
@@ -261,7 +270,7 @@ void GenerateIf(If* ifInstruction, boolean isElseIf) {
 void GenerateWhile(While* whileInstruction) {
 	OB_Write(state.output, "while ");
 	GenerateExpression(whileInstruction->expression);
-	OB_Write(state.output, ":\n");
+	OB_WriteWT(state.output, ":\n");
 	GenerateBlock(whileInstruction->block);
 }
 
@@ -304,7 +313,7 @@ void GenerateForLoopDeclaration(ForLoopDeclaration* forLoopDeclaration) {
 			OB_WriteWT(state.output, "; ");
 			break;
 		case FOREACH_ITERATOR:
-			GenerateDeclaration(forLoopDeclaration->declaration, true);
+			GenerateDeclaration(forLoopDeclaration->declaration, true, false);
 			OB_WriteWT(state.output, " in ");
 			GenerateForEachIterator(forLoopDeclaration->forEachIterator);
 			break;
