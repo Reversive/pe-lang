@@ -44,4 +44,6 @@ main {
             print "\t\tAddress: ", exportFunction.address;
         }
     }
+
+    peclose(pe);
 }
