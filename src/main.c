@@ -41,6 +41,7 @@ const int main(const int argumentCount, const char **arguments)
 			FreeErrors();
 			CX_Free(state.context);
 			OB_Free(state.output);
+			return 1;
 		}
 		break;
 	case 1:
