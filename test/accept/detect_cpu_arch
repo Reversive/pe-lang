@@ -1,11 +1,13 @@
 main {
     string file = "./binaries/setup.exe";
     PEFile pe = peopen(file);
-    int arch = pe.file_header.machine;
-    if (arch == 267) { 
-        print "32";
-    } else if (arch == 523) { 
-        print "64";
+    int machine = pe.file_header.machine;
+    if (machine == 332) {
+        print("x86");
+    } else if (machine == 34404) {
+        print("x64");
+    } else {
+        print("Unknown");
     }
     
 }
