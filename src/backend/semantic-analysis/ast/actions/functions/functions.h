@@ -8,7 +8,6 @@ ReturnFunction* PEOpenFunctionGrammarAction(PEOpen* peOpen);
 
 // VoidFunction
 VoidFunction* PrintFunctionGrammarAction(Print* print);
-VoidFunction* PECloseFunctionGrammarAction(PEClose* peClose);
 
 // Parameters
 Parameters* ParametersGrammarAction(Expression* expression);
@@ -20,9 +19,6 @@ Parameters* ParametersCommaExpressionGrammarAction(
 // PEOpen
 PEOpen* PEOpenGrammarAction(char* path);
 PEOpen* PEOpenIdentifierGrammarAction(char* id);
-
-// PEClose
-PEClose* PECloseGrammarAction(char* id);
 
 // Print
 Print* PrintGrammarAction(Parameters* parameters);

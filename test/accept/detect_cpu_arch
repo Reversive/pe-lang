@@ -7,5 +7,5 @@ main {
     } else if (arch == 523) { 
         print "64";
     }
-    peclose(pe);
+    
 }

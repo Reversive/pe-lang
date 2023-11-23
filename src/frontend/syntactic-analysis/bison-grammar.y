@@ -16,7 +16,6 @@
 	FullAssignment* full_assignment;
 	Assignment* assignment;
 	PEOpen* peopen;
-	PEClose* peclose;
 	Print* print;
 	ReturnFunction* ret_function;
 	VoidFunction* void_function;
@@ -81,7 +80,6 @@
 // functions
 %token <token> PEOPEN
 %token <token> PRINT
-%token <token> PECLOSE
 %token <token> MAIN
 
 // constants
@@ -99,7 +97,6 @@
 %type <full_assignment> full_assignment
 %type <assignment> assignment
 %type <peopen> peopen
-%type <peclose> peclose
 %type <print> print
 %type <ret_function> ret_function
 %type <void_function> void_function
@@ -244,7 +241,6 @@ ret_function: peopen																			{ $$ = PEOpenFunctionGrammarAction($1); }
 	;
 
 void_function: print																			{ $$ = PrintFunctionGrammarAction($1); }
-	| peclose																					{ $$ = PECloseFunctionGrammarAction($1); }
 	;
 
 parameters: expression																			{ $$ = ParametersGrammarAction($1); }
@@ -253,9 +249,6 @@ parameters: expression																			{ $$ = ParametersGrammarAction($1); }
 
 peopen: PEOPEN OPEN_PARENTHESIS STRING CLOSE_PARENTHESIS										{ $$ = PEOpenGrammarAction($3); }
 	| 	PEOPEN OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS									{ $$ = PEOpenIdentifierGrammarAction($3); }
-	;
-
-peclose: PECLOSE OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS									{ $$ = PECloseGrammarAction($3); }
 	;
 
 print: PRINT parameters																			{ $$ = PrintGrammarAction($2); }

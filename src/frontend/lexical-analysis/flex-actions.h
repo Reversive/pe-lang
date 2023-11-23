@@ -22,7 +22,6 @@ token StringPatternAction(const char *lexeme, const int length);
 // Functions
 token PEOpenPatternAction();
 token PrintPatternAction();
-token PEClosePatternAction();
 
 // Conditionals
 token IfPatternAction();

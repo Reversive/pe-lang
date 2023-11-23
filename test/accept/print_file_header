@@ -6,5 +6,5 @@ main {
     print "\tNumber of sections: ", header.number_of_sections;
     print "\tTime date stamp: ", header.time_date_stamp;
     print "\tCharacteristics: ", header.characteristics;
-    peclose(pe);
+    
 }

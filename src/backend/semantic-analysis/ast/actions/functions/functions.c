@@ -19,15 +19,6 @@ VoidFunction* PrintFunctionGrammarAction(Print* print) {
 	return voidFunction;
 }
 
-VoidFunction* PECloseFunctionGrammarAction(PEClose* peClose) {
-	LogDebug("[Bison] PECloseFunctionGrammarAction");
-	VoidFunction* voidFunction = calloc(1, sizeof(VoidFunction));
-	AssertNotNullCallback(voidFunction, HandleOutOfMemoryError);
-	voidFunction->type = PE_CLOSE_FUNCTION;
-	voidFunction->peClose = peClose;
-	return voidFunction;
-}
-
 // Parameters
 Parameters* ParametersGrammarAction(Expression* expression) {
 	LogDebug("[Bison] ParametersGrammarAction");
@@ -76,23 +67,6 @@ PEOpen* PEOpenIdentifierGrammarAction(char* id) {
 	peOpen->type = PE_OPEN_ID;
 	peOpen->id = id;
 	return peOpen;
-}
-
-// PEClose
-PEClose* PECloseGrammarAction(char* id) {
-	LogDebug("[Bison] PECloseGrammarAction: %s", id);
-	PEClose* peClose = calloc(1, sizeof(PEClose));
-	AssertNotNullCallback(peClose, HandleOutOfMemoryError);
-	SymbolEntry* entry = CX_GetSymbol(state.context, id);
-	if(entry == NULL) {
-		PushError("La variable '%s' no existe.", id);
-	} else if(entry->type != TYPE_PEFILE) {
-		PushError("La variable '%s' debe ser de tipo 'PEFile'.", id);
-	} else if(entry->value.expVal == NULL) {
-		PushError("La variable '%s' no fue inicializada.", id);
-	}
-	peClose->id = id;
-	return peClose;
 }
 
 // Print

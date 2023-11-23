@@ -195,9 +195,6 @@ void GenerateVoidFunction(VoidFunction* voidFunction) {
 			GenerateParameters(voidFunction->print->parameters);
 			OB_WriteWT(state.output, ")");
 			break;
-		case PE_CLOSE_FUNCTION:
-			OB_Write(state.output, "%s.close()", GetSymbolId(voidFunction->peClose->id));
-			break;
 	}
 }
 

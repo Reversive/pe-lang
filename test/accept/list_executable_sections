@@ -4,5 +4,5 @@ main {
     {
         print "{1} found on address {2} with size {3}", section.name, section.virtual_address, section.virtual_size;
     }
-    peclose(pe);
+    
 }

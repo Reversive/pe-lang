@@ -267,12 +267,6 @@ token PrintPatternAction() {
 	return PRINT;
 }
 
-token PEClosePatternAction() {
-	LogDebug("[Flex] PEClosePatternAction: 'PEClose'.");
-	yylval.token = PECLOSE;
-	return PECLOSE;
-}
-
 // Comma
 
 token CommaPatternAction() {

@@ -7,5 +7,5 @@ main {
     print "\tSection alignment: ", optional_header.section_alignment;
     print "\tFile alignment: ", optional_header.file_alignment;
     print "\tSubsystem: ", optional_header.subsystem;
-    peclose(pe);
+    
 }
