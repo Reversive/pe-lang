@@ -1,0 +1,3 @@
+main {
+    int firstBlock = print("Hello, World!");
+}
