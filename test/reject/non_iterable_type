@@ -1,0 +1,8 @@
+main {
+    string file = "./binaries/setup.exe";
+    PEFile pe = peopen(file);
+    PEHeader header = pe.file_header;
+    for(PESection section in header) {
+        print(section.name);
+    }
+}
