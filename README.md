@@ -60,12 +60,17 @@ user@machine:path/ $ script\start.bat program
 ```
 ### Example Code
 ```
-PEFile pe = peopen ("file.exe");
-for SectionInfo section in pe.sections {
-  print "{1} found on address {2} with size {3}",
-    section.name,
-    section.virtual_address,
-    section.virtual_size;
+main {
+    PEFile pe = peopen("./binaries/setup.exe");
+    for (PEImport import in pe.imports)
+    {
+        print import.dll;
+        for (PEFunction function in import.functions)
+        {
+            print "\t", function.address, function.name;
+        }
+    }
+    peclose(pe);
 }
 ```
 
