@@ -27,10 +27,11 @@ void CX_AddScope(Context* context) {
 }
 
 SymbolEntry* CX_AddSymbol(Context* context, SymbolEntry* entry) {
-    if (ST_AddSymbol(context->scopes[context->current], entry)) {
-        return entry;
+    if(CX_GetSymbol(context, entry->id) != NULL) {
+        return NULL;
     }
-    return NULL;
+    ST_AddSymbol(context->scopes[context->current], entry);
+    return entry;
 }
 
 SymbolEntry* CX_GetSymbol(Context* context, char* id) {
