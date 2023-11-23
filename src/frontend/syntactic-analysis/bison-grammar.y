@@ -173,7 +173,7 @@ for_loop_declaration:
 	// | assignment SEMICOLON expression SEMICOLON assignment										{ $$ = ForAssignmentExpressionAssignmentGrammarAction($1, $3, $5); }
 	// | SEMICOLON expression SEMICOLON assignment													{ $$ = ForExpressionAssignmentGrammarAction($2, $4); }
 	// | SEMICOLON expression SEMICOLON															{ $$ = ForExpressionGrammarAction($2); }
-	| declaration IN for_each_iterator															{ $$ = ForDeclarationMemberGrammarAction($1, $3); }
+	declaration IN for_each_iterator															{ $$ = ForDeclarationMemberGrammarAction($1, $3); }
 	;
 
 for_each_iterator: member																		{ $$ = ForEachIteratorGrammarAction($1); }
