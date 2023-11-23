@@ -1,23 +1,27 @@
 #include "symbol-table.h"
 #include <stdlib.h>
 
+static int uid = 0;
+
 SymbolEntry* SE_New(char* id, Type type) {
     SymbolEntry* entry = (SymbolEntry*) malloc(sizeof(SymbolEntry));
     entry->id = id;
     entry->type = type;
+    entry->value.strVal = NULL;
+    entry->uid = uid++;
     return entry;
 
 }
 
-SymbolTable* AllocateSymbolTable() {
+SymbolTable* ST_New() {
     SymbolTable* table = (SymbolTable*) malloc(sizeof(SymbolTable));
     table->entries = (SymbolEntry*) malloc(sizeof(SymbolEntry) * SYMBOL_CHUNK);
     table->size = 0;
     return table;
 }
 
-int AddSymbol(SymbolTable* table, SymbolEntry* entry) {
-    if(SymbolExists(table, entry->id)) {
+int ST_AddSymbol(SymbolTable* table, SymbolEntry* entry) {
+    if(ST_SymbolExists(table, entry->id)) {
         return 0;
     }
     if (table->size % SYMBOL_CHUNK == 0) {
@@ -27,7 +31,7 @@ int AddSymbol(SymbolTable* table, SymbolEntry* entry) {
     return 1;
 }
 
-SymbolEntry* GetSymbol(SymbolTable* table, char* id) {
+SymbolEntry* ST_GetSymbol(SymbolTable* table, char* id) {
     
     for (int i = 0; i < table->size; i++) {
         if (strcmp(table->entries[i].id, id) == 0) {
@@ -37,7 +41,7 @@ SymbolEntry* GetSymbol(SymbolTable* table, char* id) {
     return NULL;
 }
 
-int SymbolExists(SymbolTable* table, char* id) {
+int ST_SymbolExists(SymbolTable* table, char* id) {
     for (int i = 0; i < table->size; i++) {
         if (strcmp(table->entries[i].id, id) == 0) {
             return 1;
@@ -46,7 +50,7 @@ int SymbolExists(SymbolTable* table, char* id) {
     return 0;
 }
 
-void FreeSymbolTable(SymbolTable* table) {
+void ST_Free(SymbolTable* table) {
     free(table->entries);
     free(table);
 }

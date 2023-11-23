@@ -5,23 +5,24 @@
 #include "../../expression.h"
 #include "../../assignment/assignment.h"
 #include "../../declaration.h"
-#include "../../member.h"
+#include "for-each-iterator.h"
 
 typedef enum {
 	FULL_FOR_ASSIGNMENT,
 	FOR_ASSIGNMENT,
 	EXPRESSION_AND_ASSIGNMENT,
 	ONLY_EXPRESSION,
-	MEMBER_DECLARATION
+	FOREACH_ITERATOR
 } ForLoopDeclarationType;
 
 typedef struct {
 	ForLoopDeclarationType type;
 	FullAssignment* fullAssignment;
 	Expression* expression;
-	Assignment* assignment;
+	Assignment* leftAssignment;
+	Assignment* rightAssignment;
 	Declaration* declaration;
-	Member* member;
+	ForEachIterator* forEachIterator;
 } ForLoopDeclaration;
 
 #endif

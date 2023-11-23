@@ -1,0 +1,4 @@
+main {
+    PEFile pe = peopen("./binaries/setup.exe");
+    int machine = pe.file_header.machine;
+}

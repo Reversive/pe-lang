@@ -1,0 +1,49 @@
+main {
+    PEFile pe = peopen("./binaries/setup.exe");
+    PEHeader header = pe.file_header;
+    print "PE Header:";
+    print "\tMachine: ", header.machine;
+    print "\tNumber of sections: ", header.number_of_sections;
+    print "\tTime date stamp: ", header.time_date_stamp;
+    print "\tCharacteristics: ", header.characteristics;
+
+    PEOptionalHeader optional_header = pe.optional_header;
+    print "PE Optional Header:";
+    print "\tAddress of entry point: ", optional_header.aoep;
+    print "\tImage base: ", optional_header.image_base;
+    print "\tSection alignment: ", optional_header.section_alignment;
+    print "\tFile alignment: ", optional_header.file_alignment;
+    print "\tSubsystem: ", optional_header.subsystem;
+
+    PESections sections = pe.sections;
+    print "PE Sections:";
+    for (PESection section in sections) {
+        print "\tName: ", section.name;
+        print "\tVirtual size: ", section.virtual_size;
+        print "\tVirtual address: ", section.virtual_address;
+        print "\tSize of raw data: ", section.raw_data_size;
+        print "\tCharacteristics: ", section.characteristics;
+    }
+
+    PEImports imports = pe.imports;
+    print "PE Imports:";
+    for (PEImport import in imports) {
+        print "\tDll: ", import.dll;
+        for (PEFunction importFunction in import.functions) {
+            print "\t\tName: ", importFunction.name;
+            print "\t\tAddress: ", importFunction.address;
+        }
+    }
+
+    PEExports exports = pe.exports;
+    print "PE Exports:";
+    for (PEExport export in exports) {
+        print "\tDll: ", export.dll;
+        for (PEFunction exportFunction in export.functions) {
+            print "\t\tName: ", exportFunction.name;
+            print "\t\tAddress: ", exportFunction.address;
+        }
+    }
+
+    peclose(pe);
+}

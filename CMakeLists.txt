@@ -61,11 +61,11 @@ endif ()
 add_executable(Compiler
 	src/main.c
 	src/backend/code-generation/generator.c
-	src/backend/domain-specific/calculator.c
 	src/backend/semantic-analysis/symbol-scope/symbol-table/symbol-table.c
 	src/backend/semantic-analysis/symbol-scope/context/context.c
 	src/backend/support/logger.c
 	src/backend/support/assert.c
+	src/backend/support/output-builder.c
 	src/backend/semantic-analysis/ast/actions/program.c
 	src/backend/semantic-analysis/ast/actions/assignment/assignment.c
 	src/backend/semantic-analysis/ast/actions/block/block.c

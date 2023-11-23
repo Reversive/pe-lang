@@ -1,0 +1,11 @@
+main {
+    PEFile pe = peopen("./binaries/setup.exe");
+    PEOptionalHeader optional_header = pe.optional_header;
+    print "PE Optional Header:";
+    print "\tAddress of entry point: ", optional_header.aoep;
+    print "\tImage base: ", optional_header.image_base;
+    print "\tSection alignment: ", optional_header.section_alignment;
+    print "\tFile alignment: ", optional_header.file_alignment;
+    print "\tSubsystem: ", optional_header.subsystem;
+    peclose(pe);
+}

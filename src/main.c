@@ -1,22 +1,20 @@
 #include "backend/code-generation/generator.h"
 #include "backend/support/logger.h"
+#include "backend/support/file.h"
 #include "backend/support/shared.h"
 #include "frontend/syntactic-analysis/bison-parser.h"
 #include <stdio.h>
 
-// Estado de la aplicación.
 CompilerState state;
 
-// Punto de entrada principal del compilador.
 const int main(const int argumentCount, const char **arguments)
 {
-	// Inicializar estado de la aplicación.
 	state.program = NULL;
 	state.result = 0;
 	state.succeed = true;
-	state.context = CtxAllocate();
-	
-	// Mostrar parámetros recibidos por consola.
+	state.context = CX_New();
+	state.output = OB_New("output/generated.py");
+
 	for (int i = 0; i < argumentCount; ++i)
 	{
 		LogInfo("Argumento %d: '%s'", i, arguments[i]);
@@ -31,13 +29,19 @@ const int main(const int argumentCount, const char **arguments)
 		if (state.succeed)
 		{
 			LogInfo("La compilacion fue exitosa.");
-			// Generator(state.result);
+			FILE* template = fopen("assets/template.py", "r");
+			CopyFile(template, state.output->file);
+			GenerateProgram(state.program);
+			fclose(template);
+			OB_Free(state.output);
 		}
 		else
 		{
 			PrintErrors();
 			FreeErrors();
-			CtxFree(state.context);
+			CX_Free(state.context);
+			OB_Free(state.output);
+			return 1;
 		}
 		break;
 	case 1:

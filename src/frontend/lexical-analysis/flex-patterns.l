@@ -89,9 +89,9 @@ in                                          { return InPatternAction(); }
 "("											{ return OpenParenthesisPatternAction(); }
 ")"											{ return CloseParenthesisPatternAction(); }
  
- {digit}+									{ return IntegerPatternAction(yytext, yyleng); }
- {whitespace}+								{ IgnoredPatternAction(yytext, yyleng); }
- {letter}({letter}|{digit}|_)*				{ return IdentifierPatternAction(yytext, yyleng); }
+{digit}+									{ return IntegerPatternAction(yytext, yyleng); }
+{whitespace}+								{ IgnoredPatternAction(yytext, yyleng); }
+{letter}({letter}|{digit}|_)*				{ return IdentifierPatternAction(yytext, yyleng); }
 
 "\""                                        { BEGIN(STRING); }
 <STRING>[^"]*                               { return StringPatternAction(yytext, yyleng); }

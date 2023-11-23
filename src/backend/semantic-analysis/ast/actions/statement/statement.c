@@ -8,18 +8,12 @@ Statement* FullAssignmentGrammarActionStatement(FullAssignment* fullAssignment) 
 	AssertNotNullCallback(statement, HandleOutOfMemoryError);
 	Declaration* declaration = fullAssignment->declaration;
 	Expression* expression = fullAssignment->expression;
-	SymbolEntry* entry = CtxAddSymbol(state.context, SE_New(declaration->id, declaration->declarationType));
-	if (entry == NULL) {
-		LogError("La variable '%s' ya existe en el contexto actual.", declaration->id);
-		state.succeed = false;
-	}
 	if (GetFullAssignmentType(fullAssignment) == TYPE_UNKNOWN) {
-		LogError("La variable '%s' de tipo '%s' no puede ser asignada a una expresion de tipo '%s'.", 
+		PushError("La variable '%s' de tipo '%s' no puede ser asignada a una expresion de tipo '%s'.", 
 			declaration->id, 
 			TypeToString(GetDeclarationType(declaration)), 
 			TypeToString(GetExpressionType(expression))
 		);
-		state.succeed = false;
 	}
 	statement->type = FULL_ASSIGNMENT_STATEMENT;
 	statement->fullAssignment = fullAssignment;
@@ -30,7 +24,7 @@ Statement* AssignmentGrammarActionStatement(Assignment* assignment) {
 	LogDebug("[Bison] AssignmentGrammarActionStatement");
 	Statement* statement = calloc(1, sizeof(Statement));
 	AssertNotNullCallback(statement, HandleOutOfMemoryError);
-	SymbolEntry* entry = CtxGetSymbol(state.context, assignment->id);
+	SymbolEntry* entry = CX_GetSymbol(state.context, assignment->id);
 	if(entry == NULL) {
 		LogError("La variable '%s' no existe en el contexto actual.", assignment->id);
 	}
@@ -62,11 +56,6 @@ Statement* DeclarationGrammarActionStatement(Declaration* declaration) {
 	LogDebug("[Bison] DeclarationGrammarActionStatement");
 	Statement* statement = calloc(1, sizeof(Statement));
 	AssertNotNullCallback(statement, HandleOutOfMemoryError);
-	SymbolEntry* entry = CtxAddSymbol(state.context, SE_New(declaration->id, declaration->declarationType));
-	if(entry == NULL) {
-		LogError("La variable '%s' ya existe en el contexto actual.", declaration->id);
-		state.succeed = false;
-	}
 	statement->type = DECLARATION_STATEMENT;
 	statement->declaration = declaration;
 	return statement;

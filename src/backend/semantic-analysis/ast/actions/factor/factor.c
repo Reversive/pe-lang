@@ -21,11 +21,6 @@ Factor* ConstantFactorGrammarAction(Constant* value) {
 
 Factor* IdentifierFactorGrammarAction(char *id) {
 	LogDebug("[Bison] IdentifierFactorGrammarAction: %s", id);
-	SymbolEntry* symbolEntry = CtxGetSymbol(state.context, id);
-	if(symbolEntry == NULL) {
-		PushError("La variable '%s' no existe", id);
-		state.succeed = false;
-	}
 	Factor* factor = calloc(1, sizeof(Factor));
 	AssertNotNullCallback(factor, HandleOutOfMemoryError);
 	factor->type = IDENTIFIER_FACTOR;

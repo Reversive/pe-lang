@@ -1,0 +1,4 @@
+main {
+    PEFile pe = peopen("./binaries/setup.exe");
+    PESections sections = pe.sections;
+}

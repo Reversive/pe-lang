@@ -3,14 +3,12 @@
 void AssertTypeMatch(Expression* left, Expression* right, char* operation) {
 	Type leftType = GetExpressionType(left);
 	Type rightType = GetExpressionType(right);
-	
 	if (leftType != rightType) {
 		PushError("No se puede %s una expresion de tipo '%s' con una expresion de tipo '%s'.", 
 			operation, 
 			TypeToString(leftType), 
 			TypeToString(rightType)
 		);
-		state.succeed = false;
 	}
 }
 
@@ -76,7 +74,7 @@ Expression* EqualExpressionGrammarAction(
 	Expression* leftExpression, 
 	Expression* rightExpression
 ) {
-	LogDebug("[Bison] EqualExpressionGrammarAction = ENTREEEE");
+	LogDebug("[Bison] EqualExpressionGrammarAction");
 	AssertTypeMatch(leftExpression, rightExpression, "comparar");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
@@ -184,14 +182,6 @@ Expression* OrExpressionGrammarAction(
 	return expression;
 }
 
-Expression* NotExpressionGrammarAction(Expression* expression) {
-	LogDebug("[Bison] NotExpressionGrammarAction");
-	Expression* newExpression = calloc(1, sizeof(Expression));
-	AssertNotNullCallback(newExpression, HandleOutOfMemoryError);
-	newExpression->type = NOT_EXPRESSION;
-	newExpression->leftExpression = expression;
-	return newExpression;
-}
 
 Expression* FunctionExpressionGrammarAction(ReturnFunction* returnFunction) {
 	LogDebug("[Bison] FunctionExpressionGrammarAction");
@@ -215,6 +205,9 @@ Expression* FactorExpressionGrammarAction(Factor* factor) {
 	LogDebug("[Bison] FactorExpressionGrammarAction");
 	Expression* expression = calloc(1, sizeof(Expression));
 	AssertNotNullCallback(expression, HandleOutOfMemoryError);
+	if(GetFactorType(factor) == TYPE_UNKNOWN) {
+		PushError("La variable '%s' no ha sido declarada por lo que no puede ser utilizada como una expresion.", factor->id);
+	}
 	expression->type = FACTOR_EXPRESSION;
 	expression->factor = factor;
 	return expression;

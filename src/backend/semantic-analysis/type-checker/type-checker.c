@@ -32,8 +32,6 @@ Type GetExpressionType(Expression* expression) {
 			}
 			return TYPE_UNKNOWN;
 		}
-		case NOT_EXPRESSION:
-			return GetExpressionType(expression->leftExpression);
 		case FACTOR_EXPRESSION:
 			return GetFactorType(expression->factor);
 		case RETURN_FUNCTION_EXPRESSION:
@@ -124,8 +122,10 @@ Type GetMemberType(Member* member) {
 }
 
 Type GetIdentifierType(char* id) {
-	SymbolEntry* entry = CtxGetSymbol(state.context, id);
-    return entry == NULL ? TYPE_UNKNOWN : entry->type;
+	SymbolEntry* entry = CX_GetSymbol(state.context, id);
+	if(entry == NULL) return TYPE_UNKNOWN;
+	if(entry->value.expVal == NULL) return TYPE_UNKNOWN;
+    return entry->type;
 }
 
 Type GetConstantType(Constant* constant) {

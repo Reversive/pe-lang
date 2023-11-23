@@ -19,4 +19,15 @@ struct Member {
 	Member* member;
 };
 
+static inline char* GetMemberId(Member* member) {
+	switch(member->type) {
+		case IDENTIFIER_PROPERTY_MEMBER:
+			return member->leftIdentifier;
+		case MEMBER_PROPERTY_MEMBER:
+			return GetMemberId(member->member);
+		default:
+			return NULL;
+	}
+}
+
 #endif
