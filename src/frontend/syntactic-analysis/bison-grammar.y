@@ -168,10 +168,11 @@ while: WHILE OPEN_PARENTHESIS expression CLOSE_PARENTHESIS block 								{ $$ = 
 for: FOR OPEN_PARENTHESIS for_loop_declaration CLOSE_PARENTHESIS block 							{ $$ = ExplicitForGrammarAction($3, $5); }
 	;
 
-for_loop_declaration: full_assignment SEMICOLON expression SEMICOLON assignment 				{ $$ = ForFullAssignmentForGrammarAction($1, $3, $5); }
-	| assignment SEMICOLON expression SEMICOLON assignment										{ $$ = ForAssignmentExpressionAssignmentGrammarAction($1, $3, $5); }
-	| SEMICOLON expression SEMICOLON assignment													{ $$ = ForExpressionAssignmentGrammarAction($2, $4); }
-	| SEMICOLON expression SEMICOLON															{ $$ = ForExpressionGrammarAction($2); }
+for_loop_declaration: 
+	// full_assignment SEMICOLON expression SEMICOLON assignment 				{ $$ = ForFullAssignmentForGrammarAction($1, $3, $5); }
+	// | assignment SEMICOLON expression SEMICOLON assignment										{ $$ = ForAssignmentExpressionAssignmentGrammarAction($1, $3, $5); }
+	// | SEMICOLON expression SEMICOLON assignment													{ $$ = ForExpressionAssignmentGrammarAction($2, $4); }
+	// | SEMICOLON expression SEMICOLON															{ $$ = ForExpressionGrammarAction($2); }
 	| declaration IN for_each_iterator															{ $$ = ForDeclarationMemberGrammarAction($1, $3); }
 	;
 
