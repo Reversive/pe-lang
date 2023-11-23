@@ -13,7 +13,7 @@ const int main(const int argumentCount, const char **arguments)
 	state.result = 0;
 	state.succeed = true;
 	state.context = CX_New();
-	state.output = OB_New("assets/output.py");
+	state.output = OB_New("output/generated.py");
 
 	for (int i = 0; i < argumentCount; ++i)
 	{
@@ -29,7 +29,7 @@ const int main(const int argumentCount, const char **arguments)
 		if (state.succeed)
 		{
 			LogInfo("La compilacion fue exitosa.");
-			FILE* template = fopen("assets/template.py", "r"); // TODO: Check if file exists.
+			FILE* template = fopen("assets/template.py", "r");
 			CopyFile(template, state.output->file);
 			GenerateProgram(state.program);
 			fclose(template);

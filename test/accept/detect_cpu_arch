@@ -1,5 +1,5 @@
 main {
-    string file = "file.exe";
+    string file = "./binaries/setup.exe";
     PEFile pe = peopen(file);
     int arch = pe.file_header.machine;
     if (arch == 267) { 

@@ -24,7 +24,6 @@ typedef struct {
     int size;
 } SymbolTable;
 
-
 SymbolEntry* SE_New(char* id, Type type);
 SymbolTable* ST_New();
 void ST_Free(SymbolTable* table);

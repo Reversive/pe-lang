@@ -1,5 +1,5 @@
 main {
-    string filePath = "file.exe";
+    string filePath = "./binaries/setup.exe";
     PEFile pe = peopen(filePath);
     print pe.file_header.machine;
     peclose(pe);

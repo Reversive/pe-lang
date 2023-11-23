@@ -1,5 +1,5 @@
 main {
-    PEFile pe = peopen("file.txt");
+    PEFile pe = peopen("./binaries/setup.exe");
     PEHeader header = pe.file_header;
     print "PE Header:";
     print "\tMachine: ", header.machine;

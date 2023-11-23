@@ -1,5 +1,5 @@
 main {
-    PEFile pe = peopen("file.txt");
+    PEFile pe = peopen("./binaries/setup.exe");
     for (PEImport import in pe.imports)
     {
         print import.dll;
