@@ -70,7 +70,7 @@ main {
             print "\t", function.address, function.name;
         }
     }
-    peclose(pe);
+    
 }
 ```
 
