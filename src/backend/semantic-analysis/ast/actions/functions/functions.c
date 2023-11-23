@@ -83,6 +83,14 @@ PEClose* PECloseGrammarAction(char* id) {
 	LogDebug("[Bison] PECloseGrammarAction: %s", id);
 	PEClose* peClose = calloc(1, sizeof(PEClose));
 	AssertNotNullCallback(peClose, HandleOutOfMemoryError);
+	SymbolEntry* entry = CX_GetSymbol(state.context, id);
+	if(entry == NULL) {
+		PushError("La variable '%s' no existe.", id);
+	} else if(entry->type != TYPE_PEFILE) {
+		PushError("La variable '%s' debe ser de tipo 'PEFile'.", id);
+	} else if(entry->value.expVal == NULL) {
+		PushError("La variable '%s' no fue inicializada.", id);
+	}
 	peClose->id = id;
 	return peClose;
 }

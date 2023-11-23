@@ -9,7 +9,7 @@ Statement* FullAssignmentGrammarActionStatement(FullAssignment* fullAssignment) 
 	Declaration* declaration = fullAssignment->declaration;
 	Expression* expression = fullAssignment->expression;
 	if (GetFullAssignmentType(fullAssignment) == TYPE_UNKNOWN) {
-		LogError("La variable '%s' de tipo '%s' no puede ser asignada a una expresion de tipo '%s'.", 
+		PushError("La variable '%s' de tipo '%s' no puede ser asignada a una expresion de tipo '%s'.", 
 			declaration->id, 
 			TypeToString(GetDeclarationType(declaration)), 
 			TypeToString(GetExpressionType(expression))
