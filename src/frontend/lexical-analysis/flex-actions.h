@@ -93,7 +93,6 @@ token PEImportsTypePatternAction();
 token PEExportsTypePatternAction();
 
 token UnknownPatternAction(const char *lexeme, const int length);
-
 void IgnoredPatternAction(const char *lexeme, const int length);
 
 #endif
