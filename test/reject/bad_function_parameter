@@ -1,0 +1,3 @@
+main {
+    PEFile pe = peopen(123);
+}

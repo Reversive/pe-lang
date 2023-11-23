@@ -1,0 +1,6 @@
+main {
+    string filePath = "file.exe";
+    PEFile pe = peopen(filePath);
+    print pe.file_header.machine;
+    peclose(pe);
+}

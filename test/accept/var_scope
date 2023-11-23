@@ -1,0 +1,12 @@
+main {
+    int a = 5;
+    int b = 10;
+    if(a == 5) {
+        b = 15;
+        print b;
+    } else {
+        b = 20;
+        print b;
+    }
+    print b;
+}

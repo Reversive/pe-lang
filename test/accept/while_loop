@@ -1,0 +1,7 @@
+main {
+    int loop = 0;
+    while(loop < 10) {
+        print loop;
+        loop = loop + 1;
+    }
+}

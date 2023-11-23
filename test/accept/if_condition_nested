@@ -1,0 +1,18 @@
+main {
+    int condition = 0;
+    if(condition) {
+        print "if";
+        if(condition) {
+            print "if";
+        } else {
+            print "else";
+        }
+    } else {
+        print "else";
+        if(condition) {
+            print "if";
+        } else {
+            print "else";
+        }
+    }
+}

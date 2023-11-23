@@ -1,0 +1,10 @@
+main {
+    PEFile pe = peopen("file.txt");
+    PEHeader header = pe.file_header;
+    print "PE Header:";
+    print "\tMachine: ", header.machine;
+    print "\tNumber of sections: ", header.number_of_sections;
+    print "\tTime date stamp: ", header.time_date_stamp;
+    print "\tCharacteristics: ", header.characteristics;
+    peclose(pe);
+}
