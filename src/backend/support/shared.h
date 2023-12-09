@@ -6,6 +6,7 @@
 #include "../semantic-analysis/symbol-scope/context/context.h"
 #include "output-builder.h"
 #include <stdarg.h>  
+#include <string.h>
 
 
 // Descriptor del archivo de entrada que utiliza Bison.

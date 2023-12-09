@@ -1,6 +1,6 @@
 #include "symbol-table.h"
 #include <stdlib.h>
-
+#include <string.h>
 static int uid = 0;
 
 SymbolEntry* SE_New(char* id, Type type) {
