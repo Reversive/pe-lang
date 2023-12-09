@@ -1,4 +1,4 @@
-name: build
+name: compiler-build
 
 on: [push, pull_request]
 
@@ -15,19 +15,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y bison cmake flex gcc make
 
-    - name: build compiler
+    - name: cmake generation
       run: |
-        echo "Building the compiler..."
-        if ! cmake -S . -B ./bin; then
-          echo "CMake failed!"
-          exit 1
-        fi
+         cmake -S . -B bin
 
-        cd ./bin
-
-        if ! make; then
-          echo "Make failed!"
-          exit 1
-        fi
-
-        echo "All done."
+    - name: make build
+      run: |
+        cd bin
+        make
