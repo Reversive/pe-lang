@@ -17,10 +17,6 @@ jobs:
 
     - name: build compiler
       run: |
-        ROOT="$(dirname "$0")"
-        echo "Relocating script to '$ROOT'..."
-        cd "$ROOT"
-
         echo "Building the compiler..."
         if ! cmake -S .. -B ../bin; then
           echo "CMake failed!"
