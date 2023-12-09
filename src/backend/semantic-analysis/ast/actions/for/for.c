@@ -1,5 +1,35 @@
 #include "for.h"
 
+Type GetIteratorType(Type type) {
+	switch(type) {
+		case TYPE_PESECTION:
+			return TYPE_PESECTIONS;
+		case TYPE_PEIMPORT:
+			return TYPE_PEIMPORTS;
+		case TYPE_PEEXPORT:
+			return TYPE_PEEXPORTS;
+		case TYPE_PEFUNCTION:
+			return TYPE_PEFUNCTIONS;
+		default:
+			return TYPE_UNKNOWN;
+	}
+}
+
+Type GetIterableType(Type type) {
+	switch(type) {
+		case TYPE_PESECTIONS:
+			return TYPE_PESECTION;
+		case TYPE_PEIMPORTS:
+			return TYPE_PEIMPORT;
+		case TYPE_PEEXPORTS:
+			return TYPE_PEEXPORT;
+		case TYPE_PEFUNCTIONS:
+			return TYPE_PEFUNCTION;
+		default:
+			return TYPE_UNKNOWN;
+	}
+}
+
 // For
 For* ExplicitForGrammarAction(ForLoopDeclaration* ForLoopDeclaration, Block* block) {
 	LogDebug("[Bison] ExplicitForGrammarAction");
@@ -81,36 +111,6 @@ boolean IsTypeForEachable(Type type) {
 
 boolean CompareForEachable(Type left, Type right) {
 	return GetIterableType(right) == left;
-}
-
-Type GetIteratorType(Type type) {
-	switch(type) {
-		case TYPE_PESECTION:
-			return TYPE_PESECTIONS;
-		case TYPE_PEIMPORT:
-			return TYPE_PEIMPORTS;
-		case TYPE_PEEXPORT:
-			return TYPE_PEEXPORTS;
-		case TYPE_PEFUNCTION:
-			return TYPE_PEFUNCTIONS;
-		default:
-			return TYPE_UNKNOWN;
-	}
-}
-
-Type GetIterableType(Type type) {
-	switch(type) {
-		case TYPE_PESECTIONS:
-			return TYPE_PESECTION;
-		case TYPE_PEIMPORTS:
-			return TYPE_PEIMPORT;
-		case TYPE_PEEXPORTS:
-			return TYPE_PEEXPORT;
-		case TYPE_PEFUNCTIONS:
-			return TYPE_PEFUNCTION;
-		default:
-			return TYPE_UNKNOWN;
-	}
 }
 
 ForLoopDeclaration* ForDeclarationMemberGrammarAction(Declaration* declaration, ForEachIterator* iterator) {

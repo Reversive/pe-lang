@@ -2,6 +2,7 @@
 #define ACTION_PROGRAM_H
 
 #include "../../type-checker/type-checker.h"
+#include "../../../support/assert.h"
 
 void HandleOutOfMemoryError();
 
