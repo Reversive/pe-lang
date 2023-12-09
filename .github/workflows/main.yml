@@ -18,12 +18,12 @@ jobs:
     - name: build compiler
       run: |
         echo "Building the compiler..."
-        if ! cmake -S .. -B ../bin; then
+        if ! cmake -S ./src -B ./bin; then
           echo "CMake failed!"
           exit 1
         fi
 
-        cd ../bin
+        cd ./bin
 
         if ! make; then
           echo "Make failed!"
