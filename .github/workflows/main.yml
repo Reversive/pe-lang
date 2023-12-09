@@ -1,9 +1,6 @@
 name: build
 
-on:
-  push:
-    branches:
-      - master
+on: [push, pull_request]
 
 jobs:
   build:
@@ -20,5 +17,21 @@ jobs:
 
     - name: build compiler
       run: |
-        chmod u+x --recursive script
-        script/build.sh
+        ROOT="$(dirname "$0")"
+        echo "Relocating script to '$ROOT'..."
+        cd "$ROOT"
+
+        echo "Building the compiler..."
+        if ! cmake -S .. -B ../bin; then
+          echo "CMake failed!"
+          exit 1
+        fi
+
+        cd ../bin
+
+        if ! make; then
+          echo "Make failed!"
+          exit 1
+        fi
+
+        echo "All done."
