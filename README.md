@@ -46,7 +46,7 @@ user@machine:pe-lang/$script/build.sh
 ```
 In a Microsoft Windows environment, however, you must run:
 ```
-user@machine:pe-lang/ $ script\build.bat
+user@machine:pe-lang/ $ script/build.bat
 ```
 Then the generated solution bin\Compiler.sln must be opened with the Microsoft Visual Studio 2022 IDE. The executables that this system builds are placed within the bin\Debug and bin\Release directories, as appropriate.
 
@@ -58,7 +58,7 @@ user@machine:pe-lang/ $ script/start.sh program
 ```
 On windows:
 ```
-user@machine:pe-lang/ $ script\start.bat program
+user@machine:pe-lang/ $ script/start.bat program
 ```
 This will build a `generated.py` file under the `output` folder. To run the generated file, run the following commands:
 ```
